@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# pre-commit-qmd — Refresh the QMD full-text index when markdown is staged.
+#
+# Maintained once in the LEAP submodule and shared across repositories. A per-repo
+# .githooks/pre-commit-qmd wrapper locates and runs this copy.
+#
+# Keeping the index current is an optimization, never a gate. This hook tolerates
+# a missing qmd, command failures, and unresponsive backends, and always exits
+# zero, so a commit is never blocked by documentation indexing.
+#
+# Embedding is deliberately NOT run here. It requires model weights that QMD
+# downloads separately, takes minutes on a large index, and stalls when those
+# weights are absent, which would hold every markdown commit open. Refresh
+# vectors out of band instead: qmd embed (after qmd pull, if needed).
+
+set -uo pipefail
+
+#======================================================================
+# Guard: only run if markdown files are staged
+#======================================================================
+
+if ! git diff --cached --name-only | grep -q '\.md$'; then
+  exit 0
+fi
+
+if ! command -v qmd &>/dev/null; then
+  echo "qmd: not installed — skipping index update (run utils/qmd/qmd-config to set up)" >&2
+  exit 0
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)" || exit 0
+cd "$REPO_ROOT" || exit 0
+
+#======================================================================
+# Bounded execution
+#
+# macOS ships no timeout(1), so a watchdog subshell enforces a wall-clock
+# bound. Output is redirected to a log rather than inherited: git reads the
+# hook's stdout and waits for every descendant holding it, so a stalled
+# grandchild would keep the commit open even after this hook exits.
+#======================================================================
+
+run_bounded() { # seconds logfile command...
+  local secs="$1" log="$2"; shift 2
+  "$@" >"$log" 2>&1 &
+  local pid=$!
+  ( sleep "$secs"; kill -TERM "$pid" 2>/dev/null ) >/dev/null 2>&1 &
+  local dog=$!
+  local rc=0
+  wait "$pid" 2>/dev/null || rc=$?
+  kill -TERM "$dog" 2>/dev/null
+  wait "$dog" 2>/dev/null || true
+  return "$rc"
+}
+
+#======================================================================
+# Refresh the index
+#======================================================================
+
+LOG="$(mktemp -t qmd-precommit 2>/dev/null)" || exit 0
+
+echo "qmd: updating index..."
+
+if run_bounded 60 "$LOG" qmd update; then
+  echo "qmd: index updated."
+  rm -f "$LOG"
+else
+  echo "qmd: index update skipped (failed or timed out); commit continues." >&2
+  echo "     details: $LOG" >&2
+fi
+
+exit 0

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# utils/qmd/qmd-config — Thin wrapper around the shared canonical QMD setup script.
+#
+# The canonical script is maintained once in the LEAP submodule and shared across
+# all repositories. This wrapper locates that copy and runs it against THIS
+# repository, passing the repository root explicitly (the canonical script cannot
+# derive it on its own when running from inside a submodule).
+#
+# Usage mirrors the canonical script, e.g.:
+#   ./utils/qmd/qmd-config
+#   ./utils/qmd/qmd-config --clean
+#   ./utils/qmd/qmd-config --dry-run
+
+set -euo pipefail
+
+SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(git -C "$SELF_DIR" rev-parse --show-toplevel)"
+
+# Locate the canonical script inside whichever LEAP submodule this repository
+# includes. Layouts differ: the methodology may sit directly at leap/, under a
+# differently named extension repo, or nested one level inside one. Searching by
+# pattern keeps this wrapper independent of any particular naming scheme.
+canonical=""
+for dir in "$REPO_ROOT"/leap*/ "$REPO_ROOT"/*/leap*/; do
+  candidate="${dir%/}/scripts/qmd/qmd-config"
+  if [ -x "$candidate" ]; then canonical="$candidate"; break; fi
+done
+
+if [ -z "$canonical" ]; then
+  echo "Error: shared qmd-config not found in a LEAP submodule." >&2
+  echo "       Run 'git submodule update --init' and try again." >&2
+  echo "       Searched for scripts/qmd/qmd-config under directories matching" >&2
+  echo "       'leap*' at the repository root and one level below it." >&2
+  exit 1
+fi
+
+exec "$canonical" --repo-root "$REPO_ROOT" "$@"

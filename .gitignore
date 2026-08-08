@@ -1,0 +1,14 @@
+venv/
+node_modules/
+dist/
+__pycache__/
+*.log
+*.tmp
+.DS_Store
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.env
+*.venv
+*.pyc

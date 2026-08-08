@@ -1,0 +1,643 @@
+#!/usr/bin/env bash
+# qmd-config — Set up QMD documentation indexing for the current repository.
+#
+# Run once per machine. Idempotent: safe to re-run after adding new modules.
+# Use --clean after reorganizing modules to rebuild collection masks from scratch.
+#
+# Collections are namespaced as <project>-<collection> so that many repositories
+# coexist in a single global QMD index without name collisions. The project prefix
+# is derived automatically (see "Resolve project prefix"), so this one script is
+# repo-agnostic and can be shared verbatim across repositories.
+#
+# What this script does:
+#   1. Installs QMD globally via npm (if not already installed)
+#   2. Registers knowledge base collections aligned to the LEAP document taxonomy,
+#      each prefixed with the project name
+#   3. Optionally registers the shared, unprefixed leap/leap-* collections (owner only)
+#   4. Attaches context hints describing each collection's content and purpose
+#   5. Configures the QMD MCP server in ~/.claude.json
+#   6. Wires the QMD pre-commit hook into .git/hooks/pre-commit
+#   7. Indexes all content and generates embeddings
+#
+# Prerequisites: npm, node, git
+#
+# Portability: targets bash 3.2 (the default on macOS). Avoids bash 4+ features.
+
+set -euo pipefail
+
+#======================================================================
+# Configuration
+#======================================================================
+
+# The repository that owns the shared, unprefixed leap/leap-* collections.
+# Each participating repository includes a copy of the same LEAP submodule, so
+# these collections are registered once (by the owner) rather than once per repo,
+# which would add the same documents to the index repeatedly.
+readonly SHARED_OWNER="commons"
+
+# Per-project collection suffixes, in registration order.
+readonly PROJECT_COLLECTIONS="adrs features planning guides meta readmes"
+
+#======================================================================
+# Arguments
+#======================================================================
+
+CLEAN=false
+DRY_RUN=false
+REMOVE_LEGACY=false
+NO_SCHEDULE=false
+REMOVE_SCHEDULE=false
+PREFIX_OVERRIDE=""
+REPO_ROOT_OVERRIDE=""
+SHARED_MODE="auto"   # auto | on | off
+
+usage() {
+  cat >&2 <<'USAGE'
+Usage: qmd-config [options]
+
+Options:
+  --repo-root <dir> Target repository root. Required when this script is invoked
+                    from a shared location (e.g. a submodule) rather than from
+                    inside the target repo; a thin per-repo wrapper supplies it.
+  --prefix <name>   Override the derived project prefix.
+  --with-shared     Force-register the shared leap/leap-* collections.
+  --no-shared       Skip the shared leap/leap-* collections.
+  --clean           Remove this project's collections before re-registering.
+  --remove-legacy   Remove unprefixed project collections left by pre-convention
+                    setups (adrs, features, ...). Shared leap/leap-* collections
+                    are never touched. Run once per machine when migrating.
+  --no-schedule     Do not install the daily embedding refresh job.
+  --remove-schedule Remove a previously installed refresh job.
+  --dry-run         Print the plan without installing, registering, or indexing.
+  -h, --help        Show this help.
+
+By default the shared leap/leap-* collections are registered only when the
+resolved project prefix is the shared owner ("commons").
+USAGE
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --clean) CLEAN=true ;;
+    --remove-legacy) REMOVE_LEGACY=true ;;
+    --no-schedule) NO_SCHEDULE=true ;;
+    --remove-schedule) REMOVE_SCHEDULE=true ;;
+    --dry-run) DRY_RUN=true ;;
+    --with-shared) SHARED_MODE="on" ;;
+    --no-shared) SHARED_MODE="off" ;;
+    --prefix)
+      shift || { echo "Error: --prefix requires a value" >&2; exit 1; }
+      PREFIX_OVERRIDE="${1:-}" ;;
+    --prefix=*) PREFIX_OVERRIDE="${1#--prefix=}" ;;
+    --repo-root)
+      shift || { echo "Error: --repo-root requires a value" >&2; exit 1; }
+      REPO_ROOT_OVERRIDE="${1:-}" ;;
+    --repo-root=*) REPO_ROOT_OVERRIDE="${1#--repo-root=}" ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "Error: unknown option: $1" >&2; usage; exit 1 ;;
+  esac
+  shift
+done
+
+#======================================================================
+# Resolve repository root
+#======================================================================
+
+# This script's own directory, which also holds the companion qmd-refresh script.
+# Resolved unconditionally, because it is needed regardless of how the target
+# repository root is determined.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# When invoked via a per-repo wrapper the target repo root is passed explicitly,
+# because this script may live in a shared submodule whose own toplevel differs
+# from the consuming repository. Otherwise derive it from the script's location.
+if [ -n "$REPO_ROOT_OVERRIDE" ]; then
+  REPO_ROOT="$REPO_ROOT_OVERRIDE"
+  if [ ! -d "$REPO_ROOT" ]; then
+    echo "Error: --repo-root does not exist: $REPO_ROOT" >&2
+    exit 1
+  fi
+else
+  REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+fi
+
+#======================================================================
+# Resolve project prefix
+#
+# Precedence: explicit --prefix > git remote name > repository directory name.
+# The git remote name is preferred because it is stable across clones regardless
+# of the local checkout directory; the directory name is only a fallback for
+# repositories that have no remote configured yet.
+#======================================================================
+
+# Reduce an arbitrary string to a safe collection-name slug: lowercase, with any
+# run of non [a-z0-9-] characters collapsed to a single hyphen, and no leading or
+# trailing hyphens.
+slugify() {
+  printf '%s' "$1" \
+    | tr '[:upper:]' '[:lower:]' \
+    | sed -e 's/[^a-z0-9-]\{1,\}/-/g' -e 's/-\{2,\}/-/g' -e 's/^-//' -e 's/-$//'
+}
+
+PREFIX=""
+PREFIX_SOURCE=""
+
+if [ -n "$PREFIX_OVERRIDE" ]; then
+  PREFIX="$(slugify "$PREFIX_OVERRIDE")"
+  PREFIX_SOURCE="override"
+else
+  remote_url="$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || true)"
+  if [ -n "$remote_url" ]; then
+    # Strip everything up to the last '/' (handles both https and ssh forms),
+    # then drop a trailing ".git".
+    remote_name="${remote_url##*/}"
+    remote_name="${remote_name%.git}"
+    PREFIX="$(slugify "$remote_name")"
+    PREFIX_SOURCE="remote"
+  fi
+  if [ -z "$PREFIX" ]; then
+    PREFIX="$(slugify "$(basename "$REPO_ROOT")")"
+    PREFIX_SOURCE="directory"
+  fi
+fi
+
+if [ -z "$PREFIX" ]; then
+  echo "Error: could not resolve a project prefix (empty after slugify)." >&2
+  exit 1
+fi
+
+#======================================================================
+# Resolve shared-collection ownership
+#======================================================================
+
+case "$SHARED_MODE" in
+  on) INDEX_SHARED=true ;;
+  off) INDEX_SHARED=false ;;
+  auto)
+    if [ "$PREFIX" = "$SHARED_OWNER" ]; then INDEX_SHARED=true; else INDEX_SHARED=false; fi ;;
+esac
+
+#======================================================================
+# Discover knowledge base directories
+#
+# All kb/ directories are indexed except those inside a leap or leap-* submodule,
+# which are handled (once, by the owner) as shared collections.
+#======================================================================
+
+kb_rel_paths=()
+while IFS= read -r abs_path; do
+  [ -n "$abs_path" ] || continue
+  kb_rel_paths+=("${abs_path#"$REPO_ROOT"/}")
+done < <(find "$REPO_ROOT" -type d \( -name 'leap' -o -name 'leap-*' \) -prune \
+              -o -type d -name kb -print | sort)
+
+if [ ${#kb_rel_paths[@]} -eq 0 ]; then
+  echo "Error: no kb/ directories found in $REPO_ROOT" >&2
+  exit 1
+fi
+
+# Build a brace-expansion prefix: {kb,server/kb,...} or just kb when there is one.
+if [ ${#kb_rel_paths[@]} -eq 1 ]; then
+  KB="${kb_rel_paths[0]}"
+else
+  KB="{$(IFS=,; echo "${kb_rel_paths[*]}")}"
+fi
+
+#======================================================================
+# Discover shared leap/leap-* submodule directories
+#======================================================================
+
+shared_dirs=()
+for cand in "$REPO_ROOT"/leap "$REPO_ROOT"/leap-*; do
+  [ -d "$cand" ] || continue
+  [ -d "$cand/kb" ] || continue
+  shared_dirs+=("$(basename "$cand")")
+done
+
+#======================================================================
+# Action emitters (respect --dry-run)
+#======================================================================
+
+emit_collection() { # name path mask
+  if [ "$DRY_RUN" = true ]; then
+    echo "COLLECTION $1 PATH $2 MASK $3"
+  else
+    qmd collection add "$2" --name "$1" --mask "$3"
+    echo "  ✓ $1"
+  fi
+}
+
+emit_context() { # uri text
+  if [ "$DRY_RUN" = true ]; then
+    echo "CONTEXT $1"
+  else
+    qmd context add "$1" "$2"
+  fi
+}
+
+remove_collection() { # name
+  if [ "$DRY_RUN" = true ]; then
+    echo "REMOVE $1"
+  else
+    if qmd collection remove "$1" 2>/dev/null; then echo "  ✓ removed $1"; else echo "  - $1 not found"; fi
+  fi
+}
+
+#======================================================================
+# Scheduled-refresh helpers
+#
+# The scheduling mechanism differs by platform: macOS uses launchd, other Unix
+# systems use the user crontab. systemd timers are deliberately not supported,
+# since cron is available essentially everywhere Linux is and needs no unit
+# files. QMD_PLATFORM is overridable so tests can exercise both paths on one
+# machine.
+#======================================================================
+
+SCHEDULE_LABEL="local.qmd.refresh"
+LAUNCH_AGENT="$HOME/Library/LaunchAgents/${SCHEDULE_LABEL}.plist"
+REFRESH_SCRIPT="$SCRIPT_DIR/qmd-refresh"
+QMD_PLATFORM="${QMD_PLATFORM:-$(uname -s)}"
+
+schedule_mechanism() {
+  case "$QMD_PLATFORM" in
+    Darwin) echo "launchd" ;;
+    Linux|*BSD|SunOS) echo "cron" ;;
+    *) echo "none" ;;
+  esac
+}
+
+schedule_installed() {
+  case "$(schedule_mechanism)" in
+    launchd) [ -f "$LAUNCH_AGENT" ] ;;
+    cron) crontab -l 2>/dev/null | grep -q 'qmd-refresh' ;;
+    *) return 1 ;;
+  esac
+}
+
+# Scheduled jobs do not read a shell profile, so PATH must be given explicitly.
+# Without the directory holding qmd, the job runs and silently does nothing.
+schedule_path_value() {
+  local qmd_dir=""
+  if command -v qmd &>/dev/null; then qmd_dir="$(dirname "$(command -v qmd)"):"; fi
+  printf '%s/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin' "$qmd_dir"
+}
+
+install_schedule() {
+  local path_value
+  path_value="$(schedule_path_value)"
+
+  case "$(schedule_mechanism)" in
+    launchd)
+      mkdir -p "$(dirname "$LAUNCH_AGENT")"
+      cat > "$LAUNCH_AGENT" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>${SCHEDULE_LABEL}</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>${REFRESH_SCRIPT}</string>
+    <string>--quiet</string>
+  </array>
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key><integer>9</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>${path_value}</string>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>/tmp/qmd-refresh.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/qmd-refresh.log</string>
+</dict>
+</plist>
+PLIST
+      launchctl unload "$LAUNCH_AGENT" 2>/dev/null || true
+      if launchctl load "$LAUNCH_AGENT" 2>/dev/null; then
+        echo "  ✓ daily refresh installed (09:00); log: /tmp/qmd-refresh.log"
+      else
+        echo "  Warning: wrote $LAUNCH_AGENT but launchctl load failed" >&2
+      fi
+      ;;
+    cron)
+      # Filter any previous entry before appending, so re-running cannot
+      # accumulate duplicates.
+      local line="0 9 * * * PATH=${path_value} ${REFRESH_SCRIPT} --quiet"
+      (crontab -l 2>/dev/null | grep -v 'qmd-refresh'; echo "$line") | crontab -
+      echo "  ✓ daily refresh installed (09:00) in your crontab"
+      ;;
+  esac
+}
+
+remove_schedule() {
+  case "$(schedule_mechanism)" in
+    launchd)
+      launchctl unload "$LAUNCH_AGENT" 2>/dev/null || true
+      rm -f "$LAUNCH_AGENT"
+      echo "  ✓ daily refresh removed"
+      ;;
+    cron)
+      crontab -l 2>/dev/null | grep -v 'qmd-refresh' | crontab -
+      echo "  ✓ daily refresh removed from your crontab"
+      ;;
+  esac
+}
+
+#======================================================================
+# Plan summary
+#======================================================================
+
+echo "QMD setup for: $REPO_ROOT"
+echo "PREFIX=$PREFIX"
+echo "PREFIX_SOURCE=$PREFIX_SOURCE"
+echo "INDEX_SHARED=$INDEX_SHARED"
+echo "KB=$KB"
+echo ""
+
+#======================================================================
+# 1. Install QMD (skipped in dry-run)
+#======================================================================
+
+if [ "$DRY_RUN" = false ]; then
+  if command -v qmd &>/dev/null; then
+    echo "✓ qmd already installed ($(qmd --version 2>/dev/null || echo 'version unknown'))"
+  else
+    if ! command -v npm &>/dev/null; then
+      echo "Error: npm is required to install qmd." >&2
+      exit 1
+    fi
+    npm install -g @tobilu/qmd
+    echo "✓ qmd installed"
+  fi
+  echo ""
+fi
+
+#======================================================================
+# 2. Optionally remove existing collections (--clean)
+#======================================================================
+
+if [ "$REMOVE_LEGACY" = true ]; then
+  # Pre-convention setups registered project collections under bare names, which
+  # let whichever repository ran first claim them for the whole index. Removing
+  # them frees those names and stops them answering queries with one repository's
+  # documents. The shared leap/leap-* collections are excluded deliberately: they
+  # are unprefixed by design, not legacy.
+  echo "Removing legacy unprefixed collections (--remove-legacy)..."
+  for name in $PROJECT_COLLECTIONS; do
+    remove_collection "$name"
+  done
+  echo ""
+fi
+
+if [ "$CLEAN" = true ]; then
+  echo "Removing existing collections (--clean)..."
+  for suffix in $PROJECT_COLLECTIONS; do
+    remove_collection "${PREFIX}-${suffix}"
+  done
+  if [ "$INDEX_SHARED" = true ] && [ ${#shared_dirs[@]} -gt 0 ]; then
+    for name in "${shared_dirs[@]}"; do
+      remove_collection "$name"
+    done
+  fi
+  echo ""
+fi
+
+#======================================================================
+# 3. Register per-project collections
+#======================================================================
+
+echo "Registering collections (prefix: $PREFIX)..."
+
+emit_collection "${PREFIX}-adrs"     "$REPO_ROOT" "$KB/adr/*.md"
+emit_collection "${PREFIX}-features" "$REPO_ROOT" "$KB/feature/**/*.md"
+emit_collection "${PREFIX}-planning" "$REPO_ROOT" "$KB/planning/**/*.md"
+emit_collection "${PREFIX}-guides"   "$REPO_ROOT" "$KB/*.md"
+emit_collection "${PREFIX}-meta"     "$REPO_ROOT" "$KB/meta/*.md"
+emit_collection "${PREFIX}-readmes"  "$REPO_ROOT" "**/{!ReadMe*,README}.md"
+
+#======================================================================
+# 4. Register shared leap/leap-* collections (owner only)
+#======================================================================
+
+if [ "$INDEX_SHARED" = true ] && [ ${#shared_dirs[@]} -gt 0 ]; then
+  for name in "${shared_dirs[@]}"; do
+    emit_collection "$name" "$REPO_ROOT/$name" "kb/**/*.md"
+  done
+fi
+echo ""
+
+#======================================================================
+# 5. Context hints
+#
+# Hints are generic and describe the LEAP document taxonomy rather than any one
+# application, so this script carries nothing project-specific.
+#======================================================================
+
+emit_context "/" \
+  "Project '$PREFIX': knowledge base organized per the LEAP document taxonomy. \
+Collections in this project are prefixed '$PREFIX-'."
+
+emit_context "qmd://${PREFIX}-adrs" \
+  "Architecture Decision Records: significant design and technology choices with rationale. \
+Files named adr-NNN__description.md (or <module>-adr-NNN__description.md) under */kb/adr/."
+
+emit_context "qmd://${PREFIX}-features" \
+  "LEAP feature development docs: goals.md, plan.md, phase-N.md, completion-summary.md \
+under */kb/feature/<username>/<feature-name>/."
+
+emit_context "qmd://${PREFIX}-planning" \
+  "LEAP Planning extension documents: strategic planning, roadmaps, initiative artifacts \
+under */kb/planning/."
+
+emit_context "qmd://${PREFIX}-guides" \
+  "System documentation directly in a kb/ directory (not subdirectories): \
+guide-* (how to use) and impl-* (how it works internally)."
+
+emit_context "qmd://${PREFIX}-meta" \
+  "Process and reflection docs under */kb/meta/: best-practices-*, lessons-*, tech-debt-*, \
+idea-*, benchmark-*."
+
+emit_context "qmd://${PREFIX}-readmes" \
+  "Module entry-point docs: !ReadMe*.md (primary LEAP pattern) and README.md. \
+The first documents to read when approaching an unfamiliar module."
+
+if [ "$INDEX_SHARED" = true ] && [ ${#shared_dirs[@]} -gt 0 ]; then
+  for name in "${shared_dirs[@]}"; do
+    emit_context "qmd://$name" \
+      "Core LEAP methodology documentation (guides, ADRs, templates, best practices) \
+from the '$name' submodule. Shared across all projects in this index."
+  done
+fi
+
+if [ "$DRY_RUN" = true ]; then
+  echo ""
+  # Report the scheduling decision so a preview shows it without acting on it.
+  if [ "$REMOVE_SCHEDULE" = true ]; then
+    schedule_action="remove"
+  elif [ "$NO_SCHEDULE" = true ]; then
+    schedule_action="skip"
+  elif [ "$(schedule_mechanism)" = none ]; then
+    schedule_action="unsupported"
+  elif schedule_installed; then
+    schedule_action="already-installed"
+  else
+    schedule_action="install"
+  fi
+  echo "SCHEDULE mechanism=$(schedule_mechanism) action=$schedule_action"
+  echo ""
+  echo "(dry-run: no install, registration, MCP config, hook, or indexing performed)"
+  exit 0
+fi
+echo "  ✓ context hints attached"
+echo ""
+
+#======================================================================
+# 6. Configure MCP servers
+#
+# Registration is per AI-coding-agent, and each agent keeps its own JSON
+# config. Editing runs through node rather than jq: node is already required
+# (QMD runs on it), so relying on it avoids a second prerequisite that would
+# otherwise have to be installed separately on every machine.
+#
+# Config is written at user scope rather than committed to the repository,
+# because adopting QMD is a personal choice; a checked-in registration would
+# enable it for everyone who opens the repo.
+#======================================================================
+
+# register_mcp <label> <config path> <create-if-missing: true|false>
+#
+# Exit codes from the node helper: 0 added, 3 already present, other failed.
+register_mcp() {
+  local label="$1" json="$2" create="$3"
+  local dir rc=0
+  dir="$(dirname "$json")"
+
+  if [ ! -d "$dir" ]; then
+    echo "  - $label: not installed (skipped)"
+    return 0
+  fi
+  if [ ! -f "$json" ]; then
+    if [ "$create" != true ]; then
+      echo "  - $label: $json not found (skipped)"
+      return 0
+    fi
+    printf '{}\n' > "$json"
+  fi
+
+  node -e '
+    const fs = require("fs");
+    const path = process.argv[1];
+    let cfg;
+    try {
+      const raw = fs.readFileSync(path, "utf8").trim();
+      cfg = raw === "" ? {} : JSON.parse(raw);
+    } catch (e) {
+      console.error(e.message);
+      process.exit(2);
+    }
+    if (cfg.mcpServers && cfg.mcpServers.qmd) process.exit(3);
+    cfg.mcpServers = cfg.mcpServers || {};
+    cfg.mcpServers.qmd = { command: "qmd", args: ["mcp"] };
+    fs.writeFileSync(path, JSON.stringify(cfg, null, 2) + "\n");
+  ' "$json" || rc=$?
+
+  case "$rc" in
+    0) echo "  ✓ $label: registered in $json" ;;
+    3) echo "  ✓ $label: already registered (skipped)" ;;
+    *) echo "  Warning: $label: could not update $json; add manually:" >&2
+       echo "           \"mcpServers\": {\"qmd\": {\"command\": \"qmd\", \"args\": [\"mcp\"]}}" >&2 ;;
+  esac
+}
+
+echo "Configuring MCP servers..."
+
+# Claude Code keeps user-scope config in a single file, so only update an
+# existing one: creating it would misrepresent Claude Code as installed.
+register_mcp "Claude Code" "$HOME/.claude.json" false
+
+# Gemini CLI keeps its settings in a directory it creates on first run. The
+# directory is the reliable signal that it is installed; the file may not exist
+# until a setting is changed, so create it when the directory is present.
+register_mcp "Gemini CLI" "$HOME/.gemini/settings.json" true
+
+echo ""
+
+#======================================================================
+# 7. Wire pre-commit hook
+#======================================================================
+
+echo "Wiring pre-commit hook..."
+HOOK="$REPO_ROOT/.git/hooks/pre-commit"
+# shellcheck disable=SC2016
+QMD_HOOK_LINE='"$(git rev-parse --show-toplevel)/.githooks/pre-commit-qmd"'
+if [ ! -f "$HOOK" ]; then
+  cat > "$HOOK" <<'HOOKEOF'
+#!/usr/bin/env bash
+"$(git rev-parse --show-toplevel)/.githooks/pre-commit-qmd"
+HOOKEOF
+  chmod +x "$HOOK"
+  echo "  ✓ Created .git/hooks/pre-commit"
+elif grep -q 'pre-commit-qmd' "$HOOK"; then
+  echo "  ✓ Hook already wired (skipped)"
+else
+  printf '\n# QMD index update\n%s\n' "$QMD_HOOK_LINE" >> "$HOOK"
+  echo "  ✓ Appended QMD hook to existing .git/hooks/pre-commit"
+fi
+echo ""
+
+#======================================================================
+# 8. Scheduled embedding refresh
+#
+# Embeddings go stale as documentation changes, and nothing refreshes them on
+# its own: the pre-commit hook deliberately skips embedding because it is slow,
+# and a stale set degrades semantic search silently. A daily job closes that
+# gap, and is installed by default for the same reason the pre-commit hook and
+# the MCP registration are: running this script is the decision to adopt QMD,
+# and setup is expected to leave it working. Use --no-schedule to skip it and
+# --remove-schedule to take one away.
+#======================================================================
+
+echo "Scheduled refresh..."
+
+if [ "$REMOVE_SCHEDULE" = true ]; then
+  if schedule_installed; then remove_schedule; else echo "  - none installed (nothing to remove)"; fi
+elif [ "$NO_SCHEDULE" = true ]; then
+  echo "  - skipped (--no-schedule)"
+elif [ "$(schedule_mechanism)" = none ]; then
+  echo "  - not supported on this platform ($QMD_PLATFORM)"
+  echo "    run '$REFRESH_SCRIPT --quiet' periodically by whatever means you prefer"
+elif schedule_installed; then
+  echo "  ✓ already installed (unchanged)"
+else
+  install_schedule
+fi
+echo ""
+
+#======================================================================
+# 9. Index and embed
+#======================================================================
+
+echo "Indexing content..."
+qmd update
+echo ""
+
+# Embedding needs model weights that QMD downloads separately, and it fails when
+# they are absent or a model host is unreachable. Collections are registered and
+# the full-text index is current by this point, so a failure here is reported
+# rather than fatal: it costs semantic search until resolved, nothing more.
+echo "Generating embeddings..."
+if ! qmd embed; then
+  echo "" >&2
+  echo "  Warning: embeddings were not generated. Full-text search works now;" >&2
+  echo "           semantic search needs them. Run 'qmd pull' to fetch model" >&2
+  echo "           weights, then 'qmd embed'. See 'qmd doctor' for diagnostics." >&2
+fi
+echo ""
+qmd status

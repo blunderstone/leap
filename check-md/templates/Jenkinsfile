@@ -1,0 +1,68 @@
+// Jenkinsfile for check-md
+//
+// Installation:
+//   Add this to your repository as Jenkinsfile or integrate into
+//   your existing pipeline
+//
+// This pipeline runs check-md on markdown files and fails the build
+// if violations are found or score is below threshold.
+
+pipeline {
+    agent any
+
+    environment {
+        MIN_SCORE = '80'
+    }
+
+    stages {
+        stage('Setup') {
+            steps {
+                // Install check-md
+                sh '''
+                    pip install --user check-md
+                    export PATH="$HOME/.local/bin:$PATH"
+                '''
+            }
+        }
+
+        stage('Check Markdown') {
+            steps {
+                script {
+                    // Run check-md on markdown files
+                    def result = sh(
+                        script: "check-md kb/ docs/ --min-score ${env.MIN_SCORE}",
+                        returnStatus: true
+                    )
+
+                    if (result != 0) {
+                        error "Markdown quality check failed (score below ${env.MIN_SCORE})"
+                    }
+                }
+            }
+        }
+
+        stage('Generate Report') {
+            steps {
+                // Generate JSON report for archiving
+                sh 'check-md kb/ docs/ --format json > markdown-report.json'
+            }
+
+            post {
+                always {
+                    // Archive the report
+                    archiveArtifacts artifacts: 'markdown-report.json', allowEmptyArchive: true
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Markdown quality check failed!'
+            echo 'Run: check-md kb/ docs/ --fix'
+        }
+        success {
+            echo 'All markdown files are compliant with ADR 008'
+        }
+    }
+}

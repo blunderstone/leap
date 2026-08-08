@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# qmd-refresh — Bring the QMD index and embeddings up to date.
+#
+# The pre-commit hook keeps the full-text index current, but embeddings (which
+# power semantic search) are deliberately left out of it because they are slow.
+# This script catches them up. It is incremental, so re-running it is cheap, and
+# it is safe to schedule.
+#
+# Usage:
+#   qmd-refresh            Refresh the index and embeddings
+#   qmd-refresh --pull     Download missing model weights first
+#   qmd-refresh --quiet    Suppress progress output (useful when scheduled)
+
+set -uo pipefail
+
+PULL=false
+QUIET=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --pull)  PULL=true ;;
+    --quiet) QUIET=true ;;
+    -h|--help)
+      sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      exit 0 ;;
+    *) echo "Error: unknown option: $arg" >&2; exit 1 ;;
+  esac
+done
+
+say() { [ "$QUIET" = true ] || echo "$@"; }
+
+if ! command -v qmd &>/dev/null; then
+  echo "qmd is not installed. Run utils/qmd/qmd-config to set it up." >&2
+  exit 1
+fi
+
+#======================================================================
+# Model weights
+#
+# Embedding runs on-device models that QMD downloads separately from the npm
+# package. Downloading them is a large, deliberate operation, so it happens only
+# when asked for rather than as a side effect of a routine refresh.
+#======================================================================
+
+if [ "$PULL" = true ]; then
+  say "Downloading model weights..."
+  if ! qmd pull; then
+    echo "Model download failed." >&2
+    echo "Behind a TLS-inspecting proxy, set NODE_EXTRA_CA_CERTS to your" >&2
+    echo "organization's root certificate. See guide-qmd-config.md." >&2
+    exit 1
+  fi
+fi
+
+#======================================================================
+# Refresh
+#======================================================================
+
+say "Refreshing full-text index..."
+if ! qmd update; then
+  echo "Index update failed." >&2
+  exit 1
+fi
+
+say "Updating embeddings..."
+if ! qmd embed; then
+  echo "Embedding failed. If model weights are missing, run: qmd-refresh --pull" >&2
+  exit 1
+fi
+
+[ "$QUIET" = true ] || qmd status

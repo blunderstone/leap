@@ -1,0 +1,36 @@
+#!/bin/sh
+# check-md pre-commit hook
+#
+# Installation:
+#   cp templates/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# This hook runs check-md on staged markdown files before allowing a commit.
+# If violations are found, the commit is rejected with instructions to fix.
+
+# Exit on error
+set -e
+
+# Check if check-md is available
+if ! command -v check-md >/dev/null 2>&1; then
+    echo "Error: check-md not found. Please install it first:"
+    echo "  pip install check-md"
+    exit 1
+fi
+
+# Run check-md on staged markdown files
+echo "Running check-md on staged markdown files..."
+if ! check-md --staged --quiet; then
+    echo ""
+    echo "❌ Markdown violations found in staged files."
+    echo ""
+    echo "To fix automatically:"
+    echo "  check-md --staged --fix"
+    echo ""
+    echo "To commit anyway (not recommended):"
+    echo "  git commit --no-verify"
+    exit 1
+fi
+
+echo "✓ Markdown files are compliant with ADR 008"
+exit 0

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# .githooks/pre-commit-qmd — Thin wrapper around the shared canonical hook.
+#
+# Locates the canonical pre-commit-qmd in the LEAP submodule and runs it. Designed
+# to be fail-safe: if the shared hook cannot be found it exits 0 so it never blocks
+# a commit. Wired into .git/hooks/pre-commit by utils/qmd/qmd-config.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Locate the canonical hook inside whichever LEAP submodule this repository
+# includes. Searching by pattern keeps this wrapper independent of any particular
+# submodule naming scheme.
+for dir in "$REPO_ROOT"/leap*/ "$REPO_ROOT"/*/leap*/; do
+  candidate="${dir%/}/scripts/qmd/pre-commit-qmd"
+  if [ -x "$candidate" ]; then exec "$candidate"; fi
+done
+
+# Shared hook not present (submodule not initialized): do not block the commit.
+exit 0
