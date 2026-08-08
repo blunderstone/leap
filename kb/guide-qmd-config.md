@@ -285,6 +285,7 @@ qmd status
 | `--remove-legacy` | Remove unprefixed project collections left by pre-convention setups |
 | `--no-schedule` | Do not install the daily embedding refresh |
 | `--remove-schedule` | Remove a previously installed refresh job |
+| `--uninstall` | Remove all collections, scheduled jobs, and git hooks installed for this repo |
 | `--prefix <name>` | Override the derived project prefix |
 | `--with-shared` | Register the shared `leap`/`leap-*` collections here |
 | `--no-shared` | Skip the shared collections |
@@ -317,7 +318,7 @@ This happens because npm's default security configuration blocks native install/
 Re-install QMD globally while explicitly allowing life-cycle build scripts:
 
 ```bash
-npm install -g @tobilu/qmd --allow-scripts
+npm install -g --allow-scripts=better-sqlite3,node-llama-cpp,tree-sitter-go,tree-sitter-python,tree-sitter-rust,tree-sitter-typescript,tree-sitter-javascript @tobilu/qmd
 ```
 
 This forces compilation of the required C++ modules, after which `qmd-config` and semantic searches will execute flawlessly.

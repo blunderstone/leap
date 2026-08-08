@@ -47,6 +47,7 @@ DRY_RUN=false
 REMOVE_LEGACY=false
 NO_SCHEDULE=false
 REMOVE_SCHEDULE=false
+UNINSTALL=false
 PREFIX_OVERRIDE=""
 REPO_ROOT_OVERRIDE=""
 SHARED_MODE="auto"   # auto | on | off
@@ -68,6 +69,7 @@ Options:
                     are never touched. Run once per machine when migrating.
   --no-schedule     Do not install the daily embedding refresh job.
   --remove-schedule Remove a previously installed refresh job.
+  --uninstall       Remove all collections, scheduled jobs, and git hooks installed for this repo.
   --dry-run         Print the plan without installing, registering, or indexing.
   -h, --help        Show this help.
 
@@ -82,6 +84,7 @@ while [ $# -gt 0 ]; do
     --remove-legacy) REMOVE_LEGACY=true ;;
     --no-schedule) NO_SCHEDULE=true ;;
     --remove-schedule) REMOVE_SCHEDULE=true ;;
+    --uninstall) UNINSTALL=true ;;
     --dry-run) DRY_RUN=true ;;
     --with-shared) SHARED_MODE="on" ;;
     --no-shared) SHARED_MODE="off" ;;
@@ -161,7 +164,7 @@ else
   fi
 fi
 
-if [ -z "$PREFIX" ]; then
+if [ "$PREFIX" = "" ]; then
   echo "Error: could not resolve a project prefix (empty after slugify)." >&2
   exit 1
 fi
@@ -222,8 +225,23 @@ emit_collection() { # name path mask
   if [ "$DRY_RUN" = true ]; then
     echo "COLLECTION $1 PATH $2 MASK $3"
   else
-    qmd collection add "$2" --name "$1" --mask "$3"
-    echo "  ✓ $1"
+    # Capture stderr and temporarily disable set -e to handle "already exists" idempotently
+    set +e
+    local err_out
+    err_out=$(qmd collection add "$2" --name "$1" --mask "$3" 2>&1)
+    local status=$?
+    set -e
+
+    if [ $status -eq 0 ]; then
+      echo "  ✓ $1"
+    else
+      if echo "$err_out" | grep -iq "already exists"; then
+        echo "  ✓ $1 already exists (skipped)"
+      else
+        echo "  ✗ failed to register $1: $err_out" >&2
+        exit 1
+      fi
+    fi
   fi
 }
 
@@ -239,9 +257,15 @@ remove_collection() { # name
   if [ "$DRY_RUN" = true ]; then
     echo "REMOVE $1"
   else
+    # Temporarily turn off exit-on-error to safely capture potential non-zero status
+    # on macOS bash 3.2 where subshell assignments can trigger set -e immediately.
+    set +e
     local err_out
     err_out=$(qmd collection remove "$1" 2>&1)
-    if [ $? -eq 0 ]; then
+    local status=$?
+    set -e
+
+    if [ $status -eq 0 ]; then
       echo "  ✓ removed $1"
     else
       if echo "$err_out" | grep -iq "not found"; then
@@ -361,6 +385,60 @@ remove_schedule() {
 }
 
 #======================================================================
+# Execute --uninstall (if specified)
+#======================================================================
+
+if [ "$UNINSTALL" = true ]; then
+  echo "Uninstalling QMD configuration for: $REPO_ROOT"
+  
+  if [ "$DRY_RUN" = false ]; then
+    # 1. Remove registered collections
+    echo "Removing registered collections..."
+    for suffix in $PROJECT_COLLECTIONS; do
+      remove_collection "${PREFIX}-${suffix}"
+    done
+    
+    # 2. Remove scheduled refresh job
+    echo "Removing scheduled refresh job..."
+    remove_schedule
+    
+    # 3. Clean up git pre-commit hook
+    echo "Removing pre-commit hook..."
+    HOOK_FILE="$REPO_ROOT/.git/hooks/pre-commit"
+    if [ -f "$HOOK_FILE" ]; then
+      line_count=$(wc -l < "$HOOK_FILE" | xargs)
+      # If it's a simple <= 2 line hook we created, delete it entirely
+      if [ "$line_count" -le 2 ] && grep -q 'pre-commit-qmd' "$HOOK_FILE"; then
+        rm -f "$HOOK_FILE"
+        echo "  ✓ Deleted .git/hooks/pre-commit"
+      else
+        # Otherwise, write a portable loop to strip out QMD lines
+        if grep -q 'pre-commit-qmd' "$HOOK_FILE"; then
+          temp_hook=$(mktemp)
+          while IFS= read -r line || [ -n "$line" ]; do
+            if [[ "$line" != *"pre-commit-qmd"* ]]; then
+              echo "$line" >> "$temp_hook"
+            fi
+          done < "$HOOK_FILE"
+          mv -f "$temp_hook" "$HOOK_FILE"
+          chmod +x "$HOOK_FILE"
+          echo "  ✓ Removed QMD hook from existing .git/hooks/pre-commit"
+        fi
+      fi
+    fi
+  else
+    echo "PLAN (dry-run):"
+    echo "  - Remove collections: ${PREFIX}-adrs, ${PREFIX}-features, ..."
+    echo "  - Uninstall daily refresh schedule"
+    echo "  - Clean up pre-commit hook in .git/hooks/pre-commit"
+  fi
+  
+  echo ""
+  echo "✓ QMD uninstallation complete for project: $PREFIX"
+  exit 0
+fi
+
+#======================================================================
 # Plan summary
 #======================================================================
 
@@ -376,15 +454,25 @@ echo ""
 #======================================================================
 
 if [ "$DRY_RUN" = false ]; then
+  qmd_working=false
   if command -v qmd &>/dev/null; then
-    echo "✓ qmd already installed ($(qmd --version 2>/dev/null || echo 'version unknown'))"
-  else
+    # Verify qmd is actually functional (e.g. can load native DB bindings)
+    if qmd status &>/dev/null; then
+      qmd_working=true
+      echo "✓ qmd already installed and fully functional ($(qmd --version 2>/dev/null || echo 'version unknown'))"
+    else
+      echo "⚠ qmd is installed but broken (native C++ bindings are missing or uncompiled)."
+    fi
+  fi
+
+  if [ "$qmd_working" = false ]; then
     if ! command -v npm &>/dev/null; then
-      echo "Error: npm is required to install qmd." >&2
+      echo "Error: npm is required to install/repair qmd." >&2
       exit 1
     fi
-    npm install -g @tobilu/qmd --allow-scripts
-    echo "✓ qmd installed"
+    echo "Installing/repairing global QMD with native C++ compilation..."
+    npm install -g --allow-scripts=better-sqlite3,node-llama-cpp,tree-sitter-go,tree-sitter-python,tree-sitter-rust,tree-sitter-typescript,tree-sitter-javascript @tobilu/qmd
+    echo "✓ qmd installed and compiled successfully"
   fi
   echo ""
 fi
@@ -585,17 +673,36 @@ echo ""
 
 echo "Wiring pre-commit hook..."
 HOOK="$REPO_ROOT/.git/hooks/pre-commit"
+
+QMD_HOOK_PATH=".githooks/pre-commit-qmd"
+if [ ! -f "$REPO_ROOT/$QMD_HOOK_PATH" ] && [ -f "$REPO_ROOT/scripts/qmd/pre-commit-qmd" ]; then
+  QMD_HOOK_PATH="scripts/qmd/pre-commit-qmd"
+fi
+
 # shellcheck disable=SC2016
-QMD_HOOK_LINE='"$(git rev-parse --show-toplevel)/.githooks/pre-commit-qmd"'
+QMD_HOOK_LINE='"$(git rev-parse --show-toplevel)/'"$QMD_HOOK_PATH"'"'
+
 if [ ! -f "$HOOK" ]; then
-  cat > "$HOOK" <<'HOOKEOF'
+  cat > "$HOOK" <<HOOKEOF
 #!/usr/bin/env bash
-"$(git rev-parse --show-toplevel)/.githooks/pre-commit-qmd"
+"\$(git rev-parse --show-toplevel)/$QMD_HOOK_PATH"
 HOOKEOF
   chmod +x "$HOOK"
   echo "  ✓ Created .git/hooks/pre-commit"
 elif grep -q 'pre-commit-qmd' "$HOOK"; then
-  echo "  ✓ Hook already wired (skipped)"
+  if [ "$QMD_HOOK_PATH" = "scripts/qmd/pre-commit-qmd" ]; then
+    if grep -q '\.githooks/pre-commit-qmd' "$HOOK"; then
+      cat > "$HOOK" <<HOOKEOF
+#!/usr/bin/env bash
+"\$(git rev-parse --show-toplevel)/$QMD_HOOK_PATH"
+HOOKEOF
+      echo "  ✓ Updated existing hook to use scripts/qmd/pre-commit-qmd"
+    else
+      echo "  ✓ Hook already wired (skipped)"
+    fi
+  else
+    echo "  ✓ Hook already wired (skipped)"
+  fi
 else
   printf '\n# QMD index update\n%s\n' "$QMD_HOOK_LINE" >> "$HOOK"
   echo "  ✓ Appended QMD hook to existing .git/hooks/pre-commit"
