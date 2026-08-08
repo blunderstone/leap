@@ -239,7 +239,17 @@ remove_collection() { # name
   if [ "$DRY_RUN" = true ]; then
     echo "REMOVE $1"
   else
-    if qmd collection remove "$1" 2>/dev/null; then echo "  ✓ removed $1"; else echo "  - $1 not found"; fi
+    local err_out
+    err_out=$(qmd collection remove "$1" 2>&1)
+    if [ $? -eq 0 ]; then
+      echo "  ✓ removed $1"
+    else
+      if echo "$err_out" | grep -iq "not found"; then
+        echo "  - $1 not found"
+      else
+        echo "  ✗ failed to remove $1: $err_out" >&2
+      fi
+    fi
   fi
 }
 
