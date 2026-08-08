@@ -373,7 +373,7 @@ if [ "$DRY_RUN" = false ]; then
       echo "Error: npm is required to install qmd." >&2
       exit 1
     fi
-    npm install -g @tobilu/qmd
+    npm install -g @tobilu/qmd --allow-scripts
     echo "✓ qmd installed"
   fi
   echo ""

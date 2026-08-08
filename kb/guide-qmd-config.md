@@ -299,3 +299,25 @@ qmd status
 
 - Because the index is global per machine, renaming collections requires every developer to
   re-run `qmd-config --clean` to converge.
+
+## Troubleshooting
+
+### "Error: Could not locate the bindings file" (or Node Native Addon errors)
+
+When running the setup script or QMD commands on modern Node.js versions (v20+ / npm v10+), you may see an error like:
+
+```text
+Error: Could not locate the bindings file. Tried:
+ → .../better-sqlite3/build/better_sqlite3.node
+```
+
+This happens because npm's default security configuration blocks native install/build scripts (like those of `better-sqlite3` or `node-llama-cpp`) during global installations, leaving the native C++ binaries uncompiled.
+
+**Resolution:**
+Re-install QMD globally while explicitly allowing life-cycle build scripts:
+
+```bash
+npm install -g @tobilu/qmd --allow-scripts
+```
+
+This forces compilation of the required C++ modules, after which `qmd-config` and semantic searches will execute flawlessly.
