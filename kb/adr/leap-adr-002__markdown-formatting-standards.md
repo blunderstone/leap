@@ -392,9 +392,24 @@ The project uses `check-md` - a custom Python linter that enforces Rules 1, 2, a
 
 #### Installation
 
+For detailed and bulletproof installation instructions (including virtual environments and modern `uv` workflows), refer to the **[check-md README](../../check-md/README.md)**.
+
+Quick setup:
+
+Using `uv` (Recommended):
+
 ```bash
-# From repository root
+# Installs check-md globally as an editable command on your PATH
 cd check-md
+uv tool install --editable .
+```
+
+Using standard Python:
+
+```bash
+cd check-md
+python3 -m venv .venv
+source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
 pip install -e .
 ```
 

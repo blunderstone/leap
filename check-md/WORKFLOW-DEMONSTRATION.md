@@ -49,20 +49,47 @@ Core check-md functionality including file selection, violation detection, outpu
 **Python 3.10+** installed:
 
 ```bash
-python --version
+# Verify Python version (must be 3.10 or higher)
+python3 --version
 ```
 
-Expected: Python 3.10.0 or higher
+Expected: Python 3.10.x or higher
 
 ### Install check-md
 
+To prevent OS-level environment errors and resolve potential "command not found: pip" issues, install within a virtual environment:
+
+#### Option A: Using Standard Python Virtual Environment
+
 ```bash
+# 1. Create a virtual environment
+python3 -m venv .venv
+
+# 2. Activate the virtual environment
+# On macOS/Linux:
+source .venv/bin/activate
+# On Windows (Command Prompt):
+.venv\Scripts\activate.bat
+
+# 3. Install in editable mode
 pip install -e .
 ```
 
-Expected: Successfully installed check-md
+#### Option B: Using uv (Recommended)
+
+If you use the `uv` package manager, the easiest way to install `check-md` as a global, standalone command while keeping local changes instantly synchronized is:
+
+```bash
+uv tool install --editable .
+```
+
+This places the standalone `check-md` executable on your path so you can run it directly from anywhere without virtual environment activation or `uv run` prefixes!
+
+*(Note: Alternatively, you can run `uv sync` to create a local `.venv` and then use `uv run check-md` or run `source .venv/bin/activate`.)*
 
 #### Verify installation
+
+With your virtual environment active, verify that `check-md` is available:
 
 ```bash
 check-md --help

@@ -126,14 +126,18 @@ Enforce compliance automatically:
   run: check-md kb/ docs/ --min-score 80 --format github
 ```
 
-See `leap/check-md/templates/` for complete CI/CD examples.
+See `check-md/templates/` for complete CI/CD examples.
 
 ### As Pre-commit Hook
 
-Install the hook:
+Install the hook (from your parent repository's root):
 
 ```bash
+# If check-md is in a 'leap' submodule:
 cp leap/check-md/templates/pre-commit .git/hooks/pre-commit
+
+# If working in the standalone leap repository:
+cp check-md/templates/pre-commit .git/hooks/pre-commit
 ```
 
 ```bash
@@ -434,9 +438,9 @@ What it does:
 - Fast: < 100ms per file
 
 Getting started:
-1. cd leap/check-md && pip install -e .
-2. check-md kb/your-feature/ --fix
-3. See leap/check-md/README.md for details
+1. Install check-md (see check-md/README.md)
+2. Run `check-md kb/your-feature/ --fix` (no prefix needed if installed as a global tool)
+3. See check-md/README.md for details
 
 Questions? Ask in #dev-tools
 ```
@@ -484,16 +488,24 @@ Auto-fix rate: 89% → 93% → 95%
 
 ## Troubleshooting
 
-### "check-md: command not found"
+### "check-md: command not found" or "pip: command not found"
 
-Install check-md:
+To prevent OS-level environment restrictions (PEP 668) and ensure `pip` and `check-md` are available, install inside a virtual environment (requires Python 3.10+):
+
+Using standard Python:
 
 ```bash
 cd check-md
+python3 -m venv .venv
+source .venv/bin/activate  # Or .venv\Scripts\activate on Windows
+pip install -e .
 ```
 
+Using uv:
+
 ```bash
-pip install -e .
+cd check-md
+uv tool install --editable .
 ```
 
 Verify installation:
@@ -658,9 +670,9 @@ markdownlint kb/ --json > markdownlint-report.json
 - [ADR leap-adr-002: Markdown Formatting Standards](../adr/leap-adr-002__markdown-formatting-standards.md)
 - [Onboarding Guide](guide-markdown-quality-onboarding.md)
 - [Baseline Metrics](metrics-markdown-quality-baseline.txt) - Current project status
-- [check-md README](../../leap/check-md/README.md)
-- [Integration Templates](../../leap/check-md/templates/README.md)
-- [CLAUDE.md ADR leap-adr-002 Section](../../CLAUDE.md#️-critical-adr-002-markdown-compliance)
+- [check-md README](../check-md/README.md)
+- [Integration Templates](../check-md/templates/README.md)
+- [CLAUDE.md ADR leap-adr-002 Section](../CLAUDE.md#️-critical-adr-002-markdown-compliance)
 
 ## Summary
 

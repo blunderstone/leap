@@ -17,11 +17,78 @@ A fast, Python-based markdown linter that enforces [ADR leap-adr-002](../kb/adr/
 
 ### Installation
 
+`check-md` requires **Python 3.10 or higher**.
+
+Because modern operating systems restrict global `pip` installations (PEP 668), it is highly recommended to install `check-md` inside a virtual environment, or use a tool like `uv` or `pipx`.
+
+#### Option A: Fast & Modern with `uv` (Recommended)
+
+[`uv`](https://github.com/astral-sh/uv) is an extremely fast Python package manager that automatically handles Python versions and virtual environments.
+
+The absolute best way to install `check-md` for local development is using `uv tool install --editable .`. This installs it in an isolated global environment, places the standalone `check-md` executable directly on your system's `PATH`, and automatically reflects any local code changes instantly without needing a `uv run` prefix.
+
 ```bash
-# From the check-md directory (installs with dev dependencies for testing)
+# 1. Install uv (if not already installed)
+# macOS/Linux:
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows (PowerShell):
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+# Or via package managers (Homebrew / winget):
+brew install uv              # macOS/Linux
+winget install astral-sh.uv  # Windows
+
+# 2. Install check-md globally in editable mode
+cd check-md
+uv tool install --editable .
+
+# 3. Ensure your shell PATH is permanently configured (if not already)
+# If check-md is not found, you can have uv update your shell profile/environment permanently:
+uv tool update-shell
+# Or add it manually to your shell configuration:
+# macOS/Linux (e.g., ~/.zshrc or ~/.bashrc): export PATH="$HOME/.local/bin:$PATH"
+# Windows (PowerShell): Add "$env:USERPROFILE\.local\bin" to your user PATH environment variable
+
+# 4. Reload your terminal and run check-md directly from anywhere!
+check-md --help
+```
+
+*(Note: If you prefer to keep everything strictly local to the folder, you can run `uv sync` to create a local `.venv` and then use `uv run check-md` or run `source .venv/bin/activate` to add the executable to your path.)*
+
+#### Option B: Standard Python Virtual Environment
+
+If you prefer standard Python tooling, use Python's built-in `venv` module:
+
+```bash
+# 1. Navigate to the check-md directory
+cd check-md
+
+# 2. Create a virtual environment with Python 3.10+
+python3 -m venv .venv
+
+# 3. Activate the virtual environment
+# On macOS/Linux:
+source .venv/bin/activate
+# On Windows (Command Prompt):
+.venv\Scripts\activate.bat
+# On Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+
+# 4. Install check-md with development dependencies in editable mode
 pip install -e ".[dev]"
 
-# Or install from PyPI (once published)
+# 5. Verify and run (within active virtual environment)
+check-md --help
+```
+
+#### Option C: Production Installation (from PyPI)
+
+Once published to PyPI, you can install `check-md` globally using `pipx` (highly recommended for Python CLI tools) or via standard pip:
+
+```bash
+# Install globally via pipx
+pipx install check-md
+
+# Or via standard pip inside a virtual environment
 pip install check-md
 ```
 
