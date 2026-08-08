@@ -50,7 +50,11 @@ up shares one index, which is why collection names must be unique across reposit
 Preview everything without changing anything:
 
 ```bash
+# In a consuming repository (using the installed wrapper):
 ./utils/qmd/qmd-config --dry-run
+
+# In the standalone leap repository (using the canonical script):
+./scripts/qmd/qmd-config --dry-run
 ```
 
 ## Collection naming convention
@@ -98,8 +102,13 @@ identical hits. Registering it once keeps one copy in the index, shared by every
 Override the default when needed:
 
 ```bash
+# In a consuming repository (using the installed wrapper):
 ./utils/qmd/qmd-config --with-shared   # register the shared collections here
 ./utils/qmd/qmd-config --no-shared     # skip them
+
+# In the standalone leap repository (using the canonical script):
+./scripts/qmd/qmd-config --with-shared   # register the shared collections here
+./scripts/qmd/qmd-config --no-shared     # skip them
 ```
 
 ## Setting up a repository
@@ -129,13 +138,21 @@ rather than by editing copies. Wrapper templates for the two wrappers are in
 Once per development machine:
 
 ```bash
+# In a consuming repository (using the installed wrapper):
 ./utils/qmd/qmd-config
+
+# In the standalone leap repository (using the canonical script):
+./scripts/qmd/qmd-config
 ```
 
 After reorganizing modules, rebuild the collection masks from the current structure:
 
 ```bash
+# In a consuming repository (using the installed wrapper):
 ./utils/qmd/qmd-config --clean
+
+# In the standalone leap repository (using the canonical script):
+./scripts/qmd/qmd-config --clean
 ```
 
 ## The two ways QMD searches
@@ -231,7 +248,11 @@ Clearing them is a one-time step, and because the index is per developer machine
 developer runs it on their own machine**:
 
 ```bash
+# In a consuming repository (using the installed wrapper):
 ./utils/qmd/qmd-config --remove-legacy --clean
+
+# In the standalone leap repository (using the canonical script):
+./scripts/qmd/qmd-config --remove-legacy --clean
 ```
 
 `--remove-legacy` drops the bare project collection names; `--clean` drops this project's
