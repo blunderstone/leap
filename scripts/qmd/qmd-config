@@ -48,6 +48,7 @@ REMOVE_LEGACY=false
 NO_SCHEDULE=false
 REMOVE_SCHEDULE=false
 UNINSTALL=false
+EMBED=false
 PREFIX_OVERRIDE=""
 REPO_ROOT_OVERRIDE=""
 SHARED_MODE="auto"   # auto | on | off
@@ -70,6 +71,7 @@ Options:
   --no-schedule     Do not install the daily embedding refresh job.
   --remove-schedule Remove a previously installed refresh job.
   --uninstall       Remove all collections, scheduled jobs, and git hooks installed for this repo.
+  --embed, --embedd Pull model weights and generate/refresh vector embeddings.
   --dry-run         Print the plan without installing, registering, or indexing.
   -h, --help        Show this help.
 
@@ -85,6 +87,7 @@ while [ $# -gt 0 ]; do
     --no-schedule) NO_SCHEDULE=true ;;
     --remove-schedule) REMOVE_SCHEDULE=true ;;
     --uninstall) UNINSTALL=true ;;
+    --embed|--embedd) EMBED=true ;;
     --dry-run) DRY_RUN=true ;;
     --with-shared) SHARED_MODE="on" ;;
     --no-shared) SHARED_MODE="off" ;;
@@ -296,6 +299,7 @@ schedule_mechanism() {
   case "$QMD_PLATFORM" in
     Darwin) echo "launchd" ;;
     Linux|*BSD|SunOS) echo "cron" ;;
+    *NT*|*MINGW*|*CYGWIN*|*MSYS*|*Windows*) echo "schtasks" ;;
     *) echo "none" ;;
   esac
 }
@@ -304,6 +308,7 @@ schedule_installed() {
   case "$(schedule_mechanism)" in
     launchd) [ -f "$LAUNCH_AGENT" ] ;;
     cron) crontab -l 2>/dev/null | grep -q 'qmd-refresh' ;;
+    schtasks) schtasks /query /tn "$SCHEDULE_LABEL" &>/dev/null ;;
     *) return 1 ;;
   esac
 }
@@ -338,7 +343,7 @@ install_schedule() {
   </array>
   <key>StartCalendarInterval</key>
   <dict>
-    <key>Hour</key><integer>9</integer>
+    <key>Hour</key><integer>6</integer>
     <key>Minute</key><integer>0</integer>
   </dict>
   <key>EnvironmentVariables</key>
@@ -355,7 +360,7 @@ install_schedule() {
 PLIST
       launchctl unload "$LAUNCH_AGENT" 2>/dev/null || true
       if launchctl load "$LAUNCH_AGENT" 2>/dev/null; then
-        echo "  ✓ daily refresh installed (09:00); log: /tmp/qmd-refresh.log"
+        echo "  ✓ daily refresh installed (06:00); log: /tmp/qmd-refresh.log"
       else
         echo "  Warning: wrote $LAUNCH_AGENT but launchctl load failed" >&2
       fi
@@ -363,9 +368,20 @@ PLIST
     cron)
       # Filter any previous entry before appending, so re-running cannot
       # accumulate duplicates.
-      local line="0 9 * * * PATH=${path_value} ${REFRESH_SCRIPT} --quiet"
+      local line="0 6 * * * PATH=${path_value} ${REFRESH_SCRIPT} --quiet"
       (crontab -l 2>/dev/null | grep -v 'qmd-refresh'; echo "$line") | crontab -
-      echo "  ✓ daily refresh installed (09:00) in your crontab"
+      echo "  ✓ daily refresh installed (06:00) in your crontab"
+      ;;
+    schtasks)
+      local win_refresh_script="$REFRESH_SCRIPT"
+      if command -v cygpath &>/dev/null; then
+        win_refresh_script="$(cygpath -w "$REFRESH_SCRIPT")"
+      fi
+      if schtasks /create /tn "$SCHEDULE_LABEL" /tr "powershell.exe -WindowStyle Hidden -Command \"& { & '${win_refresh_script}' --quiet }\"" /sc daily /st 06:00 /f &>/dev/null; then
+        echo "  ✓ daily refresh installed (06:00) in Windows Task Scheduler"
+      else
+        echo "  Warning: failed to install Windows scheduled task" >&2
+      fi
       ;;
   esac
 }
@@ -380,6 +396,11 @@ remove_schedule() {
     cron)
       crontab -l 2>/dev/null | grep -v 'qmd-refresh' | crontab -
       echo "  ✓ daily refresh removed from your crontab"
+      ;;
+    schtasks)
+      if schtasks /delete /tn "$SCHEDULE_LABEL" /f &>/dev/null; then
+        echo "  ✓ daily refresh removed from Windows Task Scheduler"
+      fi
       ;;
   esac
 }
@@ -744,6 +765,16 @@ echo ""
 echo "Indexing content..."
 qmd update
 echo ""
+
+if [ "$EMBED" = true ]; then
+  if [ "$DRY_RUN" = true ]; then
+    echo "EMBED (dry-run): qmd pull"
+  else
+    echo "Pulling model weights (--embed)..."
+    qmd pull
+    echo ""
+  fi
+fi
 
 # Embedding needs model weights that QMD downloads separately, and it fails when
 # they are absent or a model host is unreachable. Collections are registered and

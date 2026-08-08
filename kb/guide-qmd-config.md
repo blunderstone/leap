@@ -197,9 +197,40 @@ scripts/qmd/qmd-refresh          # index plus embeddings, incremental
 scripts/qmd/qmd-refresh --pull   # also fetch model weights, for a first run
 ```
 
-Setup installs a daily background job that does this for you, so semantic search stays current
-without anyone remembering to run anything. It logs to `/tmp/qmd-refresh.log`. Skip it with
-`--no-schedule`, or take an existing one away with `--remove-schedule`.
+Setup installs a daily background job that does this for you at **06:00 AM** (when you are unlikely to be actively working), so semantic search stays current without anyone remembering to run anything. It logs to `/tmp/qmd-refresh.log` on Unix systems. Skip it with `--no-schedule`, or take an existing one away with `--remove-schedule`.
+
+#### How to change the scheduled time
+
+Depending on your platform, you can customize when this background job runs:
+
+* **macOS (`launchd`):**
+  The job is managed by a Launch Agent. Open `~/Library/LaunchAgents/local.qmd.refresh.plist` in your editor, locate the `<key>StartCalendarInterval</key>` block, and modify the `<integer>` value for the `<key>Hour</key>` (and/or Minute):
+  ```xml
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key><integer>6</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+  ```
+  After saving the file, reload the agent to apply the changes:
+  ```bash
+  launchctl unload ~/Library/LaunchAgents/local.qmd.refresh.plist
+  launchctl load ~/Library/LaunchAgents/local.qmd.refresh.plist
+  ```
+
+* **Linux (`cron`):**
+  Open your crontab in edit mode:
+  ```bash
+  crontab -e
+  ```
+  Locate the line containing `qmd-refresh` and change the cron schedule. For example, to change it from 6:00 AM (`0 6 * * *`) to 8:30 AM:
+  ```text
+  30 8 * * * PATH=... /path/to/scripts/qmd/qmd-refresh --quiet
+  ```
+
+* **Windows (Task Scheduler):**
+  The setup script installs the job as a Windows Task Scheduler task named `local.qmd.refresh`.
+  To change its trigger time, open the Windows **Task Scheduler** app, find `local.qmd.refresh` in the task list, double-click it, go to the **Triggers** tab, click **Edit**, and set your desired start time.
 
 ### Model downloads behind a TLS-inspecting proxy
 
