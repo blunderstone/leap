@@ -188,7 +188,7 @@ kb_rel_paths=()
 while IFS= read -r abs_path; do
   [ -n "$abs_path" ] || continue
   kb_rel_paths+=("${abs_path#"$REPO_ROOT"/}")
-done < <(find "$REPO_ROOT" -type d \( -name 'leap' -o -name 'leap-*' \) -prune \
+done < <(find "$REPO_ROOT" -mindepth 1 -type d \( -name 'leap' -o -name 'leap-*' \) -prune \
               -o -type d -name kb -print | sort)
 
 if [ ${#kb_rel_paths[@]} -eq 0 ]; then
