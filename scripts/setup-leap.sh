@@ -244,18 +244,26 @@ print_step "Configuring QMD Semantic Search"
 echo "QMD is an on-device semantic search engine that lets AI agents find your documentation."
 echo -n "Would you like to run the QMD configuration script? (y/n): "
 read -r response
+QMD_FAILED=false
 if [[ "$response" =~ ^[Yy]$ ]]; then
   if bash "$LEAP_DIR/scripts/qmd/qmd-config" --repo-root "$REPO_ROOT"; then
     print_success "QMD semantic search configured successfully."
   else
     print_warning "QMD configuration failed or was cancelled. You can retry via 'bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT'."
+    QMD_FAILED=true
   fi
 else
   print_warning "Skipped QMD configuration."
 fi
 
 print_step "LEAP Initialization Complete!"
-echo -e "${GREEN}${BOLD}Congratulations! Your project is now LEAP-ready.${NC}"
+if [ "$QMD_FAILED" = true ]; then
+  echo -e "${YELLOW}${BOLD}LEAP is configured, but optional QMD semantic search failed to set up.${NC}"
+  echo "You can manually resolve the QMD warning later. Your project is otherwise fully ready for LEAP!"
+else
+  echo -e "${GREEN}${BOLD}Congratulations! Your project is now LEAP-ready.${NC}"
+fi
+
 echo "Next steps:"
 echo "1. Create your first feature branch: 'git checkout -b <username>/<feature-name>'"
 echo "2. Create your feature directory: 'mkdir -p kb/feature/<username>/<feature-name>'"
