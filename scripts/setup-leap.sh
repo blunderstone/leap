@@ -38,6 +38,7 @@ print_warning() {
 # 1. Verify working directory
 REPO_ROOT=$(pwd)
 LEAP_DIR="leap"
+IS_SUBMODULE=false
 if [ ! -d "leap" ]; then
   if [ -f "scripts/setup-leap.sh" ]; then
     LEAP_DIR="."
@@ -50,6 +51,10 @@ if [ ! -d "leap" ]; then
   fi
 fi
 
+if [ -f ".gitmodules" ] && grep -q "path = leap" ".gitmodules"; then
+  IS_SUBMODULE=true
+fi
+
 echo -e "${GREEN}${BOLD}Welcome to the LEAP Workspace Configurator!${NC}"
 echo "This helper will bootstrap your project's agent-friendly Literate Programming environment."
 
@@ -60,6 +65,21 @@ if [ -d "kb" ]; then
 else
   mkdir -p kb
   print_success "Created empty 'kb/' directory in project root."
+fi
+
+# 2b. Configure Submodule Recurse (if submodule)
+if [ "$IS_SUBMODULE" = true ]; then
+  print_step "Configuring Git Submodule Recurse"
+  echo "By default, Git does not automatically update submodules on 'git pull' or 'git checkout'."
+  echo "Enabling 'submodule.recurse' will configure Git to automatically update the LEAP submodule."
+  echo -n "Would you like to enable submodule.recurse for this repository? (y/n): "
+  read -r response
+  if [[ "$response" =~ ^[Yy]$ ]]; then
+    git config submodule.recurse true
+    print_success "Enabled automatic submodule recursion (submodule.recurse = true)."
+  else
+    print_warning "Skipped submodule auto-recurse. Remember to run 'git submodule update --init --recursive' manually."
+  fi
 fi
 
 # 3. Help install check-md
@@ -225,10 +245,10 @@ echo "QMD is an on-device semantic search engine that lets AI agents find your d
 echo -n "Would you like to run the QMD configuration script? (y/n): "
 read -r response
 if [[ "$response" =~ ^[Yy]$ ]]; then
-  if bash "$LEAP_DIR/scripts/qmd/qmd-config"; then
+  if bash "$LEAP_DIR/scripts/qmd/qmd-config" --repo-root "$REPO_ROOT"; then
     print_success "QMD semantic search configured successfully."
   else
-    print_warning "QMD configuration failed or was cancelled. You can retry via 'bash $LEAP_DIR/scripts/qmd/qmd-config'."
+    print_warning "QMD configuration failed or was cancelled. You can retry via 'bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT'."
   fi
 else
   print_warning "Skipped QMD configuration."
