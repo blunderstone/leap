@@ -35,6 +35,70 @@ print_warning() {
   echo -e "  ${YELLOW}⚠${NC} $1"
 }
 
+# Helper variable to keep track of questions
+PROMPT_RESULT=""
+
+# Helper function to ask a Yes/No question with a default value and descriptive help text
+ask_yes_no() {
+  local prompt="$1"
+  local default="$2"
+  local explanation="$3"
+  
+  echo -e "\n${BOLD}${prompt}${NC}"
+  echo -e "  ${explanation}"
+  
+  local options="[y/n]"
+  if [ "$default" = "y" ] || [ "$default" = "Y" ]; then
+    options="[Y/n]"
+    default="y"
+  else
+    options="[y/N]"
+    default="n"
+  fi
+  
+  while true; do
+    echo -n "  Answer ${options}: "
+    read -r response
+    response="${response:-$default}"
+    
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      PROMPT_RESULT="y"
+      return 0
+    elif [[ "$response" =~ ^[Nn]$ ]]; then
+      PROMPT_RESULT="n"
+      return 0
+    else
+      echo -e "  ${RED}Please enter 'y' for Yes or 'n' for No.${NC}"
+    fi
+  done
+}
+
+# Helper function to write content to a file safely, prompting if it already exists
+write_file_safe() {
+  local file_path="$1"
+  local description="$2"
+  
+  if [ -f "$file_path" ]; then
+    echo -e "\n  ${YELLOW}File already exists:${NC} $file_path"
+    echo "  This file may contain custom, user-written instructions."
+    ask_yes_no "Overwrite existing $file_path?" "n" "Select 'y' to replace the existing file with the standard LEAP configuration, or 'n' to safely preserve your custom file."
+    if [ "$PROMPT_RESULT" != "y" ]; then
+      print_warning "Preserved existing $file_path."
+      # Consume/discard stdin
+      cat > /dev/null
+      return 0
+    fi
+  fi
+  
+  # Ensure parent directory exists
+  local parent_dir
+  parent_dir=$(dirname "$file_path")
+  mkdir -p "$parent_dir"
+  
+  cat > "$file_path"
+  print_success "$description"
+}
+
 # 1. Verify working directory
 REPO_ROOT=$(pwd)
 LEAP_DIR="leap"
@@ -69,12 +133,8 @@ fi
 
 # 2b. Configure Submodule Recurse (if submodule)
 if [ "$IS_SUBMODULE" = true ]; then
-  print_step "Configuring Git Submodule Recurse"
-  echo "By default, Git does not automatically update submodules on 'git pull' or 'git checkout'."
-  echo "Enabling 'submodule.recurse' will configure Git to automatically update the LEAP submodule."
-  echo -n "Would you like to enable submodule.recurse for this repository? (y/n): "
-  read -r response
-  if [[ "$response" =~ ^[Yy]$ ]]; then
+  ask_yes_no "Enable automatic Git Submodule updates?" "y" "Configures Git to automatically update the 'leap' folder during checkout or pull commands so you do not need to sync submodules manually."
+  if [ "$PROMPT_RESULT" = "y" ]; then
     git config submodule.recurse true
     print_success "Enabled automatic submodule recursion (submodule.recurse = true)."
   else
@@ -88,10 +148,9 @@ if command -v check-md &> /dev/null; then
   print_success "check-md is already installed and available on PATH."
 else
   if command -v uv &> /dev/null; then
-    echo "Modern 'uv' package manager detected!"
-    echo -n "Would you like to install check-md globally using 'uv tool'? (y/n): "
-    read -r response
-    if [[ "$response" =~ ^[Yy]$ ]]; then
+    echo "  Modern 'uv' package manager detected!"
+    ask_yes_no "Install check-md globally using 'uv tool'?" "y" "Installs the markdown linter globally on your system PATH using the extremely fast 'uv' tool manager."
+    if [ "$PROMPT_RESULT" = "y" ]; then
       uv tool install --editable "$LEAP_DIR/check-md"
       print_success "check-md installed successfully via uv tool."
     else
@@ -100,10 +159,9 @@ else
   elif command -v pip &> /dev/null || command -v pip3 &> /dev/null; then
     PIP_CMD="pip"
     command -v pip3 &> /dev/null && PIP_CMD="pip3"
-    echo "Python pip detected."
-    echo -n "Would you like to install check-md in your current Python environment? (y/n): "
-    read -r response
-    if [[ "$response" =~ ^[Yy]$ ]]; then
+    echo "  Python pip detected."
+    ask_yes_no "Install check-md in your active Python environment?" "y" "Installs the markdown linter in your current Python terminal environment using pip."
+    if [ "$PROMPT_RESULT" = "y" ]; then
       $PIP_CMD install -e "$LEAP_DIR/check-md[dev]"
       print_success "check-md installed successfully via pip."
     else
@@ -117,11 +175,10 @@ fi
 # 4. Agent Configuration files
 print_step "Configuring AI Agent Instructions"
 echo "LEAP works best when your AI assistant is explicitly instructed to follow LEAP principles."
-echo "Select the AI environments you use (you can choose multiple):"
 
 # Function to write CLAUDE.md
 write_claude() {
-  cat << 'EOF' > CLAUDE.md
+  write_file_safe "CLAUDE.md" "Created CLAUDE.md (Claude Code / Cline / Roo Code / Cursor)" << 'EOF'
 # Claude Developer Guide (LEAP Compliant)
 
 This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** methodology. Please respect the following guidelines for all code changes, architecture decisions, and feature implementations.
@@ -152,12 +209,11 @@ For example:
 - **Build**: `npm run build` or `cargo build`
 - **Test**: `npm run test` or `cargo test`
 EOF
-  print_success "Created CLAUDE.md (Claude Code / Cline / Roo Code / Cursor)."
 }
 
 # Function to write GEMINI.md
 write_gemini() {
-  cat << 'EOF' > GEMINI.md
+  write_file_safe "GEMINI.md" "Created GEMINI.md (Gemini CLI / Antigravity CLI / AGENTS.md)" << 'EOF'
 # Gemini & Antigravity Developer Guide (LEAP Compliant)
 
 This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** paradigm. Every task must be carried out following our documentation-first and testing-first lifecycle.
@@ -180,13 +236,11 @@ This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** para
 - **Build Project**: [Insert project build command]
 - **Run Tests**: [Insert project test command]
 EOF
-  print_success "Created GEMINI.md (Gemini CLI / Antigravity CLI / AGENTS.md)."
 }
 
 # Function to write copilot-instructions.md
 write_copilot() {
-  mkdir -p .github
-  cat << 'EOF' > .github/copilot-instructions.md
+  write_file_safe ".github/copilot-instructions.md" "Created .github/copilot-instructions.md (GitHub Copilot)" << 'EOF'
 # GitHub Copilot Custom Instructions (LEAP Compliant)
 
 This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** methodology. Please respect the following guidelines for all code changes, architecture decisions, and feature implementations.
@@ -198,12 +252,11 @@ This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** met
   - Use <br> tags for consecutive metadata lists.
 - **Testing**: Maintain high test coverage (90%+). Proactively verify code behaves correctly.
 EOF
-  print_success "Created .github/copilot-instructions.md (GitHub Copilot)."
 }
 
 # Function to write .cursorrules
 write_cursor() {
-  cat << 'EOF' > .cursorrules
+  write_file_safe ".cursorrules" "Created .cursorrules (Cursor / Windsurf)" << 'EOF'
 # Cursor Rules (LEAP Compliant)
 
 This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** methodology. Please respect the following guidelines for all code changes, architecture decisions, and feature implementations.
@@ -212,40 +265,39 @@ This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** met
 - **Markdown Standards**: Ensure markdown files comply with check-md rules (proper headings, blank lines around code blocks/lists, <br> for metadata). Run `check-md kb/ --fix` to verify.
 - **Testing**: Proactively write unit and integration tests. Target 90%+ coverage.
 EOF
-  print_success "Created .cursorrules (Cursor)."
 }
 
-echo -n "Enable Claude / Cline / Roo Code (CLAUDE.md)? (y/n): "
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
+# Ask Claude
+ask_yes_no "Configure Claude Guide (CLAUDE.md)?" "y" "Creates CLAUDE.md in your repository root, informing Claude-based coding agents (like Claude Code, Cline, Roo Code, and Cursor) to follow your LEAP rules."
+if [ "$PROMPT_RESULT" = "y" ]; then
   write_claude
 fi
 
-echo -n "Enable Gemini / Antigravity CLI (GEMINI.md)? (y/n): "
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
+# Ask Gemini
+ask_yes_no "Configure Gemini & Antigravity Guide (GEMINI.md)?" "y" "Creates GEMINI.md in your repository root, which the Gemini CLI and the next-generation Antigravity CLI (agy) natively parse on startup."
+if [ "$PROMPT_RESULT" = "y" ]; then
   write_gemini
 fi
 
-echo -n "Enable GitHub Copilot (.github/copilot-instructions.md)? (y/n): "
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
+# Ask Copilot
+ask_yes_no "Configure GitHub Copilot Instructions?" "n" "Creates .github/copilot-instructions.md to automatically instruct GitHub Copilot Chat to align with your LEAP guidelines."
+if [ "$PROMPT_RESULT" = "y" ]; then
   write_copilot
 fi
 
-echo -n "Enable Cursor (.cursorrules)? (y/n): "
-read -r response
-if [[ "$response" =~ ^[Yy]$ ]]; then
+# Ask Cursor
+ask_yes_no "Configure Cursor Rules (.cursorrules)?" "n" "Creates .cursorrules to automatically feed guidelines into Cursor's inline and chat-assistant contexts."
+if [ "$PROMPT_RESULT" = "y" ]; then
   write_cursor
 fi
 
 # 5. Configure QMD Semantic Search
 print_step "Configuring QMD Semantic Search"
 echo "QMD is an on-device semantic search engine that lets AI agents find your documentation."
-echo -n "Would you like to run the QMD configuration script? (y/n): "
-read -r response
+
+ask_yes_no "Run QMD semantic search configurator?" "y" "Registers your document collections, registers your local project with the local AI agent, and installs pre-commit hooks to keep the index updated automatically."
 QMD_FAILED=false
-if [[ "$response" =~ ^[Yy]$ ]]; then
+if [ "$PROMPT_RESULT" = "y" ]; then
   if bash "$LEAP_DIR/scripts/qmd/qmd-config" --repo-root "$REPO_ROOT"; then
     print_success "QMD semantic search configured successfully."
   else
@@ -258,10 +310,12 @@ fi
 
 print_step "LEAP Initialization Complete!"
 if [ "$QMD_FAILED" = true ]; then
-  echo -e "${YELLOW}${BOLD}LEAP is configured, but optional QMD semantic search failed to set up.${NC}"
-  echo "You can manually resolve the QMD warning later. Your project is otherwise fully ready for LEAP!"
+  echo -e "${RED}${BOLD}LEAP Setup Incomplete (Warnings Detected)${NC}"
+  echo "  - Please fix the QMD path errors or clean up any broken pre-commit hooks before committing!"
+  echo "  - You can retry QMD setup via: bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT"
+  exit 1
 else
-  echo -e "${GREEN}${BOLD}Congratulations! Your project is now LEAP-ready.${NC}"
+  echo -e "${GREEN}${BOLD}Congratulations! Your project is now fully LEAP-ready.${NC}"
 fi
 
 echo "Next steps:"

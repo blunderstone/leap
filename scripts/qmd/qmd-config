@@ -425,8 +425,16 @@ if [ "$UNINSTALL" = true ]; then
     
     # 3. Clean up git pre-commit hook
     echo "Removing pre-commit hook..."
-    HOOK_FILE="$REPO_ROOT/.git/hooks/pre-commit"
-    if [ -f "$HOOK_FILE" ]; then
+    HOOK_FILE=""
+    if [ -f "$REPO_ROOT/.git" ]; then
+      PARENT_DIR="$(cd "$REPO_ROOT/.." && pwd)"
+      if [ -f "$PARENT_DIR/.git/hooks/pre-commit" ]; then
+        HOOK_FILE="$PARENT_DIR/.git/hooks/pre-commit"
+      fi
+    elif [ -f "$REPO_ROOT/.git/hooks/pre-commit" ]; then
+      HOOK_FILE="$REPO_ROOT/.git/hooks/pre-commit"
+    fi
+    if [ -n "$HOOK_FILE" ] && [ -f "$HOOK_FILE" ]; then
       line_count=$(wc -l < "$HOOK_FILE" | xargs)
       # If it's a simple <= 2 line hook we created, delete it entirely
       if [ "$line_count" -le 2 ] && grep -q 'pre-commit-qmd' "$HOOK_FILE"; then
@@ -693,40 +701,76 @@ echo ""
 #======================================================================
 
 echo "Wiring pre-commit hook..."
-HOOK="$REPO_ROOT/.git/hooks/pre-commit"
-
-QMD_HOOK_PATH=".githooks/pre-commit-qmd"
-if [ ! -f "$REPO_ROOT/$QMD_HOOK_PATH" ] && [ -f "$REPO_ROOT/scripts/qmd/pre-commit-qmd" ]; then
-  QMD_HOOK_PATH="scripts/qmd/pre-commit-qmd"
+# Resolve real hooks directory
+HOOKS_DIR=""
+HOOKS_REPO_ROOT="$REPO_ROOT"
+if [ -d "$REPO_ROOT/.git/hooks" ]; then
+  HOOKS_DIR="$REPO_ROOT/.git/hooks"
+elif [ -f "$REPO_ROOT/.git" ]; then
+  # Submodule file detected. Redirect hook installation to the parent repository.
+  PARENT_DIR="$(cd "$REPO_ROOT/.." && pwd)"
+  if [ -d "$PARENT_DIR/.git/hooks" ]; then
+    HOOKS_DIR="$PARENT_DIR/.git/hooks"
+    HOOKS_REPO_ROOT="$PARENT_DIR"
+    echo "  - Detected submodule layout. Wiring pre-commit hook to parent repository."
+  fi
 fi
 
-# shellcheck disable=SC2016
-QMD_HOOK_LINE='"$(git rev-parse --show-toplevel)/'"$QMD_HOOK_PATH"'"'
+if [ -z "$HOOKS_DIR" ]; then
+  echo "  ⚠ Could not locate a valid .git/hooks directory. Skipping pre-commit hook setup."
+else
+  HOOK="$HOOKS_DIR/pre-commit"
 
-if [ ! -f "$HOOK" ]; then
-  cat > "$HOOK" <<HOOKEOF
-#!/usr/bin/env bash
-"\$(git rev-parse --show-toplevel)/$QMD_HOOK_PATH"
-HOOKEOF
-  chmod +x "$HOOK"
-  echo "  ✓ Created .git/hooks/pre-commit"
-elif grep -q 'pre-commit-qmd' "$HOOK"; then
-  if [ "$QMD_HOOK_PATH" = "scripts/qmd/pre-commit-qmd" ]; then
-    if grep -q '\.githooks/pre-commit-qmd' "$HOOK"; then
+  QMD_HOOK_PATH=".githooks/pre-commit-qmd"
+  if [ ! -f "$HOOKS_REPO_ROOT/$QMD_HOOK_PATH" ]; then
+    if [ -f "$HOOKS_REPO_ROOT/scripts/qmd/pre-commit-qmd" ]; then
+      QMD_HOOK_PATH="scripts/qmd/pre-commit-qmd"
+    else
+      # Search for any candidate under leap*
+      for candidate in "$HOOKS_REPO_ROOT"/*leap*/scripts/qmd/pre-commit-qmd "$HOOKS_REPO_ROOT"/*/*leap*/scripts/qmd/pre-commit-qmd; do
+        if [ -f "$candidate" ]; then
+          QMD_HOOK_PATH="${candidate#$HOOKS_REPO_ROOT/}"
+          break
+        fi
+      done
+    fi
+  fi
+
+  # shellcheck disable=SC2016
+  QMD_HOOK_LINE='"$(git rev-parse --show-toplevel)/'"$QMD_HOOK_PATH"'"'
+
+  # Make sure the target hook path actually exists
+  if [ ! -f "$HOOKS_REPO_ROOT/$QMD_HOOK_PATH" ]; then
+    echo "  ⚠ Pre-commit hook script not found at $HOOKS_REPO_ROOT/$QMD_HOOK_PATH. Skipping pre-commit hook setup."
+  else
+    if [ ! -f "$HOOK" ]; then
       cat > "$HOOK" <<HOOKEOF
 #!/usr/bin/env bash
 "\$(git rev-parse --show-toplevel)/$QMD_HOOK_PATH"
 HOOKEOF
-      echo "  ✓ Updated existing hook to use scripts/qmd/pre-commit-qmd"
+      chmod +x "$HOOK"
+      echo "  ✓ Created .git/hooks/pre-commit"
+    elif grep -q 'pre-commit-qmd' "$HOOK"; then
+      # Make sure the existing hook is updated if necessary
+      if [ "$QMD_HOOK_PATH" != ".githooks/pre-commit-qmd" ]; then
+        # Check if the hook line in the file matches
+        if ! grep -q "$QMD_HOOK_PATH" "$HOOK"; then
+          cat > "$HOOK" <<HOOKEOF
+#!/usr/bin/env bash
+"\$(git rev-parse --show-toplevel)/$QMD_HOOK_PATH"
+HOOKEOF
+          echo "  ✓ Updated existing hook to use $QMD_HOOK_PATH"
+        else
+          echo "  ✓ Hook already wired (skipped)"
+        fi
+      else
+        echo "  ✓ Hook already wired (skipped)"
+      fi
     else
-      echo "  ✓ Hook already wired (skipped)"
+      printf '\n# QMD index update\n%s\n' "$QMD_HOOK_LINE" >> "$HOOK"
+      echo "  ✓ Appended QMD hook to existing .git/hooks/pre-commit"
     fi
-  else
-    echo "  ✓ Hook already wired (skipped)"
   fi
-else
-  printf '\n# QMD index update\n%s\n' "$QMD_HOOK_LINE" >> "$HOOK"
-  echo "  ✓ Appended QMD hook to existing .git/hooks/pre-commit"
 fi
 echo ""
 
