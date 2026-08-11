@@ -356,8 +356,8 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 - Should be linkable from code comments
 - TODOs in code should reference relevant tech debt docs when they exist (TODOs don't require a doc, but significant debt should be documented)
-- Document should include status (open, in-progress) while in `kb/meta/` or `<module>/kb/`
-- When resolved, move document to the feature branch directory that resolved it (location indicates resolved status)
+- Document should include a status (`open`, `in-progress`, or `done`) and a `Tracking Issue:` value (`none` is a valid value — it marks the debt as findable for later triage)
+- When resolved, set status to `done` and move the document to the feature branch directory that resolved it; location is authoritative, so a document still in `kb/meta/` or `<module>/kb/` is unresolved whatever its status says, and an absent status is inferred from location
 - Tech debt docs are temporary - resolved debt becomes part of feature documentation
 - Consider converting to `idea-` if debt resolution suggests new enhancement opportunities
 
@@ -644,7 +644,7 @@ Meta-documentation is about our work, process, learning, and reflection.
   - Example: `kb/meta/lessons-typedb-performance.md` (project-wide)
   - Example: `ghee-ui/kb/lessons-reasonml-interop.md` (module-specific)
 
-- **`tech-debt-`** - Reflection on what we built (temporary, moved to feature branch when resolved)
+- **`tech-debt-`** - Reflection on what we built (temporary; location is authoritative, so moving the document to the feature branch directory that resolved it is what marks it resolved)
   - Example: `kb/meta/tech-debt-test-coverage.md` (project-wide)
   - Example: `ghee-server/kb/tech-debt-authentication-refactor.md` (module-specific)
 
