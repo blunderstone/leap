@@ -440,19 +440,25 @@ When discovering issues that cannot be immediately resolved:
    - Project-wide: `kb/meta/tech-debt-<topic>.md`
    - Module-specific: `<module>/kb/tech-debt-<topic>.md`
 2. **Document the issue** with context, impact, and proposed solutions
-3. **Reference from feature docs** where the issue was discovered
+3. **Record ownership** in the document's `Tracking Issue:` header field — the issue that owns remediation, in your tracking system's canonical form, or `none` if no issue has been filed
+4. **Reference from feature docs** where the issue was discovered
+
+An issue that merely records where the debt was discovered is not a tracking issue. Provenance belongs in the document's own "Related Issues" section, under "References"; when the discovering work closes, an unowned document is left behind with nothing driving it. `none` is the honest value in that case, and it makes the document findable when untracked debt is triaged.
 
 ### Resolving Tech Debt
 
 When resolving tech debt items in a feature branch:
 
 1. **Update the document** with resolution details:
-   - Change status to "✅ RESOLVED (Phase/Feature Name)"
+   - Change Status to `done`, optionally qualified after an em-dash, hyphen, or double hyphen (e.g., `done - resolved in phase 3`)
    - Add "Resolved" date
    - Add "Resolution" section with implementation details, verification, and files modified
+   - Close the tracking issue, if the document names one
 
-2. **Move to feature directory**: `kb/feature/<username>/<feature-name>/tech-debt-resolved/`
-   - Keeps `kb/tech-debt/` clean (only open items)
+2. **Move to feature directory**: `kb/feature/<username>/<feature-name>/tech-debt-<topic>.md`
+   - The document sits directly in the feature directory, alongside `goals.md` and `completion-summary.md`
+   - Location is authoritative: the move is what marks the debt resolved, and the Status value simply agrees with it. A document still in `kb/meta/` or `<module>/kb/` is unresolved whatever its Status says, and a document with no Status field takes its status from its location.
+   - Keeps `kb/meta/` and `<module>/kb/` clean (only unresolved items)
    - Preserves resolution context with the feature that fixed it
    - Enables natural garbage collection when feature branches are archived
 
@@ -463,12 +469,12 @@ When resolving tech debt items in a feature branch:
 ```
 # When resolving tech debt in feature branch faseidl/jcl-phase-1
 git mv kb/meta/tech-debt-program-id-extraction-missing.md \
-       kb/feature/faseidl/jcl-phase-1/tech-debt-resolved/
+       kb/feature/faseidl/jcl-phase-1/
 ```
 
 #### Benefits of this convention
 
-- ✅ Clear separation: Tech debt files in `kb/meta/` show only active issues
+- ✅ Clear separation: Tech debt files in `kb/meta/` or `<module>/kb/` show only unresolved items
 - ✅ Contextual documentation: Resolution details stay with the feature
 - ✅ Natural lifecycle: Archived feature branches take resolved tech debt with them
 - ✅ Discoverability: Easy to see open vs resolved at a glance
