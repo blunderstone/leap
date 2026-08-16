@@ -252,3 +252,12 @@ For a complete explanation of the methodology, compliance requirements, and guid
 - **[Compliance Levels](leap/kb/guide-compliance-levels.md)**: Essential, Standard, and Comprehensive criteria.
 - **[Markdown Formatting Standards ADR](leap/kb/adr/leap-adr-002__markdown-formatting-standards.md)**: Detailed reasoning behind `check-md` rules.
 - **[QMD Configuration Guide](leap/kb/guide-qmd-config.md)**: Setup instructions for semantic search.
+
+---
+
+## License & Contribution
+
+This project is licensed under the terms of **The Apache License, Version 2.0** (see [`LICENSE`](LICENSE)).
+
+By contributing to this repository, you agree that your submissions are governed by the terms outlined in our [Contributing Guide](CONTRIBUTING.md#⚖️-contribution-licensing-agreement-implicit-cla).
+
