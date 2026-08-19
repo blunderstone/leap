@@ -345,7 +345,8 @@ Error: Could not locate the bindings file. Tried:
 
 This happens because npm's default security configuration blocks native install/build scripts (like those of `better-sqlite3` or `node-llama-cpp`) during global installations, leaving the native C++ binaries uncompiled.
 
-**Resolution:**
+#### Resolution
+
 Re-install QMD globally while explicitly allowing life-cycle build scripts:
 
 ```bash

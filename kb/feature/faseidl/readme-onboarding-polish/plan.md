@@ -37,8 +37,8 @@ This plan outlines the steps to streamline the LEAP onboarding experience by sim
 
 ### Success Criteria
 
-- [ ] `kb/guide-installation.md` is complete and has zero formatting violations.
-- [ ] All remote repository references in `README.md` are updated to `blunderstone/leap`.
+- [x] `kb/guide-installation.md` is complete and has zero formatting violations.
+- [x] All remote repository references in `README.md` are updated to `blunderstone/leap`.
 
 ### Explicitly Deferred
 
@@ -69,9 +69,9 @@ This plan outlines the steps to streamline the LEAP onboarding experience by sim
 
 ### Success Criteria
 
-- [ ] `README.md` "Getting Started" section is simplified, clear, and direct.
-- [ ] All links between `README.md` and `kb/guide-installation.md` work perfectly.
-- [ ] `check-md kb/` passes with 100% compliance.
+- [x] `README.md` "Getting Started" section is simplified, clear, and direct.
+- [x] All links between `README.md` and `kb/guide-installation.md` work perfectly.
+- [x] `check-md kb/` passes with 100% compliance.
 
 ### Explicitly Deferred
 
@@ -81,11 +81,46 @@ This plan outlines the steps to streamline the LEAP onboarding experience by sim
 
 ---
 
+## Phase 3: Setup Script Enhancements (Overwrite/Append/Skip & Safety-First Backups)
+
+### Goals
+
+- Enhance `scripts/setup-leap.sh` with interactive three-way file merging when agent files already exist.
+- Prevent accidental overrides through a secondary double-confirmation prompt for any overwrite choice.
+- Protect pre-existing files by automatically creating `.bak` backup copies before any modification (Overwrite or Append).
+
+### Approach
+
+- Add `ask_choice` helper function in `scripts/setup-leap.sh`.
+- Modify `write_file_safe` to support choice prompts and handle appending/merging.
+- Add double-confirmation logic using `ask_yes_no` when a user selects "Overwrite" (`o`).
+- Implement automatic backup creation (`cp "$file_path" "$file_path.bak"`) before files are written or appended to.
+
+### Testing
+
+- Perform validation by running the script locally against existing and dummy files to verify overwriting, appending, and skipping behaviors.
+
+### Success Criteria
+
+- [x] `setup-leap.sh` successfully merges, appends, or skips existing files correctly depending on user choices.
+
+### Explicitly Deferred
+
+- None.
+
+**Rationale:** Adding automated merging eliminates manual work and friction for users who have pre-existing custom instruction files.
+
+---
+
 ## Decision Points
 
 ### After Phase 1
 
 - Proceed to Phase 2 once the installation guide is written, reviewed, and passes markdown linting.
+
+### After Phase 2
+
+- Proceed to Phase 3 to build and test the setup-leap.sh script enhancements.
 
 ---
 

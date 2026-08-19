@@ -34,6 +34,7 @@ This feature will split the onboarding into a highly direct, copy-pasteable quic
 - **REQ-1**: The root `README.md` must have two distinct, immediately copy-pasteable installation blocks (Submodule and Copy/Embed) without nested comments.
 - **REQ-2**: All git repository submodule and clone URLs must use `blunderstone/leap` as the remote source.
 - **REQ-3**: Detailed troubleshooting, environment-specific notes (Windows), manual virtualenv setups, and QMD configurations must be fully captured in `kb/guide-installation.md`.
+- **REQ-4**: The `setup-leap.sh` configurator must support an interactive three-way choice (Overwrite, Append, Skip) when a pre-existing agent instruction file is detected. If Overwrite is chosen, a secondary double-confirmation prompt must prevent accidental overrides. Furthermore, any modification (Overwrite or Append) must first create a `.bak` backup copy of the original file to ensure zero data loss.
 
 ### Non-Functional Requirements
 
@@ -54,10 +55,11 @@ This feature will split the onboarding into a highly direct, copy-pasteable quic
 
 ## Success Criteria
 
-- [ ] `README.md` "Getting Started" section simplified to clear, single-command installation paths.
-- [ ] All references to the repository path use `blunderstone/leap`.
-- [ ] A comprehensive `kb/guide-installation.md` is fully documented and verified.
-- [ ] `check-md kb/` passes without any violations.
+- [x] `README.md` "Getting Started" section simplified to clear, single-command installation paths.
+- [x] All references to the repository path use `blunderstone/leap`.
+- [x] A comprehensive `kb/guide-installation.md` is fully documented and verified.
+- [x] `setup-leap.sh` supports interactive Overwrite/Append/Skip options for existing files.
+- [x] `check-md kb/` passes without any violations.
 
 ---
 
