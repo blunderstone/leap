@@ -5,6 +5,9 @@
 
 set -euo pipefail
 
+# Duplicate stdin (FD 0) to FD 3 so prompts can read from keyboard/pipe even when stdin is redirected
+exec 3<&0
+
 # ANSI color codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -58,7 +61,7 @@ ask_yes_no() {
   
   while true; do
     echo -n "  Answer ${options}: "
-    read -r response
+    read -r response <&3
     response="${response:-$default}"
     
     if [[ "$response" =~ ^[Yy]$ ]]; then
@@ -73,6 +76,34 @@ ask_yes_no() {
   done
 }
 
+# Helper function to ask a choice with options and descriptive help text
+ask_choice() {
+  local prompt="$1"
+  local default="$2"
+  local explanation="$3"
+  local allowed_regex="$4"
+  local options_display="$5"
+  
+  echo -e "\n${BOLD}${prompt}${NC}"
+  echo -e "  ${explanation}"
+  
+  while true; do
+    echo -n "  Answer ${options_display}: "
+    read -r response <&3
+    response="${response:-$default}"
+    
+    # Normalize to lowercase
+    response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+    
+    if [[ "$response" =~ ^[$allowed_regex]$ ]]; then
+      PROMPT_RESULT="$response"
+      return 0
+    else
+      echo -e "  ${RED}Please enter one of the allowed options: ${allowed_regex}${NC}"
+    fi
+  done
+}
+
 # Helper function to write content to a file safely, prompting if it already exists
 write_file_safe() {
   local file_path="$1"
@@ -81,11 +112,44 @@ write_file_safe() {
   if [ -f "$file_path" ]; then
     echo -e "\n  ${YELLOW}File already exists:${NC} $file_path"
     echo "  This file may contain custom, user-written instructions."
-    ask_yes_no "Overwrite existing $file_path?" "n" "Select 'y' to replace the existing file with the standard LEAP configuration, or 'n' to safely preserve your custom file."
-    if [ "$PROMPT_RESULT" != "y" ]; then
-      print_warning "Preserved existing $file_path."
-      # Consume/discard stdin
+    echo "  Note: Choosing to Overwrite or Append will automatically save a backup (e.g. $file_path.bak), making it easy to revert at any time."
+    
+    ask_choice "How would you like to handle the existing $file_path?" "s" "Select 'o' to overwrite with the LEAP template, 'a' to append LEAP guidelines to the end of the file, or 's' to safely skip and preserve it." "oas" "[o/a/S]"
+    
+    local choice="$PROMPT_RESULT"
+    
+    if [ "$choice" = "s" ]; then
+      print_warning "Preserved existing $file_path without modification."
+      # Consume/discard stdin from the heredoc redirect
       cat > /dev/null
+      return 0
+    elif [ "$choice" = "o" ]; then
+      # Double confirmation
+      ask_yes_no "Are you SURE you want to completely overwrite $file_path?" "n" "This will erase and replace all existing custom content in this file!"
+      if [ "$PROMPT_RESULT" != "y" ]; then
+        print_warning "Overwriting cancelled. Preserved existing $file_path without modification."
+        # Consume/discard stdin from the heredoc redirect
+        cat > /dev/null
+        return 0
+      fi
+      
+      # Save backup before overwriting
+      cp "$file_path" "$file_path.bak"
+      print_success "Saved backup copy of original to $file_path.bak"
+      
+    elif [ "$choice" = "a" ]; then
+      # Save backup before appending
+      local parent_dir
+      parent_dir=$(dirname "$file_path")
+      mkdir -p "$parent_dir"
+      
+      cp "$file_path" "$file_path.bak"
+      print_success "Saved backup copy of original to $file_path.bak"
+      
+      # Append a divider and the new content to the file
+      echo -e "\n\n# --- LEAP METHODOLOGY SECTION ---" >> "$file_path"
+      cat >> "$file_path"
+      print_success "Appended LEAP guidelines to $file_path."
       return 0
     fi
   fi
@@ -318,8 +382,8 @@ else
   echo -e "${GREEN}${BOLD}Congratulations! Your project is now fully LEAP-ready.${NC}"
 fi
 
-echo "Next steps:"
-echo "1. Create your first feature branch: 'git checkout -b <username>/<feature-name>'"
-echo "2. Create your feature directory: 'mkdir -p kb/feature/<username>/<feature-name>'"
-echo "3. Author your goals.md file in that folder."
-echo "4. Activate your AI agent and start building!"
+echo -e "\nNext steps to start a new task:"
+echo "1. Activate your AI agent in this repository."
+echo "2. Prompt your agent to initialize the task for you!"
+echo "   Example Prompt:"
+echo -e "     ${BLUE}\"We are starting a new task to [brief description]. Please create a feature branch, create our feature directory under kb/feature/, and draft the goals.md file for my review.\"${NC}"
