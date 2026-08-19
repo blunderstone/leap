@@ -65,7 +65,7 @@ Moving advanced, manual, and OS-specific configuration steps to `kb/guide-instal
 
 ### Test Coverage
 
-- **Markdown Compliance:** 100% (all 29 markdown files in the workspace pass `check-md` linter checks with zero violations).
+- **Markdown Compliance:** 100% (all 30 markdown files in the workspace pass `check-md` linter checks with zero violations).
 
 ### Test Strategy
 
@@ -75,7 +75,7 @@ Moving advanced, manual, and OS-specific configuration steps to `kb/guide-instal
 
 ### Test Results
 
-- Total markdown files linted: 29
+- Total markdown files linted: 30
 - Violations detected: 0
 - New linter failures: None (existing failures resolved)
 
