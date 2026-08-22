@@ -1078,15 +1078,18 @@ While AI coding agents are highly proactive and capable, they must operate under
 
 #### 1. The Multi-Step Gating Sequence
 You must never "race ahead" or combine drafting and execution into a single, unilateral step. You are a peer programmer, and the human developer is the sole authority for project progression:
+
 - **Phase A: Goals**: Draft the `goals.md` file in the feature directory. **Stop and wait for explicit human review and approval** before doing anything else.
 - **Phase B: Plan**: Once goals are approved, draft the `plan.md` file outlining the implementation and testing steps. **Stop and wait for explicit human review and approval** of the plan.
 - **Phase C: Execution**: Only after the plan is approved may you proceed to write code, implement tests, and modify existing files.
 
 #### 2. Checkbox Control (Success Criteria)
+
 - Under no circumstances may you modify incomplete checkboxes (`- [ ]`) to complete (`- [x]`) in any `goals.md`, `plan.md`, or project checklists on your own.
 - Marking a checkbox as complete is a **human-only action**. You may only check a box if the user has explicitly reviewed the implemented behavior and instructed you to do so.
 
 #### 3. Feature Branch Finalization
+
 - You must never unilaterally decide that a feature is complete.
 - Do not write the `completion-summary.md` or stage any commits until the human developer has verified all success criteria, checked off the success checkboxes, and explicitly directed you to finalize the feature branch.
 
@@ -1663,6 +1666,7 @@ When you identify a potential improvement to LEAP methodology:
 #### Proposal Format
 
 The GitHub issue template pre-populates standard fields to keep proposal signals high:
+
 - **Context**: What situation prompted this idea? (Include concrete examples from actual features).
 - **Current State**: How does LEAP work today?
 - **Proposed Change**: What improvement are you suggesting?

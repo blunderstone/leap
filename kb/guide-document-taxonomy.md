@@ -165,6 +165,48 @@ When content doesn't fit standard categories, custom prefixes are permitted. Fol
 
 **Reference:** ADR leap-adr-001 for complete policy
 
+#### Choosing Between an ADR and an Implementation Document
+
+To determine whether a proposed document should be written as an Architecture Decision Record (ADR) or as an implementation document (such as `impl-` or `guide-`), apply these four questions to the content in front of you:
+
+1. **Could a competent architect have reasonably chosen otherwise?**
+   If no other alternative can be named that someone would actually defend, there is no real decision, and the document is describing a mechanism, not establishing a policy. "Straw-man" options in the *Options Considered* section are a reliable tell that the document is not a genuine ADR.
+
+2. **Is it binding on work not yet written?**
+   An ADR constrains future code, establishing a standard or policy. A reviewer can cite an accepted ADR to reject a pull request. An implementation document, on the other hand, cannot be violated—it can only become outdated.
+
+3. **Would a code change make this document wrong, or merely make it history?**
+   An ADR is a historical record of a decision made at a specific point in time; it remains true as of its date forever. An implementation document stops matching the code and becomes false when the code changes. If your answer to a code change is "we would edit this document to update it," it is an implementation document, not an ADR.
+
+4. **Does the title assert something one could disagree with?**
+   A title that is a claim or an imperative (e.g., *Serve HTTP/1.1 Only on TLS Connectors*, *Retire the Deprecated command__calls Relation*, *Stored Line Offsets Are Source Truth*) describes a decision. A title that is a noun phrase naming a subsystem (e.g., *API Server Architecture*, *Storage Abstraction Layer*) describes a component and belongs in an implementation or guide document. This heuristic typically sorts documents perfectly.
+
+##### The Consequences Boundary
+
+The *Consequences* section of an ADR states effects, not instructions. For example, "Callers must now handle a body on a 503" is a consequence. "Here is how to handle a 503 response in Python..." is implementation content and does not belong in an ADR.
+
+##### The Splitting Rule
+
+When a decision requires substantial explanation, write two documents:
+
+1. **The ADR** which keeps the *Issue*, *Decision*, *Options Considered*, and *Consequences* sections, and links forward to the implementation document.
+2. **The Implementation Document** (using `impl-` or `guide-`) which keeps the mechanism, code examples, usage, pitfalls, and troubleshooting details, and cites the ADR for the "why".
+
+A section titled *Implementation Details*, *Usage*, *How to Run*, *Common Pitfalls*, *Best Practices*, or *Future Enhancements* does not belong in an ADR.
+
+##### The Maintenance Rule
+
+An accepted ADR should never need editing except to change its status or to record that it was superseded. If you are editing an ADR because the code changed, the edited content was never ADR content.
+
+##### Remediation Guidance
+
+When a project reviews its documentation and discovers existing ADRs that do not conform to these standards, follow these remediation rules to clean them up without damaging the historical record:
+
+- **ADR numbers are permanent.** Never renumber, delete, or reuse ADR numbers. Other documents, commit messages, and source comments cite them.
+- **If the document contains a real decision, split it.** Trim the original ADR to include only the *Issue*, *Decision*, *Options Considered*, and *Consequences* sections. Move the removed explanation, walkthrough, or setup guide into a new `impl-` or `guide-` document in the appropriate `kb/` folder and cross-link them. The ADR retains its original number and date.
+- **If the document contains no decision at all, supersede it.** Mark the status of the ADR as `superseded` and provide a forward pointer to the `impl-` or `guide-` document that replaces it, rather than deleting the file.
+- **Record remediation as ordinary feature work.** Do not make silent edits. Trimming changes what a permanent document says, and the reasoning for the remediation belongs in a normal development branch.
+
 ---
 
 ### LEAP Feature Documentation
@@ -282,7 +324,7 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 #### Naming Convention
 
-- LEAP-specific: Prefix `leap-`
+- LEAP-specific: Prefix `leap-` (Note: Omitted in the core `leap` repository itself, where all guides are LEAP-specific by definition)
 - Project-specific: Prefix `best-practices-`
 - Format: `best-practices-<topic>.md`
 - Self-describing prefix for clarity
@@ -428,7 +470,7 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 #### Naming Convention
 
-- Prefix: `leap-`
+- Prefix: `leap-` (Note: Omitted in the core `leap` repository itself, where the entire repository is dedicated to LEAP)
 - Format: `leap-<topic>.md`
 - Descriptive names with hyphens
 
