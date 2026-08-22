@@ -36,8 +36,8 @@ Configure the essential repository-level settings, governance files, and detaile
 
 ### Success Criteria
 
-- [ ] `.github/CODEOWNERS` is verified and matches REQ-1.
-- [ ] `CONTRIBUTORS.md` is verified and matches REQ-2.
+- [x] `.github/CODEOWNERS` is verified and matches REQ-1.
+- [x] `CONTRIBUTORS.md` is verified and matches REQ-2.
 
 ---
 
@@ -62,7 +62,7 @@ Configure the essential repository-level settings, governance files, and detaile
 
 ### Success Criteria
 
-- [ ] `CONTRIBUTING.md` updated with clear PR submission guidelines and explicit LEAP compliance mandates (Level 1 for simple, Level 2 for others).
+- [x] `CONTRIBUTING.md` updated with clear PR submission guidelines and explicit LEAP compliance mandates (Level 1 for simple, Level 2 for others).
 
 ---
 
@@ -83,4 +83,4 @@ Configure the essential repository-level settings, governance files, and detaile
 
 ### Success Criteria
 
-- [ ] All new and modified markdown files pass the `check-md` linter with zero violations.
+- [x] All new and modified markdown files pass the `check-md` linter with zero violations.

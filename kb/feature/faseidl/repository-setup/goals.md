@@ -49,10 +49,10 @@ This feature documents the formal configuration of `.github/CODEOWNERS` (to desi
 
 ## Success Criteria
 
-- [ ] CODEOWNERS file created at `.github/CODEOWNERS` designating `@faseidl` as the default owner for all files.
-- [ ] CONTRIBUTORS.md file created in the root directory documenting how to get listed as a contributor.
-- [ ] `CONTRIBUTING.md` updated with clear PR guidelines and mandatory LEAP compliance levels (Level 1 for simple, Level 2 for other changes).
-- [ ] Feature documentation is compliant with `check-md` and passes successfully.
+- [x] CODEOWNERS file created at `.github/CODEOWNERS` designating `@faseidl` as the default owner for all files.
+- [x] CONTRIBUTORS.md file created in the root directory documenting how to get listed as a contributor.
+- [x] `CONTRIBUTING.md` updated with clear PR guidelines and mandatory LEAP compliance levels (Level 1 for simple, Level 2 for other changes).
+- [x] Feature documentation is compliant with `check-md` and passes successfully.
 
 ---
 
