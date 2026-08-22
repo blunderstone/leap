@@ -831,6 +831,7 @@ For each phase in your plan:
    - Create implementation docs for complex algorithms and data structures
    - Update usage and implementation documentation as you go
    - Document significant architectural decisions in ADRs
+   - **Commit by Milestone**: Make separate, logical commits after completing each major milestone of the branch lifecycle (e.g., once goals are approved, once the plan is approved, and as each phase of the plan is completed). This creates a highly readable, incremental git history.
    - Keep commits focused and well-described
 
 3. **Commit Phase Work**
@@ -1070,6 +1071,24 @@ Implement basic file storage API to unblock Knowledge Graph team.
 
 Do the basic stuff. Add auth later.
 ```
+
+### Gating Mandates for AI Agents
+
+While AI coding agents are highly proactive and capable, they must operate under a strict **collaborative gating mandate** to prevent project drift and maintain human alignment. If you are an AI agent reading this guide, you are required to strictly adhere to the following execution gates:
+
+#### 1. The Multi-Step Gating Sequence
+You must never "race ahead" or combine drafting and execution into a single, unilateral step. You are a peer programmer, and the human developer is the sole authority for project progression:
+- **Phase A: Goals**: Draft the `goals.md` file in the feature directory. **Stop and wait for explicit human review and approval** before doing anything else.
+- **Phase B: Plan**: Once goals are approved, draft the `plan.md` file outlining the implementation and testing steps. **Stop and wait for explicit human review and approval** of the plan.
+- **Phase C: Execution**: Only after the plan is approved may you proceed to write code, implement tests, and modify existing files.
+
+#### 2. Checkbox Control (Success Criteria)
+- Under no circumstances may you modify incomplete checkboxes (`- [ ]`) to complete (`- [x]`) in any `goals.md`, `plan.md`, or project checklists on your own.
+- Marking a checkbox as complete is a **human-only action**. You may only check a box if the user has explicitly reviewed the implemented behavior and instructed you to do so.
+
+#### 3. Feature Branch Finalization
+- You must never unilaterally decide that a feature is complete.
+- Do not write the `completion-summary.md` or stage any commits until the human developer has verified all success criteria, checked off the success checkboxes, and explicitly directed you to finalize the feature branch.
 
 ## LEAP Compliance Levels
 
@@ -1631,64 +1650,53 @@ When contributing to open source projects or writing for technical audiences (bl
 
 ## LEAP Governance and Evolution
 
-LEAP is a living methodology that evolves based on team experience. We use a lightweight governance model to propose, evaluate, and adopt improvements:
+LEAP is a living, open-source methodology that evolves based on community experience. We use a lightweight, public governance model to propose, evaluate, and adopt improvements:
 
 ### LEAP Improvement Proposals (LIPs)
 
 When you identify a potential improvement to LEAP methodology:
 
-1. **Capture the idea** in `kb/guide-improvement-proposals.md`
-2. **Continue with current work** - don't implement immediately
-3. **Proposals are reviewed** periodically as a separate initiative
+1. **Submit a Proposal**: Create a **GitHub Issue** on the [blunderstone/leap](https://github.com/blunderstone/leap) repository using the dedicated **LEAP Improvement Proposal** template.
+2. **Community Feedback**: Maintainers and community members will review, discuss, and evaluate the proposal directly in the issue thread.
+3. **Continue with current work**: Do not implement proposed changes immediately in project work until they are formally accepted.
 
 #### Proposal Format
 
-- **PROP-NNN**: Sequential numbering for tracking
-- **Context**: What situation prompted this idea?
+The GitHub issue template pre-populates standard fields to keep proposal signals high:
+- **Context**: What situation prompted this idea? (Include concrete examples from actual features).
 - **Current State**: How does LEAP work today?
 - **Proposed Change**: What improvement are you suggesting?
-- **Benefits/Drawbacks**: Honest assessment of trade-offs
-- **Implementation Effort**: LOW | MEDIUM | HIGH
+- **Benefits & Drawbacks**: Honest, explicit assessment of trade-offs.
+- **Alternatives Considered (Optional)**: Other options that were considered and rejected.
 
 ### Review and Adoption Process
 
-1. **Proposal**: Anyone can propose a LEAP improvement
+1. **Proposal**: Anyone can propose a LEAP improvement via GitHub Issues.
 2. **Review**: Proposals are evaluated based on:
-   - Addresses real pain point from actual development
-   - Aligns with LEAP core principles
-   - Implementation cost is reasonable
-   - Benefits outweigh drawbacks
-3. **Decision**: Proposals are marked as:
-   - **Accepted**: Will be implemented
-   - **Rejected**: Not aligned with LEAP or benefits don't justify costs
-   - **Deferred**: Good idea but not a priority now
-4. **Implementation**: Accepted proposals are implemented, often as part of a dedicated LEAP refinement feature branch
-5. **Documentation**: Once implemented, update templates and best practices
+   - Whether they address a real, recurring pain point from actual development.
+   - Alignment with LEAP core principles (such as minimality, explicit composition, and self-enforcing conventions).
+   - Practicality of implementation cost and mental overhead.
+3. **Decision & Labeling**: Proposals are assigned standard labels and status tags (such as `accepted`, `deferred`, or `implemented`) directly within GitHub.
+4. **Implementation**: Accepted proposals are scheduled and implemented via standard feature branches.
+5. **Documentation**: Once implemented, core templates, taxonomy guides, and best practices are updated.
 
 ### When to Propose Improvements
 
 #### Do Propose When
 
-- You notice repeated friction in the LEAP workflow
-- You implement the same workaround multiple times
-- You receive feedback about LEAP confusion
-- You identify missing guidance in LEAP documentation
+- You notice repeated friction or confusion in the LEAP workflow.
+- You implement the same workaround multiple times across different features.
+- You identify missing guidance or ambiguities in the LEAP guides.
 
 #### Don't Propose For
 
-- One-time edge cases
-- Personal preferences without broader benefit
-- Ideas that conflict with LEAP core principles
+- One-time, highly specific edge cases.
+- Personal preferences without structural or functional benefit.
+- Ideas that conflict with LEAP's core principles.
 
 ### Current Governance
 
-LEAP governance is currently managed by the Chief Architect. As LEAP matures, this may evolve to include:
-
-- Dedicated LEAP working group
-- Quarterly review cycles
-- Community voting for open source projects
-
-For our current project, see `kb/guide-improvement-proposals.md` for active and historical proposals.
+LEAP governance is managed by the maintainers of the `blunderstone/leap` repository with community input. Propose improvements or discuss ideas on the official [GitHub Issues](https://github.com/blunderstone/leap/issues) tracker.
 
 ## Glossary
 
@@ -1698,10 +1706,7 @@ For our current project, see `kb/guide-improvement-proposals.md` for active and 
 : A methodology for software development that combines comprehensive documentation with AI-assisted coding, building on Donald Knuth's Literate Programming principles.
 
 #### LIP (LEAP Improvement Proposal)
-: A proposal to improve or change the LEAP methodology itself. See `kb/guide-improvement-proposals.md`.
-
-#### PROP-NNN
-: Identifier format for LEAP Improvement Proposals (e.g., PROP-001).
+: A proposal to improve or change the LEAP methodology itself, tracked publicly as a GitHub Issue on the `blunderstone/leap` repository. See `kb/guide-improvement-proposals.md`.
 
 ### Document Types
 

@@ -204,7 +204,7 @@ This document defines the three LEAP compliance levels and their requirements. U
 
 - **Quick Summary** in all goals.md documents
   - 2-3 sentences at top of goals.md for quick orientation
-  - See: [PROP-001](guide-improvement-proposals.md#prop-001-quick-summary-section-in-goalsmd)
+  - See: [template-goals.md](template-goals.md)
 - **Phase documents** (phase-N.md) for complex multi-phase features
   - Detailed documentation for each implementation phase
   - Template: [template-phase.md](template-phase.md)
