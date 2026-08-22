@@ -79,7 +79,7 @@ Branch Coverage:   57%
 Tool: Dokka
 Command: ./gradlew dokkaHtml
 Output: build/dokka/html/
-CI Publishes to: https://docs.internal.company.com/ghee-app/
+CI Publishes to: https://docs.yourcompany.com/your-app/
 ```
 
 ---

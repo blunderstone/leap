@@ -47,8 +47,8 @@ How should ADRs be numbered and named to ensure clear referencing, discoverabili
 
 - Top-level uses `adr-` (no module prefix)
 - `cobol-tools-cli-adr-` = cobol-tools-cli module
-- `ghee-server-adr-` = ghee-server module
-- `ghee-ui-adr-` = ghee-ui module
+- `api-server-adr-` = api-server module
+- `web-ui-adr-` = web-ui module
 - `ontology-adr-` = ontology module
 - `meridian-adr-` = meridian module
 

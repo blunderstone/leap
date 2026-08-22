@@ -64,9 +64,8 @@ TDD is a software development approach where you write tests before writing the 
 
 ### Relationship to Other Documents
 
-- See [best-practices-testing.md](best-practices-testing.md) for comprehensive testing standards and patterns
-- See [best-practices-kotlin-code.md](best-practices-kotlin-code.md) for Kotlin coding standards
-- See [leap-implementation-guide-ghee.md](leap-implementation-guide-ghee.md) for LEAP development workflow
+- See [guide-methodology.md](guide-methodology.md) for the core LEAP development workflow and testing requirements
+- See [best-practices-claude-sessions.md](best-practices-claude-sessions.md) for managing AI agent sessions during feature development
 
 ---
 
@@ -1065,7 +1064,5 @@ fun calculate(values: List<Double>): Double {
 
 ## Related Documents
 
-- [best-practices-testing.md](best-practices-testing.md) - Comprehensive testing standards and patterns
-- [best-practices-kotlin-code.md](best-practices-kotlin-code.md) - Kotlin coding standards
-- [leap-implementation-guide-ghee.md](leap-implementation-guide-ghee.md) - LEAP development workflow
-- [best-practices-logging.md](best-practices-logging.md) - Logging best practices for test diagnostics
+- [guide-methodology.md](guide-methodology.md) - Core LEAP methodology and testing requirements
+- [best-practices-claude-sessions.md](best-practices-claude-sessions.md) - AI agent session management practices

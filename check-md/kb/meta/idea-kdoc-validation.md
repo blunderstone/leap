@@ -63,7 +63,7 @@ kdoc_exclude:
 
 ### Violation Detection
 
-**File:** `ghee-commons/src/jvmMain/kotlin/ai/phasechange/ghee/commons/util/Throttler.kt`
+**File:** `src/main/kotlin/com/example/util/Throttler.kt`
 
 #### Current (violation)
 
@@ -87,7 +87,7 @@ kdoc_exclude:
 ### Output Format
 
 ```
-ghee-commons/src/jvmMain/kotlin/ai/phasechange/ghee/commons/util/Throttler.kt:67
+src/main/kotlin/com/example/util/Throttler.kt:67
   ✗ kdoc-bold-for-structure: Don't use bold for structural headings
     | **Timing behavior:**
     Suggestion: Use markdown header (## Timing behavior)

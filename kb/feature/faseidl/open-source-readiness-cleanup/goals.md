@@ -56,12 +56,12 @@ By addressing these red and yellow flags in a dedicated feature branch, we will 
 
 ## Success Criteria
 
-- [ ] All instances of "Ghee" project references removed or replaced with generic placeholders.
-- [ ] All Phase Change Software corporate email and name occurrences replaced.
-- [ ] Example documentation URL pointing to `internal.company.com` updated to a generic domain.
-- [ ] License classifier in `check-md/pyproject.toml` updated to match Apache-2.0.
-- [ ] All broken markdown documentation links resolved.
-- [ ] Linter check `check-md` passes successfully over the entire `kb/` directory.
+- [x] All instances of "Ghee" project references removed or replaced with generic placeholders.
+- [x] All Phase Change Software corporate email and name occurrences replaced.
+- [x] Example documentation URL pointing to `internal.company.com` updated to a generic domain.
+- [x] License classifier in `check-md/pyproject.toml` updated to match Apache-2.0.
+- [x] All broken markdown documentation links resolved.
+- [x] Linter check `check-md` passes successfully over the entire `kb/` directory.
 
 ---
 

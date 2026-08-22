@@ -252,5 +252,4 @@ Following these practices provides:
 ## See Also
 
 - [LEAP Methodology](guide-methodology.md) - Full LEAP methodology documentation
-- [LEAP Implementation Guide](leap-implementation-guide-ghee.md) - Ghee-specific LEAP practices
 - [Document Taxonomy Guide](guide-document-taxonomy.md) - Document naming and organization
