@@ -2,6 +2,7 @@
 
 **Branch:** `feature/faseidl/distinguish-adr-impl`<br>
 **Base Branch:** `main`<br>
+**Closes:** [Issue #14](https://github.com/blunderstone/leap/issues/14)<br>
 **Date:** 2026-08-22<br>
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)
 
