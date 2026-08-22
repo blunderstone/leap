@@ -6,7 +6,7 @@
 
 ## Issue
 
-Markdown documentation in Ghee must render consistently across multiple viewers (GitHub, GitLab, IDE markdown previewers, CommonMark processors). Inconsistent formatting practices can lead to:
+Markdown documentation in our projects must render consistently across multiple viewers (GitHub, GitLab, IDE markdown previewers, CommonMark processors). Inconsistent formatting practices can lead to:
 
 1. **Rendering Issues**: Code blocks, lists, and tables wrapped into paragraph text
 2. **Navigation Problems**: Document structure not exposed to outline/TOC tools
@@ -18,7 +18,7 @@ Without clear standards, documentation becomes harder to read, navigate, and mai
 
 ## Decision
 
-We adopt the following Markdown formatting standards for all documentation in the Ghee project:
+We adopt the following Markdown formatting standards for all documentation in our projects:
 
 ### 1. Use Semantic Headings for Structure
 

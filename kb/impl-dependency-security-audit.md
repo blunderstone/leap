@@ -35,7 +35,7 @@ Placing the audit under `check-md/` looks correct if you think of that directory
 To confirm which workflows GitHub actually recognizes:
 
 ```bash
-gh api /repos/PhaseChangeSoftware/leap/actions/workflows \
+gh api /repos/blunderstone/leap/actions/workflows \
   --jq '.workflows[] | "\(.name) | \(.path) | \(.state)"'
 ```
 
@@ -143,7 +143,7 @@ When changing the floor, update every declaration naming a Python version, or th
 To review open alerts, including advisory detail and the manifest each came from:
 
 ```bash
-gh api /repos/PhaseChangeSoftware/leap/dependabot/alerts \
+gh api /repos/blunderstone/leap/dependabot/alerts \
   --jq '.[] | select(.state == "open") |
         "\(.number) \(.security_advisory.severity) \(.dependency.package.name) \(.dependency.manifest_path)"'
 ```

@@ -1,6 +1,6 @@
 # check-md
 
-A fast, Python-based markdown linter that enforces [ADR leap-adr-002](../kb/adr/leap-adr-002__markdown-formatting-standards.md) formatting standards for the Ghee project.
+A fast, Python-based markdown linter that enforces [ADR leap-adr-002](../kb/adr/leap-adr-002__markdown-formatting-standards.md) formatting standards for LEAP-compliant documentation.
 
 ## Features
 
@@ -606,10 +606,10 @@ ruff src/ tests/
 ## Project Information
 
 - **Author:** F. Andy Seidl
-- **License:** MIT
+- **License:** Apache-2.0
 - **Python:** 3.10+
 - **Dependencies:** typer, pyyaml
-- **Repository:** Part of ghee-app
+- **Repository:** Part of the LEAP methodology and tooling repository
 
 ## Related Documentation
 

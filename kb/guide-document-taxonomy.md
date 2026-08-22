@@ -41,7 +41,7 @@
 
 ## Overview
 
-This guide defines the taxonomy of documents in the Ghee knowledge base and establishes naming conventions for each document type.
+This guide defines the taxonomy of documents in a LEAP-compliant project's knowledge base and establishes naming conventions for each document type.
 
 ## Quick Reference
 
@@ -54,18 +54,18 @@ This guide defines the taxonomy of documents in the Ghee knowledge base and esta
 | LEAP methodology | `kb/meta/` | `leap-<topic>.md` | `leap-best-practices.md` |
 | Templates | `kb/meta/` | `template-<type>.md` | `template-adr.md` |
 | Best practices (project) | `kb/meta/` | `best-practices-<topic>.md` | `best-practices-kotlin-coding.md` |
-| Best practices (module) | `<module>/kb/` or `<module>/kb/meta/` | `best-practices-<topic>.md` | `ghee-ui/kb/best-practices-reasonml.md` |
+| Best practices (module) | `<module>/kb/` or `<module>/kb/meta/` | `best-practices-<topic>.md` | `web-ui/kb/best-practices-reasonml.md` |
 | Lessons learned (project) | `kb/meta/` | `lessons-<topic>.md` | `lessons-typedb-performance.md` |
 | Lessons learned (module) | `<module>/kb/` or `<module>/kb/meta/` | `lessons-<topic>.md` | `fileset-manager-cli/kb/meta/lessons-parallel-upload.md` |
 | Technical debt (project) | `kb/meta/` | `tech-debt-<topic>.md` | `tech-debt-test-coverage.md` |
-| Technical debt (module) | `<module>/kb/` or `<module>/kb/meta/` | `tech-debt-<topic>.md` | `ghee-server/kb/tech-debt-auth-refactor.md` |
+| Technical debt (module) | `<module>/kb/` or `<module>/kb/meta/` | `tech-debt-<topic>.md` | `api-server/kb/tech-debt-auth-refactor.md` |
 | Ideas (project) | `kb/meta/` | `idea-<topic>.md` | `idea-graphql-api.md` |
-| Ideas (module) | `<module>/kb/` or `<module>/kb/meta/` | `idea-<topic>.md` | `ghee-ui/kb/idea-dark-mode.md` |
+| Ideas (module) | `<module>/kb/` or `<module>/kb/meta/` | `idea-<topic>.md` | `web-ui/kb/idea-dark-mode.md` |
 | Benchmarks (project) | `kb/meta/` | `benchmark-<topic>.md` or `benchmark-<topic>-YYYY-MM-DD.md` | `benchmark-query-performance.md` |
-| Benchmarks (module) | `<module>/kb/` or `<module>/kb/meta/` | `benchmark-<topic>.md` or `benchmark-<topic>-YYYY-MM-DD.md` | `ghee-server/kb/benchmark-api-throughput-2025-12-15.md` |
+| Benchmarks (module) | `<module>/kb/` or `<module>/kb/meta/` | `benchmark-<topic>.md` or `benchmark-<topic>-YYYY-MM-DD.md` | `api-server/kb/benchmark-api-throughput-2025-12-15.md` |
 | Dev notes (local only) | Anywhere (gitignored) | `dev-note-<topic>.md` | `dev-note-debugging-session.md` |
-| Usage guides | `kb/` or `<module>/kb/` | `guide-<topic>.md` | `guide-cli-framework.md`, `ghee-server/kb/guide-api.md` |
-| Implementation docs | `kb/` or `<module>/kb/` | `impl-<topic>.md` | `impl-query-builder.md`, `ghee-server/kb/impl-pooling.md` |
+| Usage guides | `kb/` or `<module>/kb/` | `guide-<topic>.md` | `guide-cli-framework.md`, `api-server/kb/guide-api.md` |
+| Implementation docs | `kb/` or `<module>/kb/` | `impl-<topic>.md` | `impl-query-builder.md`, `api-server/kb/impl-pooling.md` |
 | Primary documentation | Module root | `!ReadMe.<tool-name>.md` | `!ReadMe.kg-tools.md` |
 | Categorized guides | Module root | `!ReadMe.<category>.<tool-name>.md` | `!ReadMe.quickstart.cobol-tools.md` |
 | Test resource docs | Test resource directories | `!ReadMe.md` | `src/jvmTest/resources/dependency-analyzer-tests/!ReadMe.md` |
@@ -296,7 +296,7 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 - `kb/meta/leap-best-practices.md` (LEAP methodology)
 - `kb/meta/best-practices-kotlin-coding.md` (project-wide coding standards)
-- `ghee-server/kb/best-practices-api-design.md` (module-specific practices)
+- `api-server/kb/best-practices-api-design.md` (module-specific practices)
 
 ---
 
@@ -320,7 +320,7 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 - `kb/meta/lessons-typedb-performance.md` (project-wide)
 - `kb/meta/lessons-query-optimization.md` (project-wide)
-- `ghee-ui/kb/lessons-reasonml-interop.md` (module-specific)
+- `web-ui/kb/lessons-reasonml-interop.md` (module-specific)
 
 #### Notes
 
@@ -350,7 +350,7 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 - `kb/meta/tech-debt-test-coverage.md` (project-wide)
 - `kb/meta/tech-debt-error-handling.md` (project-wide)
-- `ghee-server/kb/tech-debt-authentication-refactor.md` (module-specific)
+- `api-server/kb/tech-debt-authentication-refactor.md` (module-specific)
 
 #### Notes
 
@@ -382,7 +382,7 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 - `kb/meta/idea-graphql-api.md` (project-wide)
 - `kb/meta/idea-plugin-system.md` (project-wide)
-- `ghee-ui/kb/idea-dark-mode.md` (module-specific)
+- `web-ui/kb/idea-dark-mode.md` (module-specific)
 
 #### Notes
 
@@ -462,8 +462,8 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 
 - `kb/guide-kg-repository-usage.md`
 - `kb/impl-query-builder-architecture.md`
-- `ghee-server/kb/guide-api-endpoints.md`
-- `ghee-server/kb/impl-database-connection-pooling.md`
+- `api-server/kb/guide-api-endpoints.md`
+- `api-server/kb/impl-database-connection-pooling.md`
 
 ---
 
@@ -593,7 +593,7 @@ Developers can create custom categories as needed. Use descriptive, lowercase ca
 
 - `kb/meta/benchmark-query-performance-2025-12-15.md` (dated: specific measurement)
 - `kb/meta/benchmark-typedb-scaling.md` (undated: living reference)
-- `ghee-server/kb/benchmark-api-throughput.md` (module-specific)
+- `api-server/kb/benchmark-api-throughput.md` (module-specific)
 
 #### Notes
 
@@ -638,19 +638,19 @@ Meta-documentation is about our work, process, learning, and reflection.
 
 - **`best-practices-`** - How we work and develop
   - Example: `kb/meta/best-practices-kotlin-coding.md` (project-wide)
-  - Example: `ghee-server/kb/best-practices-api-design.md` (module-specific)
+  - Example: `api-server/kb/best-practices-api-design.md` (module-specific)
 
 - **`lessons-`** - What we learned about our development
   - Example: `kb/meta/lessons-typedb-performance.md` (project-wide)
-  - Example: `ghee-ui/kb/lessons-reasonml-interop.md` (module-specific)
+  - Example: `web-ui/kb/lessons-reasonml-interop.md` (module-specific)
 
 - **`tech-debt-`** - Reflection on what we built (temporary; location is authoritative, so moving the document to the feature branch directory that resolved it is what marks it resolved)
   - Example: `kb/meta/tech-debt-test-coverage.md` (project-wide)
-  - Example: `ghee-server/kb/tech-debt-authentication-refactor.md` (module-specific)
+  - Example: `api-server/kb/tech-debt-authentication-refactor.md` (module-specific)
 
 - **`idea-`** - Ideas about future direction
   - Example: `kb/meta/idea-graphql-api.md` (project-wide)
-  - Example: `ghee-ui/kb/idea-dark-mode.md` (module-specific)
+  - Example: `web-ui/kb/idea-dark-mode.md` (module-specific)
 
 - **`dev-note-`** - Temporary developer notes (NEVER COMMITTED)
   - Example: `dev-note-debugging-session.md` (local only, in .gitignore)
@@ -668,11 +668,11 @@ System documentation is about the actual product/code.
 
 - **`guide-`** - How to use features and patterns (usage documentation)
   - Example: `kb/guide-cli-framework.md` (project-wide)
-  - Example: `ghee-server/kb/guide-api-endpoints.md` (module-specific)
+  - Example: `api-server/kb/guide-api-endpoints.md` (module-specific)
 
 - **`impl-`** - How the system works internally (implementation documentation)
   - Example: `kb/impl-query-builder-architecture.md` (project-wide)
-  - Example: `ghee-server/kb/impl-database-connection-pooling.md` (module-specific)
+  - Example: `api-server/kb/impl-database-connection-pooling.md` (module-specific)
 
 ### Custom Prefixes
 
