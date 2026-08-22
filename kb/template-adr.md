@@ -120,7 +120,7 @@ Use ✓ for meets criterion, leave empty for doesn't meet criterion.
 
 ### Migration Strategy
 
-[Optional: If this decision requires migration of existing code/docs/practices]
+[Optional: If this decision requires migration of existing code/docs/practices. Note: Scope this section to describing the high-level migration strategy rather than tracking task-by-task execution. Active task tracking belongs in feature plans, issues, or pull requests, not inside the immutable ADR.]
 
 #### Phase 1: [Phase Name]
 
@@ -129,12 +129,6 @@ Use ✓ for meets criterion, leave empty for doesn't meet criterion.
 #### Phase 2: [Phase Name]
 
 [Description of migration phase]
-
-#### Migration Checklist
-
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
 
 ---
 
@@ -162,7 +156,7 @@ Use ✓ for meets criterion, leave empty for doesn't meet criterion.
 ### ADR Status Workflow
 
 - **proposed**: Decision under consideration
-- **accepted**: Decision approved and being implemented
+- **accepted**: Decision approved and adopted as official policy. This status represents established architectural policy rather than pending development. Once accepted, the ADR is canonical policy going forward, and there is no need to edit the ADR or add custom tracking fields (such as `**Implemented:**`) to reflect completion state.
 - **rejected**: Decision considered but not adopted
 - **deprecated**: Decision no longer recommended (but not forbidden)
 - **superseded**: Decision replaced by another ADR (reference the new ADR)
@@ -205,6 +199,14 @@ When architectural decisions affect testing, include testability considerations:
 
 ### Writing Tips
 
+- **Pre-Write Gate**: Before writing, name the alternative you rejected and the reason it lost. If you cannot name a viable alternative, there is no policy decision to record; write an `impl-` or `guide-` document instead.
+- **No Living/Implementation Content**: An accepted ADR is an immutable historical record and must not contain implementation details that change over time. The following sections **do not belong** in an ADR and should be placed in an implementation document (`impl-` or `guide-`) instead:
+  - *Implementation Details*
+  - *Usage*
+  - *How to Run*
+  - *Common Pitfalls*
+  - *Best Practices*
+  - *Future Enhancements*
 - **Issue section**: Focus on the problem, not the solution
 - **Decision section**: State what was decided and why (rationale)
 - **Options section**: Show you considered alternatives

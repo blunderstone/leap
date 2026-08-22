@@ -317,6 +317,12 @@ ADRs document **architectural policy decisions** - binding choices about pattern
 - **Best practices** (`best-practices-`): Established development patterns
 - **Lessons learned** (`lessons-`): Insights from development experience
 
+### Choosing and Remediation Guidance
+
+For comprehensive guidance on distinguishing ADRs from implementation documents (including the four decision questions, the splitting rule, the maintenance rule, and remediation steps for existing documentation), refer directly to the **[Choosing Between an ADR and an Implementation Document](../guide-document-taxonomy.md#choosing-between-an-adr-and-an-implementation-document)** section of the LEAP Document Taxonomy and Naming Guide (`kb/guide-document-taxonomy.md`).
+
+The canonical definition and testing criteria are managed in the taxonomy guide to avoid duplication and definition forking across documents.
+
 ### When Retrofitting LEAP Documentation
 
 When documenting an existing codebase, you will commonly extract:

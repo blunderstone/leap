@@ -38,7 +38,7 @@ This plan outlines the steps to integrate clear boundaries between Architecture 
 
 ### Success Criteria
 
-- [ ] New guidelines successfully written into `kb/guide-document-taxonomy.md` and passes `check-md` cleanly.
+- [x] New guidelines successfully written into `kb/guide-document-taxonomy.md` and passes `check-md` cleanly.
 
 ---
 
@@ -62,7 +62,7 @@ This plan outlines the steps to integrate clear boundaries between Architecture 
 
 ### Success Criteria
 
-- [ ] `kb/template-adr.md` updated and passes `check-md` cleanly.
+- [x] `kb/template-adr.md` updated and passes `check-md` cleanly.
 
 ---
 
@@ -84,7 +84,7 @@ This plan outlines the steps to integrate clear boundaries between Architecture 
 
 ### Success Criteria
 
-- [ ] Reference pointer added in `kb/adr/leap-adr-001__adr-numbering-and-naming-policy.md` and passes `check-md` cleanly.
+- [x] Reference pointer added in `kb/adr/leap-adr-001__adr-numbering-and-naming-policy.md` and passes `check-md` cleanly.
 
 ---
 
@@ -100,7 +100,7 @@ This plan outlines the steps to integrate clear boundaries between Architecture 
 
 ### Success Criteria
 
-- [ ] All markdown documents in the workspace pass the `check-md` linter with zero errors.
+- [x] All markdown documents in the workspace pass the `check-md` linter with zero errors.
 
 ---
 

@@ -29,10 +29,12 @@ By decommissioning the antiquated, file-based proposal register and manual seria
 ### Detailed Changes
 
 #### Issue Templates (.github/ISSUE_TEMPLATE/)
+
 - Created `.github/ISSUE_TEMPLATE/leap-improvement-proposal.md` with core LIP fields and visible square bracket placeholders.
 - Created `.github/ISSUE_TEMPLATE/bug-report.md` focusing strictly on reproduction details, simplified environments, and visible square bracket placeholders.
 
 #### Knowledge Base (kb/)
+
 - Modernized `kb/guide-improvement-proposals.md` into an instructions-only guide describing how to submit issues and guidelines for writing high-quality proposals.
 - Updated `kb/guide-compliance-levels.md` to change the legacy `PROP-001` link to point to `template-goals.md` directly.
 - Updated `kb/guide-methodology.md` to rewrite the "LEAP Governance and Evolution" section (describing GitHub templates, community feedback, and labels) and removed the legacy `PROP-NNN` glossary entry.
@@ -53,5 +55,6 @@ Splitting bugs (empirical, reproduction-focused, minimal metadata) from proposal
 ## Testing
 
 ### Test Coverage
+
 - **Markdown Compliance:** 100% of the modified and newly created markdown files pass the local `check-md` linter with zero violations.
 - **Link Auditing:** All updated relative hyperlinks and remote repository links have been verified as correct.

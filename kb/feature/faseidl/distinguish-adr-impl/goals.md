@@ -58,11 +58,11 @@ To resolve this structural conflation, this feature establishes clear tests and 
 
 ## Success Criteria
 
-- [ ] Goals for distinguishing ADRs from implementation guides drafted and approved.
-- [ ] Subsection "Choosing Between an ADR and an Implementation Document" added to `kb/guide-document-taxonomy.md`.
-- [ ] ADR Template (`kb/template-adr.md`) updated with pre-write gate and migration strategy adjustments.
-- [ ] ADR-001 pointer to the taxonomy guide added and verified.
-- [ ] All new/modified markdown files pass `check-md` with 0 violations.
+- [x] Goals for distinguishing ADRs from implementation guides drafted and approved.
+- [x] Subsection "Choosing Between an ADR and an Implementation Document" added to `kb/guide-document-taxonomy.md`.
+- [x] ADR Template (`kb/template-adr.md`) updated with pre-write gate and migration strategy adjustments.
+- [x] ADR-001 pointer to the taxonomy guide added and verified.
+- [x] All new/modified markdown files pass `check-md` with 0 violations.
 
 ---
 
