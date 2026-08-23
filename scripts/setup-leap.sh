@@ -331,6 +331,47 @@ This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** met
 EOF
 }
 
+# Function to configure .gitignore in the target repository
+configure_gitignore() {
+  local gitignore_path="$REPO_ROOT/.gitignore"
+  local backup_gitignore="${gitignore_path}.bak"
+  
+  # Ensure the file exists
+  touch "$gitignore_path"
+  
+  # Patterns to add
+  local patterns=(
+    "*.bak"
+    "dev-note-*"
+    ".gemini/"
+    ".cursor/"
+    ".windsurf/"
+    ".claude/"
+    ".aider/"
+  )
+  
+  local added_any=false
+  for pattern in "${patterns[@]}"; do
+    if ! grep -Fqx "$pattern" "$gitignore_path" &>/dev/null; then
+      if [ "$added_any" = false ]; then
+        # Save backup copy
+        cp "$gitignore_path" "$backup_gitignore"
+        print_success "Saved backup copy of original to $backup_gitignore"
+        # Add a header before the first added pattern
+        echo -e "\n# LEAP Environment & AI Agent Ignore Patterns" >> "$gitignore_path"
+        added_any=true
+      fi
+      echo "$pattern" >> "$gitignore_path"
+    fi
+  done
+  
+  if [ "$added_any" = true ]; then
+    print_success "Configured .gitignore to ignore agent rule folders, backup files, and dev notes."
+  else
+    print_success ".gitignore is already fully configured for LEAP rules."
+  fi
+}
+
 # Ask Claude
 ask_yes_no "Configure Claude Guide (CLAUDE.md)?" "y" "Creates CLAUDE.md in your repository root, informing Claude-based coding agents (like Claude Code, Cline, Roo Code, and Cursor) to follow your LEAP rules."
 if [ "$PROMPT_RESULT" = "y" ]; then
@@ -353,6 +394,32 @@ fi
 ask_yes_no "Configure Cursor Rules (.cursorrules)?" "n" "Creates .cursorrules to automatically feed guidelines into Cursor's inline and chat-assistant contexts."
 if [ "$PROMPT_RESULT" = "y" ]; then
   write_cursor
+fi
+
+# 4b. Configure Staged Agent Skills
+print_step "Configuring Custom Agent Skills"
+echo "LEAP provides pre-built, staged AI agent skills under '.skills/' (e.g. leap-start, leap-dev, leap-resume, leap-handoff, leap-finish, leap-pr)."
+
+ask_yes_no "Install LEAP custom skills for your AI agents?" "y" "Creates relative symlinks projecting .skills/ custom instructions into your configured agent directories."
+if [ "$PROMPT_RESULT" = "y" ]; then
+  if python3 "$LEAP_DIR/scripts/install-skills.py" all --repo-root "$REPO_ROOT" --skills-dir "$REPO_ROOT/$LEAP_DIR/.skills"; then
+    print_success "LEAP custom agent skills installed successfully."
+  else
+    print_warning "Failed to install agent skills."
+  fi
+else
+  print_warning "Skipped custom agent skills installation."
+fi
+
+# 4c. Configure .gitignore for Local Rule Projections
+print_step "Configuring .gitignore for LEAP Rule Projections"
+echo "To prevent cluttering your repository's git status, local agent folders (.cursor/, .gemini/, etc.), .bak files, and dev notes should be ignored."
+
+ask_yes_no "Configure your project's .gitignore for LEAP?" "y" "Appends standard LEAP and AI agent directories to your repository's .gitignore file."
+if [ "$PROMPT_RESULT" = "y" ]; then
+  configure_gitignore
+else
+  print_warning "Skipped .gitignore configuration."
 fi
 
 # 5. Configure QMD Semantic Search
