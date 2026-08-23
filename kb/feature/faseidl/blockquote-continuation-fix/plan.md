@@ -42,9 +42,9 @@ This implementation plan outlines the steps required to resolve GitHub Issue #12
 
 ### Success Criteria
 
-- [ ] New test cases compile and run successfully.
-- [ ] Pytest suite fails on blockquote continuation line assertions as expected (TDD RED).
-- [ ] Baseline test state is committed to git.
+- [x] New test cases compile and run successfully.
+- [x] Pytest suite fails on blockquote continuation line assertions as expected (TDD RED).
+- [x] Baseline test state is committed to git.
 
 **Rationale:** Writing tests first ensures we have a precise, executable requirement specification for what constitutes "correct" behavior, completely eliminating guessing and preventing regressions.
 
