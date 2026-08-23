@@ -58,12 +58,12 @@ This issue is particularly damaging because the resulting corrupted document pas
 
 ## Success Criteria
 
-- [ ] Contiguous block quote continuation lines do not report Rule 2 violations.
-- [ ] Block quotes with internal empty-line paragraph breaks (bare `>`) do not report Rule 2 violations.
-- [ ] A block quote preceded by normal paragraph text correctly reports exactly one violation on its first line.
-- [ ] Running `--fix` over multi-line block quotes does not insert blank lines between contiguous quote lines.
-- [ ] All unit tests in `tests/test_rule2_block_separation.py` pass successfully.
-- [ ] Standard linter checks (`check-md kb/`) run cleanly with zero violations.
+- [x] Contiguous block quote continuation lines do not report Rule 2 violations.
+- [x] Block quotes with internal empty-line paragraph breaks (bare `>`) do not report Rule 2 violations.
+- [x] A block quote preceded by normal paragraph text correctly reports exactly one violation on its first line.
+- [x] Running `--fix` over multi-line block quotes does not insert blank lines between contiguous quote lines.
+- [x] All unit tests in `tests/test_rule2_block_separation.py` pass successfully.
+- [x] Standard linter checks (`check-md kb/`) run cleanly with zero violations.
 
 ---
 

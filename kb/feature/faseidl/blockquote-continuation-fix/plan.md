@@ -70,6 +70,7 @@ This implementation plan outlines the steps required to resolve GitHub Issue #12
         if not self.BLOCKQUOTE_CONTINUATION_PATTERN.match(prev):
             violations.append(self._create_violation(context, "block quote"))
     ```
+
 - Run pytest to ensure all test cases (both existing and new) now pass cleanly (TDD GREEN).
 - Refactor and clean up code if necessary, ensuring no regressions.
 - Verify workspace compliance by running `check-md kb/` over the repository knowledge base.
@@ -81,9 +82,9 @@ This implementation plan outlines the steps required to resolve GitHub Issue #12
 
 ### Success Criteria
 
-- [ ] Linter continuation guard is implemented.
-- [ ] Pytest test suite runs and passes cleanly with 100% success.
-- [ ] Workspace linter check (`check-md kb/`) passes with zero violations.
+- [x] Linter continuation guard is implemented.
+- [x] Pytest test suite runs and passes cleanly with 100% success.
+- [x] Workspace linter check (`check-md kb/`) passes with zero violations.
 
 **Rationale:** The proposed continuation guard directly targets the root cause of the bug by mirroring the existing, proven guards for lists and tables.
 

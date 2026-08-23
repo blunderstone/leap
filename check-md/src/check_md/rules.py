@@ -304,6 +304,7 @@ class Rule2BlockSeparation(Rule):
     ORDERED_LIST_PATTERN = re.compile(r"^\s*\d+\.\s+\S")  # Ordered list
     CODE_FENCE_PATTERN = re.compile(r"^`{3,}")  # Code fence
     BLOCKQUOTE_PATTERN = re.compile(r"^\s*>\s")  # Block quote
+    BLOCKQUOTE_CONTINUATION_PATTERN = re.compile(r"^\s*>")  # Block quote continuation
     HORIZONTAL_RULE_PATTERN = re.compile(r"^\s*(?:---+|\*\*\*+|___+)\s*$")  # HR
     TABLE_PATTERN = re.compile(r"^\s*\|")  # Table row
 
@@ -354,7 +355,9 @@ class Rule2BlockSeparation(Rule):
         elif self.CODE_FENCE_PATTERN.match(line):
             violations.append(self._create_violation(context, "code block"))
         elif self.BLOCKQUOTE_PATTERN.match(line):
-            violations.append(self._create_violation(context, "block quote"))
+            # Only flag first line of block quote
+            if not self.BLOCKQUOTE_CONTINUATION_PATTERN.match(prev):
+                violations.append(self._create_violation(context, "block quote"))
         elif self.HORIZONTAL_RULE_PATTERN.match(line):
             violations.append(self._create_violation(context, "horizontal rule"))
         elif self.TABLE_PATTERN.match(line):
