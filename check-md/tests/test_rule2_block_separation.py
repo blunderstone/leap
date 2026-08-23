@@ -86,6 +86,32 @@ class TestRule2BlockSeparation:
         pytest.param(
             BlockTypeTestCase(
                 lines=[
+                    "Intro paragraph:\n",
+                    "> Line one of the quote,\n",
+                    "> line two of the quote,\n",
+                    "> line three.\n",
+                ],
+                expected_line=2,
+                expected_message_fragment="block quote"
+            ),
+            id="multiline_blockquote"
+        ),
+        pytest.param(
+            BlockTypeTestCase(
+                lines=[
+                    "Intro paragraph:\n",
+                    "> Line one of the quote,\n",
+                    ">\n",
+                    "> Line two of the quote.\n",
+                ],
+                expected_line=2,
+                expected_message_fragment="block quote"
+            ),
+            id="multiline_blockquote_with_paragraph_break"
+        ),
+        pytest.param(
+            BlockTypeTestCase(
+                lines=[
                     "Section one.\n",
                     "---\n",
                     "Section two.\n",
@@ -282,5 +308,71 @@ class TestRule2BlockSeparation:
             "Text.\n",
             "\n",
             "- List\n",
+        ]
+        assert fixed_lines == expected
+
+    def test_allows_multiline_blockquote_with_blank_line(self, rule: Rule2BlockSeparation) -> None:
+        """Should not flag any violations for a multi-line block quote preceded by a blank line."""
+        lines = [
+            "Intro paragraph.\n",
+            "\n",
+            "> Line one of the quote,\n",
+            "> line two of the quote,\n",
+            ">\n",
+            "> line three.\n",
+        ]
+
+        violations = rule.check_file(lines)
+
+        assert len(violations) == 0, f"Expected 0 violations, got {len(violations)}: {violations}"
+
+    def test_ignores_blockquote_at_file_start(self, rule: Rule2BlockSeparation) -> None:
+        """Should not flag block quote at very start of file."""
+        lines = [
+            "> Line one of the quote,\n",
+            "> line two of the quote.\n",
+        ]
+
+        violations = rule.check_file(lines)
+
+        assert len(violations) == 0, f"Expected 0 violations, got {len(violations)}: {violations}"
+
+    def test_fix_leaves_valid_multiline_blockquote_unchanged(self, rule: Rule2BlockSeparation) -> None:
+        """Should not modify a valid multi-line block quote with or without paragraph breaks."""
+        lines = [
+            "Intro paragraph.\n",
+            "\n",
+            "> Line one of the quote,\n",
+            "> line two of the quote,\n",
+            ">\n",
+            "> line three.\n",
+        ]
+
+        violations = rule.check_file(lines)
+        assert len(violations) == 0, f"Expected 0 violations, got {len(violations)}: {violations}"
+
+    def test_fix_only_inserts_blank_line_before_first_line_of_blockquote(self, rule: Rule2BlockSeparation) -> None:
+        """Should only insert a blank line before the first line of a blockquote and leave the rest unchanged."""
+        lines = [
+            "Intro paragraph.\n",
+            "> Line one of the quote,\n",
+            "> line two of the quote,\n",
+            ">\n",
+            "> line three.\n",
+        ]
+
+        violations = rule.check_file(lines)
+        assert len(violations) == 1, f"Expected 1 violation, got {len(violations)}: {violations}"
+        assert violations[0].line_number == 2
+
+        fixed_lines = rule.fix_violation(lines, violations[0])
+
+        expected = [
+            "Intro paragraph.\n",
+            "\n",
+            "> Line one of the quote,\n",
+            "> line two of the quote,\n",
+            ">\n",
+            "> line three.\n",
         ]
         assert fixed_lines == expected
