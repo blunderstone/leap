@@ -44,10 +44,10 @@ This implementation plan outlines the creation and verification of a multi-tiere
 
 ### Success Criteria
 
-- [ ] `scripts/run-all-checks.sh` successfully exits with 0 on a clean workspace.
-- [ ] `scripts/run-all-checks.sh` successfully exits with 1 on the first failure of any subcommand.
-- [ ] Script is fully executable and documented internally with comments.
-- [ ] Tests for the unified script are implemented and passing.
+- [x] `scripts/run-all-checks.sh` successfully exits with 0 on a clean workspace.
+- [x] `scripts/run-all-checks.sh` successfully exits with 1 on the first failure of any subcommand.
+- [x] Script is fully executable and documented internally with comments.
+- [x] Tests for the unified script are implemented and passing.
 
 ---
 
