@@ -13,6 +13,9 @@ __pycache__/
 *.venv
 *.pyc
 dev-note-*
+*.bak
+.coverage
+coverage.xml
 
 # AI Agent projected rules directories
 .gemini/
