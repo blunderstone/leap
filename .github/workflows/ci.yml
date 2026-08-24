@@ -28,7 +28,7 @@ jobs:
       - name: Sync check-md development environment
         run: |
           cd check-md
-          uv sync --frozen
+          uv sync --frozen --all-extras
 
       - name: Install check-md linter tool
         run: |
