@@ -51,6 +51,7 @@ The task is conceptually simple but requires a meticulous, systematic sweep acro
 - **REQ-5:** Audit and update all Python and Shell scripts/tests in `scripts/` (e.g., `install-skills.py`, `setup-leap.sh`, `scripts/tests/test_install_skills.py`).
 - **REQ-6:** Audit and update all Shell scripts in `scripts/qmd/` (including extensionless scripts like `pre-commit-qmd`, `qmd-config`, etc.).
 - **REQ-7:** Shebang lines (`#!/usr/bin/env...`) must remain at line 1 of any script, preceding any header comment block.
+- **REQ-8:** Create a standardized, easy-to-use `COPYRIGHT` reference/template file at the repository root containing copy-pasteable header blocks for both Python and Shell formats.
 
 ### Non-Functional Requirements
 
