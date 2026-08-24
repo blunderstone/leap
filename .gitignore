@@ -13,3 +13,10 @@ __pycache__/
 *.venv
 *.pyc
 dev-note-*
+
+# AI Agent projected rules directories
+.gemini/
+.cursor/
+.windsurf/
+.claude/
+.aider/
