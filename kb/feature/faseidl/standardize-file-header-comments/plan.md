@@ -156,10 +156,10 @@ All Shell scripts (`.sh` or extensionless executable scripts) must use `#` comme
 
 ### Success Criteria
 
-- [ ] All 14 Python test files in `check-md/tests/` have the standardized header format.
-- [ ] Both python scripts (`scripts/install-skills.py` and `scripts/tests/test_install_skills.py`) have the standardized header format, preserving shebangs where applicable.
-- [ ] `pytest` passes 100%.
-- [ ] `check-md` runs clean.
+- [x] All 14 Python test files in `check-md/tests/` have the standardized header format.
+- [x] Both python scripts (`scripts/install-skills.py` and `scripts/tests/test_install_skills.py`) have the standardized header format, preserving shebangs where applicable.
+- [x] `pytest` passes 100%.
+- [x] `check-md` runs clean.
 
 ---
 
