@@ -110,4 +110,4 @@ The `check-md` linter enforces a blank line before horizontal rules and lists, w
 ### Guides and Examples
 
 - Provided an elegant example template in `.skills/SKILL-TEMPLATE.md`.
-- Authored three fully functional workflow skills that act as live documentation of the system.
+- Authored six fully functional workflow skills that act as live documentation of the system.
