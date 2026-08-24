@@ -14,6 +14,7 @@ Sweep the entire repository to define, audit, and ensure that all Python and She
 As we prepare the LEAP repository for public open-sourcing and release, maintaining a professional, compliant, and well-documented codebase is paramount. Standardizing source file headers is a key aspect of this preparation. Every source file should clearly communicate its name, its primary purpose, its author, and copyright/license information if necessary.
 
 Currently, the codebase has file headers in various styles: some Python files have docstrings with author URLs, some scripts have plain text shebang-adjacent descriptions, and others have no header comments at all. This feature will:
+
 1. Define clear, standardized templates for both Python (docstring-based) and Shell (comment-based) header blocks.
 2. Perform a comprehensive sweep/audit of all source and test files in the repository.
 3. Update existing headers and insert new headers where missing, ensuring that file names and purpose descriptions are exact, consistent, and fully accurate.
@@ -71,12 +72,12 @@ The task is conceptually simple but requires a meticulous, systematic sweep acro
 
 ## Success Criteria
 
-- [ ] Standard header templates for Python and Shell files are formally defined.
-- [ ] Every Python file in `check-md/src/check_md/`, `check-md/tests/`, and `scripts/` has a compliant, standardized header.
-- [ ] Every Shell script in `scripts/` and `scripts/qmd/` has a compliant, standardized header.
-- [ ] All existing tests in `check-md` pass cleanly.
-- [ ] `check-md` runs cleanly over the modified repository files.
-- [ ] All modified executable scripts run successfully without regression.
+- [x] Standard header templates for Python and Shell files are formally defined.
+- [x] Every Python file in `check-md/src/check_md/`, `check-md/tests/`, and `scripts/` has a compliant, standardized header.
+- [x] Every Shell script in `scripts/` and `scripts/qmd/` has a compliant, standardized header.
+- [x] All existing tests in `check-md` pass cleanly.
+- [x] `check-md` runs cleanly over the modified repository files.
+- [x] All modified executable scripts run successfully without regression.
 
 ## Constraints
 

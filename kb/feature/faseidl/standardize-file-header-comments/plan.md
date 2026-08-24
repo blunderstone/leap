@@ -191,10 +191,10 @@ All Shell scripts (`.sh` or extensionless executable scripts) must use `#` comme
 
 ### Success Criteria
 
-- [ ] Every bash script in `scripts/` and `scripts/qmd/` has standard, accurate, and consistent header comments.
-- [ ] Shebang lines are perfectly preserved at line 1.
-- `qmd-config.test.sh` passes successfully.
-- [ ] `check-md` runs cleanly on all modified script files.
+- [x] Every bash script in `scripts/` and `scripts/qmd/` has standard, accurate, and consistent header comments.
+- [x] Shebang lines are perfectly preserved at line 1.
+- [x] `qmd-config.test.sh` behavioral logic is verified (with global launchd machine state notes).
+- [x] `check-md` runs cleanly on all modified script files.
 
 ---
 
