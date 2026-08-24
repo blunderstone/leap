@@ -28,7 +28,7 @@ This skill guides AI coding agents in launching new work in a unified, standard 
 
 ## Operational Workflow
 
-1. **Verify Branch State:** Ensure the working directory is clean. Check out the latest base branch (usually `main`) and pull updates.
+1. **Verify Branch State:** Ensure the working directory is clean. Check out the latest base development branch (such as `main`, `dev`, or `develop`) and pull updates.
 2. **Checkout Branch:** Create and switch to the new feature branch:
    - Branch format: `<username>/<feature-name>` (e.g., `faseidl/skill-staging-infrastructure`).
 3. **Initialize Feature Directory:** Create the feature branch folder in the knowledge base:
@@ -57,11 +57,15 @@ This skill guides AI coding agents in launching new work in a unified, standard 
 
 ### Checklist Policy
 
-- **Review and Self-Check:** While checkboxes are checked by you during finalization, you should **NEVER** check a box until you have manually run tests/linters, verified the criteria is 100% satisfied, and obtained developer confirmation. Checkboxes are modified only *after* human review and explicit alignment.
+- **Developer Review and Agreement:** While success checkboxes are updated to checked (`[x]`) during the finalization phase, you must **NEVER** check a box proactively. You must evaluate each criterion, present your findings and explanations (especially for any deferred items) to the developer, and update checkboxes in `goals.md`/`plan.md` on their behalf **only after they review and confirm agreement**.
 
 ## Output Schema / Format
 
-Upon successful initiation, print a summary in the following structure:
+During execution, you must output clear, structured messages at key milestones:
+
+### Output 1: Bootstrapped & Goals Drafted (First Turn)
+
+Print this immediately after checking out the branch, creating the feature folder, and drafting `goals.md` (Step 4):
 
 ```
 [leap-start] Successfully bootstrapped new feature branch!
@@ -70,5 +74,20 @@ Upon successful initiation, print a summary in the following structure:
 - Directory Created: kb/feature/<username>/<feature-name>/
 - Goals Drafted: kb/feature/<username>/<feature-name>/goals.md
 
-==> Action Required: Please review the goals.md file. Reply with your approval to proceed to Phase B (Implementation & Testing Plan).
+==> Action Required: Please review the drafted goals.md file. Reply with your approval to proceed to drafting the implementation plan.
+```
+
+### Output 2: Planning Approved & Committed (Final Turn)
+
+Print this after both `goals.md` and `plan.md` have been approved, committed, and you are ready to hand off to `leap-dev` (Step 7):
+
+```
+[leap-start] Planning Milestone Achieved! Requirements and implementation plans are locked:
+
+- Goals Committed: kb/feature/<username>/<feature-name>/goals.md
+- Plan Committed: kb/feature/<username>/<feature-name>/plan.md
+
+==> Transition Ready: We are ready to transition to development (Implementation & Testing). 
+
+To begin writing code, please invoke the **`leap-dev`** skill (e.g., via `/leap-dev Phase 1`). Note that you can safely restart a brand-new conversation session to clean up token budget, and run `/leap-dev` directly in the fresh session!
 ```

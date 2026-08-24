@@ -33,16 +33,20 @@ This skill guides AI coding agents in closing out an active development task in 
    - High-level and detailed code changes.
    - Files added, modified, or deleted.
    - Key implementation decisions and architectural changes.
+   - Related GitHub issue numbers addressed or closed by this work (using standard closing keywords like "Closes #12" or "Fixes #12" in the metadata/overview section so they are automatically linked and closed when the branch merges).
    - Testing outcomes (total tests, passing tests, test coverage metrics for lines, statements, and branches).
 3. **Verify Compliance:** Run `check-md` over the entire repository to ensure no markdown violations exist.
-4. **Checkbox Review Gating:** Present the list of success criteria checkboxes from `goals.md` to the user. **Explicitly remind the user that marking checkboxes complete is a human-aligned action**, and ask them to verify and mark the checkboxes as complete in `goals.md` and `plan.md`.
+4. **Checkbox Review Gating:** Evaluate each success criterion in `goals.md` and `plan.md`. For each item, state whether it was fully met, partially met, or deferred (providing a clear, justified explanation for any deferred or partial items). Present this checklist assessment to the developer for review and seek their explicit agreement to check them off.
+5. **Milestone Commit:** Once the developer approves the checklist assessment and completion summary, update the checkboxes to checked (`[x]`) on their behalf and perform a dedicated finalization commit including `completion-summary.md`, `goals.md`, and `plan.md`:
+   - Commit message format: `doc(workflow): author completion summary and finalize success checkboxes`
 
 ## Constraints & Rules
 
-- **Gating Mandate:** You must **NEVER** modify or check off incomplete checkboxes (`- [ ]`) in any goals or plan files yourself. Marking checkboxes complete is a **human-aligned** action requiring developer review first.
+- **Checkbox Update Policy:** You must **NEVER** proactively check off checkboxes (`- [ ]` to `- [x]`) in `goals.md` or `plan.md` without first presenting your verification findings and obtaining explicit agreement from the developer. Once the developer has reviewed your work and confirmed agreement, you are authorized (and expected) to update the checkboxes to checked (`[x]`) on their behalf.
+- **Milestone Commit Mandate:** You must stage and commit the finalized `completion-summary.md`, `goals.md`, and `plan.md` files immediately upon developer approval.
 - **No Code Modifications:** You are strictly forbidden from writing, refactoring, or modifying any application source code under this skill. If any tests or linter checks fail, you must transition back to **`leap-dev`** to address them.
 - **No PR Description Drafting:** You are strictly forbidden from drafting `pr-description.md` or PR-level review descriptions under this skill.
-- **Transition Gate:** Once `completion-summary.md` is compiled, approved, and all checkboxes are manually checked off by the developer, your work under `leap-finish` is complete. You must explicitly direct the user to trigger the **`leap-pr`** skill (e.g., via `/leap-pr`) to draft the pull request description.
+- **Transition Gate:** Once `completion-summary.md` is compiled, approved, committed, and success checkboxes are updated, your work under `leap-finish` is complete. You must explicitly direct the user to trigger the **`leap-pr`** skill (e.g., via `/leap-pr`) to draft the pull request description.
 
 ## Output Schema / Format
 
@@ -54,8 +58,11 @@ Upon successful execution, print a summary in the following structure:
 - Summary File: kb/feature/<username>/<feature-name>/completion-summary.md
 - Markdown Validation: PASSED (check-md ran cleanly)
 
-==> Gating Checklist Verification:
-Please open goals.md and plan.md, review the implemented behavior, and manually mark the success criteria checkboxes as complete (- [x]). 
+==> Gating Checklist Assessment:
+Please review my assessment of the success criteria:
+- [x] Criterion 1 (Fully met via...)
+- [x] Criterion 2 (Fully met via...)
+- [ ] Criterion 3 (Deferred because...)
 
-Once you have verified and checked off all items, reply to this message to authorize finalization of this branch!
+Reply with your agreement. Once confirmed, I will automatically check off these success checkboxes in goals.md and plan.md on your behalf, and prepare you for PR drafting!
 ```

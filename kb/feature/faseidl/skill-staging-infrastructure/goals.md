@@ -69,18 +69,18 @@ Additionally, three native LEAP skills will be delivered: `leap-new` (to automat
 
 ## Success Criteria
 
-- [ ] Canonical directory structure `.skills/` initialized in the workspace.
-- [ ] Canonical template `SKILL-TEMPLATE.md` placed in `.skills/` for future developers.
-- [ ] `scripts/install-skills.py` fully implemented and executable.
-- [ ] Running `./scripts/install-skills.py gemini` creates functional relative symlinks in `.gemini/instructions/`.
-- [ ] Running `./scripts/install-skills.py cursor` creates functional relative symlinks in `.cursor/rules/` with the `.mdc` file extension.
-- [ ] Running `./scripts/install-skills.py windsurf` creates functional relative symlinks in `.windsurf/rules/`.
-- [ ] Running `./scripts/install-skills.py claude` creates functional relative symlinks in `.claude/commands/`.
-- [ ] Running `./scripts/install-skills.py aider` creates functional relative symlinks in `.aider/prompts/`.
-- [ ] `leap-new`, `leap-complete`, and `leap-pr` skills implemented under `.skills/` and functional.
-- [ ] `scripts/setup-leap.sh` successfully integrates with the new installer, prompting and configuring agent skills.
-- [ ] Test suite for `install-skills.py` created and passing successfully.
-- [ ] All workspace markdown documents pass `check-md` cleanly.
+- [x] Canonical directory structure `.skills/` initialized in the workspace.
+- [x] Canonical template `SKILL-TEMPLATE.md` placed in `.skills/` for future developers.
+- [x] `scripts/install-skills.py` fully implemented and executable.
+- [x] Running `./scripts/install-skills.py gemini` creates functional relative symlinks in `.gemini/instructions/`.
+- [x] Running `./scripts/install-skills.py cursor` creates functional relative symlinks in `.cursor/rules/` with the `.mdc` file extension.
+- [x] Running `./scripts/install-skills.py windsurf` creates functional relative symlinks in `.windsurf/rules/`.
+- [x] Running `./scripts/install-skills.py claude` creates functional relative symlinks in `.claude/commands/`.
+- [x] Running `./scripts/install-skills.py aider` creates functional relative symlinks in `.aider/prompts/`.
+- [x] `leap-start`, `leap-dev`, `leap-resume`, `leap-handoff`, `leap-finish`, and `leap-pr` skills implemented under `.skills/` and functional.
+- [x] `scripts/setup-leap.sh` successfully integrates with the new installer, prompting and configuring agent skills.
+- [x] Test suite for `install-skills.py` created and passing successfully.
+- [x] All workspace markdown documents pass `check-md` cleanly.
 
 ---
 

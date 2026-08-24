@@ -15,7 +15,7 @@ parameters:
 
 ## Context & Purpose
 
-This skill handles the critical "Session Start Orientation" process for AI coding agents under the **[Literate (Extended-by-Agent) Programming (LEAP) Methodology](../../kb/guide-methodology.md)** as defined in **[Claude Session Management Best Practices](../../kb/best-practices-claude-sessions.md)**. When starting a clean, pristine session with zero history, this skill immediately reads the active feature's goals, plans, and transient handoff files to establish a perfect, zero-noise context model.
+This skill handles the critical "Session Start Orientation" process for AI coding agents under the **[Literate (Extended-by-Agent) Programming (LEAP) Methodology](../../kb/guide-methodology.md)** as defined in **[AI Agent Session Management Best Practices](../../kb/best-practices-agent-sessions.md)**. When starting a clean, pristine session with zero history, this skill immediately reads the active feature's goals, plans, and transient handoff files to establish a perfect, zero-noise context model.
 
 ## Trigger Conditions
 
@@ -23,12 +23,13 @@ This skill handles the critical "Session Start Orientation" process for AI codin
 
 ## Operational Workflow
 
+0. **Pull Latest Changes (Prerequisite):** Run `git pull` to fetch and integrate any new commits/updates from GitHub/GitLab. This ensures that if the session was paused on another machine (or by another developer), you have the very latest branch updates and the committed handoff document locally before proceeding.
 1. **Locate Workspace Context:** Detect the current active git branch and locate the active feature folder under `kb/feature/`.
 2. **Read Status Indicators:**
    - Read `goals.md` and `plan.md` to identify checked-off `[x]` versus pending `[ ]` phases/success criteria.
-   - Scan the feature folder for any transient `handoff-*.md` or `dev-note-handoff-*.md` files.
+   - Scan the feature folder for the transient `handoff.md` file.
 3. **Establish Strategy Model:** Consolidate this information into a precise roadmap of the exact phase, test file, and next step to resume.
-4. **Cleanup:** Once the transient handoff file has been read and digested, safely delete or archive it (via `git rm` or `rm`) so it does not clutter future sessions.
+4. **Cleanup:** Once the transient `handoff.md` file has been read and digested, safely delete it and commit the deletion (via `git rm handoff.md` and a dedicated git commit `doc(workflow): consume handoff and resume`) so that the transient file is cleanly removed from the active tree and does not clutter future sessions.
 5. **Present Orientation:** Summarize findings clearly to the user, state current progress, and suggest the exact next command.
 
 ## Constraints & Rules

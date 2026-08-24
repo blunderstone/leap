@@ -48,9 +48,9 @@ We will implement the Skill Staging and Multi-Agent Installation Infrastructure 
 
 ### Success Criteria
 
-- [ ] Directory `.skills/` and template `SKILL-TEMPLATE.md` exist.
-- [ ] Script `scripts/install-skills.py` is implemented and syntax-error free.
-- [ ] Running `python3 scripts/install-skills.py` successfully parses skill packages.
+- [x] Directory `.skills/` and template `SKILL-TEMPLATE.md` exist.
+- [x] Script `scripts/install-skills.py` is implemented and syntax-error free.
+- [x] Running `python3 scripts/install-skills.py` successfully parses skill packages.
 
 ---
 
@@ -58,20 +58,22 @@ We will implement the Skill Staging and Multi-Agent Installation Infrastructure 
 
 ### Goals
 
-- Create three high-value LEAP custom instruction skills (`leap-new`, `leap-complete`, and `leap-pr`) using the official template.
+- Create our family of high-value LEAP custom instruction skills (`leap-start`, `leap-dev`, `leap-resume`, `leap-handoff`, `leap-finish`, and `leap-pr`) using the official template.
 
 ### Approach
 
-- **`leap-new` skill (`.skills/leap-new/SKILL.md`):**
+- **`leap-start` skill (`.skills/leap-start/SKILL.md`):**
   - Context/Purpose: Bootstrap a new LEAP feature branch.
-  - Workflow: Instruct agent to run git checkout commands, establish `kb/feature/<username>/<feature-name>/`, and draft a highly detailed `goals.md` adhering to `template-goals.md`.
-  - Constraints: Strict compliance with `kb/guide-methodology.md` (no coding until goals and plan are approved).
-- **`leap-complete` skill (`.skills/leap-complete/SKILL.md`):**
-  - Context/Purpose: Close out an active LEAP feature branch.
-  - Workflow: Instruct agent to prepare a comprehensive `completion-summary.md` based on `template-completion-summary.md` and present success criteria checkboxes to the user, reminding them that checkmarks are human-only actions.
+- **`leap-dev` skill (`.skills/leap-dev/SKILL.md`):**
+  - Context/Purpose: Drive implementation phases following standard TDD.
+- **`leap-handoff` skill (`.skills/leap-handoff/SKILL.md`):**
+  - Context/Purpose: Capture and commit session pause state in `handoff.md`.
+- **`leap-resume` skill (`.skills/leap-resume/SKILL.md`):**
+  - Context/Purpose: Automate pulling changes, reading and deleting the handoff document, and orienting clean sessions.
+- **`leap-finish` skill (`.skills/leap-finish/SKILL.md`):**
+  - Context/Purpose: Close out feature branches, update checkboxes, and compile `completion-summary.md` on approval.
 - **`leap-pr` skill (`.skills/leap-pr/SKILL.md`):**
-  - Context/Purpose: Draft a reviewer-friendly PR description.
-  - Workflow: Instruct agent to read `completion-summary.md` and generate `pr-description.md` based on `template-pr-description.md`.
+  - Context/Purpose: Draft reviewer-friendly PR summaries and programmatically create Pull Requests.
 
 ### Testing
 
@@ -79,10 +81,10 @@ We will implement the Skill Staging and Multi-Agent Installation Infrastructure 
 
 ### Success Criteria
 
-- [ ] `.skills/leap-new/SKILL.md` fully authored and compliant with the template.
-- [ ] `.skills/leap-complete/SKILL.md` fully authored and compliant with the template.
-- [ ] `.skills/leap-pr/SKILL.md` fully authored and compliant with the template.
-- [ ] All three skills pass the `check-md` linter.
+- [x] `.skills/leap-start/SKILL.md` fully authored and compliant with the template.
+- [x] `.skills/leap-dev/SKILL.md`, `.skills/leap-handoff/SKILL.md`, and `.skills/leap-resume/SKILL.md` fully authored.
+- [x] `.skills/leap-finish/SKILL.md` and `.skills/leap-pr/SKILL.md` fully authored.
+- [x] All skills pass the `check-md` linter.
 
 ---
 
@@ -118,7 +120,7 @@ We will implement the Skill Staging and Multi-Agent Installation Infrastructure 
 
 ### Success Criteria
 
-- [ ] Python test suite written and passing with 100% pass rate.
-- [ ] `setup-leap.sh` updated and cleanly prompts and runs the installer script.
-- [ ] All success criteria from `goals.md` are completely met and verified.
-- [ ] `check-md` passes successfully across the entire repository.
+- [x] Python test suite written and passing with 100% pass rate.
+- [x] `setup-leap.sh` updated and cleanly prompts and runs the installer script.
+- [x] All success criteria from `goals.md` are completely met and verified.
+- [x] `check-md` passes successfully across the entire repository.

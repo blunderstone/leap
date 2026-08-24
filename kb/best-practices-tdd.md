@@ -65,7 +65,7 @@ TDD is a software development approach where you write tests before writing the 
 ### Relationship to Other Documents
 
 - See [guide-methodology.md](guide-methodology.md) for the core LEAP development workflow and testing requirements
-- See [best-practices-claude-sessions.md](best-practices-claude-sessions.md) for managing AI agent sessions during feature development
+- See [best-practices-agent-sessions.md](best-practices-agent-sessions.md) for managing AI agent sessions during feature development
 
 ---
 
@@ -1065,4 +1065,4 @@ fun calculate(values: List<Double>): Double {
 ## Related Documents
 
 - [guide-methodology.md](guide-methodology.md) - Core LEAP methodology and testing requirements
-- [best-practices-claude-sessions.md](best-practices-claude-sessions.md) - AI agent session management practices
+- [best-practices-agent-sessions.md](best-practices-agent-sessions.md) - AI agent session management practices

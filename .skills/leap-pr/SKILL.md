@@ -16,11 +16,17 @@ parameters:
 
 ---
 
-# Skill: LEAP PR Description Drafter
+# Skill: LEAP PR Description Drafter & Submitter
 
 ## Context & Purpose
 
-This skill guides AI coding agents in drafting clear, reviewer-focused Pull Request descriptions under the **[Literate (Extended-by-Agent) Programming (LEAP) Methodology](../../kb/guide-methodology.md)**. Because detailed changes are already recorded in the feature branch's `completion-summary.md`, the PR description is kept highly concise, highlighting what reviewer focus areas and verification steps are needed.
+This skill guides AI coding agents in drafting clear, reviewer-focused Pull Request descriptions and programmatically creating PRs under the **[Literate (Extended-by-Agent) Programming (LEAP) Methodology](../../kb/guide-methodology.md)**. 
+
+### PR Body Flexibility:
+
+- **`pr-description.md` is OPTIONAL:** A dedicated `pr-description.md` file is not strictly required. For small-to-medium features, you should advise using the contents of `completion-summary.md` directly as the PR body to maximize efficiency.
+- **When to create `pr-description.md`:** For large, complex features where `completion-summary.md` contains extensive implementation details that might overwhelm reviewers, you must draft `pr-description.md` as a concise summary of the completion summary.
+- **PR Body Content:** In any case, the final body of the Pull Request submitted to GitHub must contain either the `completion-summary.md` or the `pr-description.md` contents.
 
 ## Trigger Conditions
 
@@ -28,33 +34,43 @@ This skill guides AI coding agents in drafting clear, reviewer-focused Pull Requ
 
 ## Operational Workflow
 
-1. **Verify Completion Summary:** Ensure `completion-summary.md` has been successfully compiled and reviewed in `kb/feature/<username>/<feature-name>/`.
-2. **Draft PR Description:** Create `kb/feature/<username>/<feature-name>/pr-description.md` using the canonical template (`kb/template-pr-description.md`). Read the compiled `completion-summary.md` to extract:
-   - Summary of PR (2-3 sentences explaining what and why).
-   - Key changes (3-5 bullet points of high-impact changes).
-   - Testing outcomes (coverage percentages).
-   - Breaking changes list.
-   - Specific review focus areas.
-   - Concrete instructions on how a reviewer can locally check out, build, and verify the changes.
-3. **Verify Compliance:** Run `check-md` to ensure the generated document meets repository linter standards.
+1. **Verify Committed Completion Summary (Prerequisite):** Verify that the completed and approved `completion-summary.md` has been successfully compiled, finalized, and committed to Git inside `kb/feature/<username>/<feature-name>/`. You must never run this skill on an uncommitted completion summary, as the PR needs to link to tracked, immutable branch histories.
+2. **Draft PR Summary (Optional):** Discuss with the developer if they want to use `completion-summary.md` directly (recommended for small-to-medium branches) or draft a dedicated `pr-description.md` (recommended for large branches). If drafting:
+   - Create `kb/feature/<username>/<feature-name>/pr-description.md` using the canonical template (`kb/template-pr-description.md`). 
+   - Read the committed `completion-summary.md` to extract the overview, key changes, testing outcomes, and breaking changes.
+   - **Carry Over Metadata & Issue Closures:** Ensure that `pr-description.md` carries forward the exact same metadata as the completion summary (branch, base branch, etc.) and **critically, all GitHub issue closing keywords (such as "Closes #12" or "Fixes #12")**. Since GitHub/GitLab parse the PR body itself to trigger auto-closures, these references must reside in the final PR description to function.
+   - Run `check-md` to ensure `pr-description.md` meets repository linter standards.
+3. **Offer Programmatic PR Creation:** Offer to create the Pull Request on behalf of the developer:
+
+   - **Check for GitHub CLI (`gh`):** Check if the GitHub CLI is installed and authenticated (`which gh` and `gh auth status`).
+   - **Programmatic PR:** If `gh` is available, offer to execute `gh pr create` using either the committed `completion-summary.md` or `pr-description.md` as the body file:
+     ```bash
+     # Example command
+     gh pr create --title "feat(workflow): <title>" --body-file kb/feature/<user>/<feature>/completion-summary.md --draft
+     ```
+
+   - **Manual Fallback:** If `gh` is not available, push the branch (`git push -u origin <branch>`) and print a pre-filled Git push command and a direct link to open the browser PR creation page.
 
 ## Constraints & Rules
 
-- **Reviewer-Focused:** Keep this document focused, high-signal, and concise. Do not duplicate the extensive details of `completion-summary.md`. Refer reviewers to the completion summary for deep implementation details.
-- **Linter Compliance:** The compiled `pr-description.md` must pass `check-md` cleanly with zero violations.
+- **Reviewer-Focused:** If drafting `pr-description.md`, keep it focused, high-signal, and concise. Refer reviewers to `completion-summary.md` for deep implementation details.
+- **Issue-Closing Porting Mandate:** If drafting `pr-description.md`, you must ensure any issue-closing keywords from `completion-summary.md` are carried forward into the PR description body so they are parsed and auto-closed on merge.
+- **Committed Prerequisite:** You must confirm that `completion-summary.md` is fully tracked and committed in Git before drafting `pr-description.md`. If it is uncommitted, you must halt and instruct the developer to run `leap-finish` or commit the summary first.
+- **Linter Compliance:** If created, `pr-description.md` must pass `check-md` cleanly with zero violations.
 - **No Code or Feature Edits:** You are strictly forbidden from writing or modifying any source code, running build/test commands, or editing any existing feature branch documents (such as `goals.md` or `plan.md`) under this skill. It is strictly a review documentation generator.
-- **End of Lifecycle:** Once `pr-description.md` is compiled and approved, your work is complete. Explicitly congratulate the developer, present the PR description, and tell them they are fully prepared to commit, push, and submit their PR!
+- **End of Lifecycle:** Once the PR is drafted and submitted (either programmatically or via browser link), your work is complete. Explicitly congratulate the developer, present the PR URL, and celebrate!
 
 ## Output Schema / Format
 
 Upon successful execution, print a summary in the following structure:
 
 ```
-[leap-pr] Successfully drafted PR description!
+[leap-pr] Pull Request Preparation Complete!
 
-- PR Description File: kb/feature/<username>/<feature-name>/pr-description.md
+- Summary Mode: [e.g., Using completion-summary.md directly / Drafted pr-description.md]
 - Markdown Validation: PASSED (check-md ran cleanly)
 
-==> Ready for Review:
-Please review the drafted pr-description.md. You can copy its contents directly into your GitHub or GitLab Pull Request form!
+==> Programmatic PR Option:
+I detected that the GitHub CLI (gh) is [available/not available]. 
+Would you like me to push this branch and programmatically create the PR as a draft for you?
 ```

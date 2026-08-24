@@ -102,13 +102,13 @@ The workspace includes a standard suite of custom skills designed to enforce a h
 ### 3. `leap-handoff` (Session Pause)
 
 * **Trigger:** "/leap-handoff" or "pause session and write a handoff".
-* **What it does:** Solves context bloating and high token overhead by capturing a high-signal, zero-noise snapshot of current git hashes, stashes, pending test states, and upcoming tasks into a transient `handoff-<phase>.md` file.
+* **What it does:** Solves context bloating and high token overhead by capturing a high-signal, zero-noise snapshot of current git hashes, stashes, pending test states, and upcoming tasks into a transient, committed `handoff.md` file.
 * **Benefit:** Allows the developer to completely clear the agent's context window and start a pristine new conversation session without losing progress.
 
 ### 4. `leap-resume` (Session Start)
 
 * **Trigger:** "/leap-resume" or "resume session".
-* **What it does:** Executed immediately upon launching a fresh conversation session. It scans active branches, reads `goals.md`, `plan.md`, and any transient `handoff-*.md` files to reconstruct a perfect context model, then cleans up/deletes the temporary handoff file to prevent clutter.
+* **What it does:** Executed immediately upon launching a fresh conversation session. It scans active branches, reads `goals.md`, `plan.md`, and the transient `handoff.md` file to reconstruct a perfect context model, then cleans up/deletes the temporary handoff file to prevent clutter.
 
 ### 5. `leap-finish` (Verify & Close)
 
