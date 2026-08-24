@@ -429,12 +429,18 @@ class TestCliBasicUsage:
 
     def test_shows_help(self) -> None:
         """Should display help with --help."""
+        import re
         result = runner.invoke(app, ["--help"])
 
         assert result.exit_code == 0
-        assert "Check markdown files" in result.stdout
-        assert "--verbose" in result.stdout
-        assert "--format" in result.stdout
+        
+        # Strip ANSI formatting
+        ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+        stdout = ansi_escape.sub('', result.stdout)
+
+        assert "Check markdown files" in stdout
+        assert "--verbose" in stdout
+        assert "--format" in stdout
 
     def test_checks_single_file(self, tmp_path: Path) -> None:
         """Should check a single markdown file."""
