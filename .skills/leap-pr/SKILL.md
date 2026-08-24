@@ -69,6 +69,10 @@ This skill guides AI coding agents in drafting clear, reviewer-focused Pull Requ
 
 ## Constraints & Rules
 
+- **Mandatory Turn Gating (No Jumping Ahead):**
+  - **Two-Step Submission Process:** You are strictly prohibited from generating the PR title, drafting the description, and executing a branch push or `gh pr create` in a single conversation turn. This is a mandatory hard gate.
+  - **No Unilateral Pushing/Submission:** On the first turn of this skill, you must ONLY draft the `pr-description.md` (if requested), generate the proposed conventional PR title, and present them along with the programmatic PR options. You MUST STOP and wait for the developer to review and approve the title and settings before executing `git push` or `gh pr create`.
+  - **Approval Required to Submit:** You may only execute the branch push or programmatically create the Pull Request on a subsequent turn AFTER the user has explicitly reviewed and approved your proposed title, description, and submission settings.
 - **Reviewer-Focused:** If drafting `pr-description.md`, keep it focused, high-signal, and concise. Refer reviewers to `completion-summary.md` for deep implementation details.
 - **Issue-Closing Porting Mandate:** If drafting `pr-description.md`, you must ensure any issue-closing keywords from `completion-summary.md` are carried forward into the PR description body so they are parsed and auto-closed on merge.
 - **Committed Prerequisite:** You must confirm that `completion-summary.md` is fully tracked and committed in Git before drafting `pr-description.md`. If it is uncommitted, you must halt and instruct the developer to run `leap-finish` or commit the summary first.
