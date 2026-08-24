@@ -45,6 +45,7 @@ The task is conceptually simple but requires a meticulous, systematic sweep acro
   - File name
   - Brief description of the file's purpose
   - Consistent author line: `Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)`
+  - Apache License, Version 2.0 copyright and license boilerplate notice to protect IP.
 - **REQ-3:** Audit and update all Python source files in `check-md/src/check_md/`.
 - **REQ-4:** Audit and update all Python test files in `check-md/tests/`.
 - **REQ-5:** Audit and update all Python and Shell scripts/tests in `scripts/` (e.g., `install-skills.py`, `setup-leap.sh`, `scripts/tests/test_install_skills.py`).
