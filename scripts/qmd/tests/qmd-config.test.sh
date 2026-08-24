@@ -228,14 +228,14 @@ assert_contains "dry-run notice" "$out" "(dry-run: no install"
 echo "Test 8b: scheduled refresh defaults on and is platform aware"
 r=$(make_repo sched-repo "https://github.com/example-org/sample-app.git")
 
-out=$(run "$r")
+out=$(QMD_PLATFORM=Darwin run "$r")
 assert_contains "macOS resolves to launchd" "$out" "SCHEDULE mechanism=launchd"
 assert_contains "installed by default" "$out" "action=install"
 
-out=$(run "$r" --no-schedule)
+out=$(QMD_PLATFORM=Darwin run "$r" --no-schedule)
 assert_contains "--no-schedule opts out" "$out" "action=skip"
 
-out=$(run "$r" --remove-schedule)
+out=$(QMD_PLATFORM=Darwin run "$r" --remove-schedule)
 assert_contains "--remove-schedule removes" "$out" "action=remove"
 
 out=$(QMD_PLATFORM=Linux "$r/utils/qmd/qmd-config" --dry-run)
