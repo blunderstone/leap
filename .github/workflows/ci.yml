@@ -12,6 +12,9 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      NO_COLOR: "1"
+      FORCE_COLOR: "0"
 
     steps:
       - name: Checkout code
