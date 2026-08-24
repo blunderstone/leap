@@ -32,6 +32,10 @@ WRAPPER="$HERE/../qmd-config.wrapper"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
+# Isolate HOME to prevent host-machine environment state (e.g., existing launch agents) from leaking into tests
+export HOME="$WORK/fake-home"
+mkdir -p "$HOME/Library/LaunchAgents"
+
 PASS=0
 FAIL=0
 

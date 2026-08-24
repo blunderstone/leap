@@ -41,11 +41,16 @@ This skill guides AI coding agents in implementing code changes in a highly disc
 
 ## Constraints & Rules
 
+- **Strict Sequential Phase Gating (No Jumping Ahead):**
+  - **One Phase Per Turn:** You must NEVER implement, write code for, or execute more than one planned Phase in a single conversation turn. Your scope is strictly limited to the Phase specified by the `phase_name` parameter.
+  - **Mandatory Pause for Approval:** At the end of EVERY phase (including those executed under a TDD Exception, such as documentation, config, styling, or asset updates), you MUST present your completed work (e.g., code, tests, or docs) and manual validation/test results, and **stop and wait for explicit human review, verification, and approval** before performing any work on a subsequent phase.
+  - **No Pre-emptive Checkboxes:** You must never check off a success criteria box in `goals.md` or `plan.md` on your own. Marking a checkbox as complete requires explicit human review and authorization. Once the developer has reviewed the implemented behavior and confirmed agreement, you are authorized (and expected) to update the checkboxes to checked (`[x]`) on their behalf.
+  - **Separate Commits:** Each Phase must have its own distinct, dedicated commit. You are strictly prohibited from staging or committing changes from multiple phases together.
 - **TDD is Mandatory:** Do NOT write or modify application source code before writing failing tests, as per `[TDD Best Practices](../../kb/best-practices-tdd.md)`.
 - **TDD Exceptions:** You are granted explicit permission to bypass the test-first TDD cycle for tasks that do not involve creating or modifying application source code (such as updating documentation, editing static markdown/content, tweaking configurations, or reorganizing assets). In these cases, verify your changes manually and document your manual validation steps clearly.
 - **Atomic Commits:** You must **NEVER** combine RED (failing tests) and GREEN (implementation) into a single commit. They must be separate, sequential, and reviewed individually by the human developer.
 - **Verification Rule:** Always run project-specific build and linter commands (e.g., `check-md kb/`, `ruff check`, etc.) before presenting work for review.
-- **No Checklist Checking:** You must never check off a success criteria box in `goals.md` or `plan.md` without presenting test/linter verification results and getting explicit human authorization.
+- **Verification Requirement for Checkboxes:** You must never ask for or update a success criteria box to checked (`[x]`) without first presenting the specific test coverage or linter verification results associated with that item.
 - **No Feature Finalization:** You are strictly forbidden from writing `completion-summary.md` or attempting to close/finalize the branch under this skill.
 - **Phase Documents Authorization:** You are fully authorized and encouraged by the LEAP Methodology to create and use `phase-*.md` documents to decompose complex phase execution into granular, manageable sub-milestones.
 - **Transition Gate:** Once all phases of your implementation plan are complete, green, and committed, your work under `leap-dev` is done. You must explicitly direct the user to trigger the **`leap-finish`** skill (e.g., via `/leap-finish`) to compile the completion summary and conduct the final gating review.

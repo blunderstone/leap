@@ -42,6 +42,10 @@ This skill guides AI coding agents in closing out an active development task in 
 
 ## Constraints & Rules
 
+- **Mandatory Turn Gating (No Jumping Ahead):**
+  - **Two-Step Finalization Process:** You are strictly prohibited from compiling the `completion-summary.md` and performing the finalization git commit or checkbox updates in a single conversation turn. This is a mandatory hard gate.
+  - **No Unilateral Finalization:** On the first turn of this skill, you must ONLY gather information, draft/compile the `completion-summary.md` (uncommitted), and present the checklist assessment. You MUST STOP and wait for the developer to explicitly review and approve your drafted files and checklist assessment before making any commits, staging files, or checking any checkboxes.
+  - **Approval Required to Commit:** You may only proceed to stage and commit the files and update checkboxes to checked (`[x]`) on a subsequent turn AFTER the user has explicitly replied confirming their review and approval.
 - **Checkbox Update Policy:** You must **NEVER** proactively check off checkboxes (`- [ ]` to `- [x]`) in `goals.md` or `plan.md` without first presenting your verification findings and obtaining explicit agreement from the developer. Once the developer has reviewed your work and confirmed agreement, you are authorized (and expected) to update the checkboxes to checked (`[x]`) on their behalf.
 - **Milestone Commit Mandate:** You must stage and commit the finalized `completion-summary.md`, `goals.md`, and `plan.md` files immediately upon developer approval.
 - **No Code Modifications:** You are strictly forbidden from writing, refactoring, or modifying any application source code under this skill. If any tests or linter checks fail, you must transition back to **`leap-dev`** to address them.
