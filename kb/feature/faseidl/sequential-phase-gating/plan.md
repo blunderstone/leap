@@ -42,10 +42,10 @@ We will implement Sequential Phase Gating and turn-gating constraints across the
 
 ### Success Criteria
 
-- [ ] `.skills/leap-dev/SKILL.md` updated and lints with 0 errors.
-- [ ] `.skills/leap-finish/SKILL.md` updated and lints with 0 errors.
-- [ ] `.skills/leap-pr/SKILL.md` updated and lints with 0 errors.
-- [ ] `scripts/install-skills.py` runs successfully, propagating the updated rules.
+- [x] `.skills/leap-dev/SKILL.md` updated and lints with 0 errors.
+- [x] `.skills/leap-finish/SKILL.md` updated and lints with 0 errors.
+- [x] `.skills/leap-pr/SKILL.md` updated and lints with 0 errors.
+- [x] `scripts/install-skills.py` runs successfully, propagating the updated rules.
 
 ### Explicitly Deferred
 
@@ -78,8 +78,8 @@ We will implement Sequential Phase Gating and turn-gating constraints across the
 
 ### Success Criteria
 
-- [ ] `kb/guide-methodology.md` updated with comprehensive gating standards.
-- [ ] Updated methodology file passes `check-md` with 0 violations.
+- [x] `kb/guide-methodology.md` updated with comprehensive gating standards.
+- [x] Updated methodology file passes `check-md` with 0 violations.
 
 ### Explicitly Deferred
 
@@ -111,10 +111,10 @@ We will implement Sequential Phase Gating and turn-gating constraints across the
 
 ### Success Criteria
 
-- [ ] All check-md tests pass cleanly.
-- [ ] All installer script tests pass cleanly.
-- [ ] Shell script test suite passes cleanly.
-- [ ] Workspace linter check `check-md kb/` reports 0 violations.
+- [x] All check-md tests pass cleanly.
+- [x] All installer script tests pass cleanly.
+- [x] Shell script test suite passes cleanly.
+- [x] Workspace linter check `check-md kb/` reports 0 violations.
 
 ### Explicitly Deferred
 

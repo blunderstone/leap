@@ -75,12 +75,12 @@ The changes are localized to `.skills/` instruction markdown files and `kb/guide
 
 ## Success Criteria
 
-- [ ] `.skills/leap-dev/SKILL.md` updated with strict sequential phase constraints.
-- [ ] `.skills/leap-finish/SKILL.md` updated with strict two-step turn-gated finalization rules.
-- [ ] `.skills/leap-pr/SKILL.md` updated with strict two-step turn-gated PR submission rules.
-- [ ] `kb/guide-methodology.md` contains comprehensive, formal gating documentation for all three skills.
-- [ ] `scripts/install-skills.py` runs successfully, propagating updated skills.
-- [ ] All new and modified markdown files pass `check-md` with 0 violations.
+- [x] `.skills/leap-dev/SKILL.md` updated with strict sequential phase constraints.
+- [x] `.skills/leap-finish/SKILL.md` updated with strict two-step turn-gated finalization rules.
+- [x] `.skills/leap-pr/SKILL.md` updated with strict two-step turn-gated PR submission rules.
+- [x] `kb/guide-methodology.md` contains comprehensive, formal gating documentation for all three skills.
+- [x] `scripts/install-skills.py` runs successfully, propagating updated skills.
+- [x] All new and modified markdown files pass `check-md` with 0 violations.
 
 ## Constraints
 
