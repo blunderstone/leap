@@ -66,9 +66,9 @@ The complexity lies in ensuring the setup scripts reliably configure the pre-com
 ## Success Criteria
 
 - [x] Unified check script (`scripts/run-all-checks.sh`) successfully executes check-md, python pytest, python unittest, and shell script tests.
-- [ ] Git pre-commit hook is automatically copied or symlinked during `scripts/setup-leap.sh`.
-- [ ] Git pre-commit hook successfully blocks local commits when any check fails.
-- [ ] Git pre-commit hook permits commits when all checks pass.
+- [x] Git pre-commit hook is automatically copied or symlinked during `scripts/setup-leap.sh`.
+- [x] Git pre-commit hook successfully blocks local commits when any check fails.
+- [x] Git pre-commit hook permits commits when all checks pass.
 - [ ] Strict "Zero-Failure Rule" cognitive constraint is integrated into `.skills/leap-dev/SKILL.md`.
 - [ ] GitHub Actions CI workflow is configured and successfully executes the unified runner on every push and PR.
 - [ ] Codebase test and linter suites pass completely after all modifications.

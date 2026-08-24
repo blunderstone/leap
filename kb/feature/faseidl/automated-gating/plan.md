@@ -73,10 +73,10 @@ This implementation plan outlines the creation and verification of a multi-tiere
 
 ### Success Criteria
 
-- [ ] Pre-commit hook is automatically copied or symlinked during environment setup.
-- [ ] Git commit attempt is blocked on check failure, giving immediate feedback.
-- [ ] Git commit attempt is permitted to succeed on fully clean checks.
-- [ ] Legacy or custom pre-commit hooks are safely preserved/backed up.
+- [x] Pre-commit hook is automatically copied or symlinked during environment setup.
+- [x] Git commit attempt is blocked on check failure, giving immediate feedback.
+- [x] Git commit attempt is permitted to succeed on fully clean checks.
+- [x] Legacy or custom pre-commit hooks are safely preserved/backed up.
 
 ---
 
