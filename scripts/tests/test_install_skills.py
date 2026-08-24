@@ -94,7 +94,7 @@ class TestInstallSkills(unittest.TestCase):
 
         # Check projections for each agent
         agent_configs = {
-            "gemini": self.project_root / ".gemini" / "instructions" / "leap-test.md",
+            "gemini": self.project_root / ".gemini" / "skills" / "leap-test" / "SKILL.md",
             "cursor": self.project_root / ".cursor" / "rules" / "leap-test.mdc",
             "windsurf": self.project_root / ".windsurf" / "rules" / "leap-test.md",
             "claude": self.project_root / ".claude" / "commands" / "leap-test.md",
@@ -129,7 +129,7 @@ class TestInstallSkills(unittest.TestCase):
 
         # Check physical file projections
         agent_configs = {
-            "gemini": self.project_root / ".gemini" / "instructions" / "leap-test.md",
+            "gemini": self.project_root / ".gemini" / "skills" / "leap-test" / "SKILL.md",
             "cursor": self.project_root / ".cursor" / "rules" / "leap-test.mdc",
             "windsurf": self.project_root / ".windsurf" / "rules" / "leap-test.md",
             "claude": self.project_root / ".claude" / "commands" / "leap-test.md",
@@ -158,7 +158,7 @@ class TestInstallSkills(unittest.TestCase):
         )
 
         # Gemini should exist
-        gemini_target = self.project_root / ".gemini" / "instructions" / "leap-test.md"
+        gemini_target = self.project_root / ".gemini" / "skills" / "leap-test" / "SKILL.md"
         self.assertTrue(gemini_target.is_symlink())
 
         # Cursor should NOT exist
@@ -179,7 +179,7 @@ class TestInstallSkills(unittest.TestCase):
             repo_root=self.project_root, 
             skills_dir=self.skills_dir
         )
-        gemini_target = self.project_root / ".gemini" / "instructions" / "leap-test.md"
+        gemini_target = self.project_root / ".gemini" / "skills" / "leap-test" / "SKILL.md"
         self.assertTrue(gemini_target.is_symlink())
 
         # Modify source

@@ -15,7 +15,7 @@ Establish a canonical `.skills/` directory for managing self-contained AI agent 
 
 As AI coding agents (such as Claude Code, Gemini CLI, Cursor, Windsurf, and Aider) become key participants in our development lifecycles, establishing unified, reusable custom instructions ("skills") is critical. However, target agents consume custom rules in highly divergent, flat, or agent-specific formats.
 
-To solve this while preparing for future Tool/MCP server migrations, this feature implements a "Canonical Source of Truth" pattern. All skills will be co-located as self-contained directories under a unified `.skills/` workspace folder, containing the instruction `SKILL.md` file (conforming to a standard frontmatter-driven template) and any related assets. A robust, portable `scripts/install-skills.py` script will orchestrate relative symlink projection into agent-specific paths (e.g. `.gemini/instructions/`, `.cursor/rules/`, `.windsurf/rules/`, `.claude/commands/`, `.aider/prompts/`).
+To solve this while preparing for future Tool/MCP server migrations, this feature implements a "Canonical Source of Truth" pattern. All skills will be co-located as self-contained directories under a unified `.skills/` workspace folder, containing the instruction `SKILL.md` file (conforming to a standard frontmatter-driven template) and any related assets. A robust, portable `scripts/install-skills.py` script will orchestrate relative symlink projection into agent-specific paths (e.g. `.gemini/skills/`, `.cursor/rules/`, `.windsurf/rules/`, `.claude/commands/`, `.aider/prompts/`).
 
 Additionally, three native LEAP skills will be delivered: `leap-new` (to automate starting a new feature branch and drafting `goals.md`), `leap-complete` (to automate drafting the LEAP `completion-summary.md`), and `leap-pr` (to automate drafting the reviewer-facing `pr-description.md`). The workspace's `setup-leap.sh` will be updated to optionally install these skills for whatever agents the developer chooses.
 
@@ -72,7 +72,7 @@ Additionally, three native LEAP skills will be delivered: `leap-new` (to automat
 - [x] Canonical directory structure `.skills/` initialized in the workspace.
 - [x] Canonical template `SKILL-TEMPLATE.md` placed in `.skills/` for future developers.
 - [x] `scripts/install-skills.py` fully implemented and executable.
-- [x] Running `./scripts/install-skills.py gemini` creates functional relative symlinks in `.gemini/instructions/`.
+- [x] Running `./scripts/install-skills.py gemini` creates functional relative symlinks in `.gemini/skills/` under nested skill directories.
 - [x] Running `./scripts/install-skills.py cursor` creates functional relative symlinks in `.cursor/rules/` with the `.mdc` file extension.
 - [x] Running `./scripts/install-skills.py windsurf` creates functional relative symlinks in `.windsurf/rules/`.
 - [x] Running `./scripts/install-skills.py claude` creates functional relative symlinks in `.claude/commands/`.

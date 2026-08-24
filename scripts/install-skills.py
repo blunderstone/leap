@@ -47,8 +47,8 @@ def install_skills(target_agent: str = "all", use_symlinks: bool = True, repo_ro
     # Dynamic target agent configuration mapping based on repo_root
     agent_configs = {
         "gemini": {
-            "dir": repo_root / ".gemini" / "instructions",
-            "ext": ".md",
+            "dir": repo_root / ".gemini" / "skills",
+            "nested": True,
         },
         "cursor": {
             "dir": repo_root / ".cursor" / "rules",
@@ -79,6 +79,13 @@ def install_skills(target_agent: str = "all", use_symlinks: bool = True, repo_ro
             print(f"Error: Unknown agent '{agent}'. Supported: {', '.join(agent_configs.keys())}, all")
             sys.exit(1)
 
+    # Clean up old legacy paths if present
+    if "gemini" in targets:
+        legacy_dir = repo_root / ".gemini" / "instructions"
+        if legacy_dir.exists():
+            print(f"Cleaning up legacy Gemini instructions directory: {legacy_dir.relative_to(repo_root)}")
+            shutil.rmtree(legacy_dir)
+
     installed_count = 0
 
     for skill_path in skills_dir.iterdir():
@@ -93,9 +100,14 @@ def install_skills(target_agent: str = "all", use_symlinks: bool = True, repo_ro
 
         for agent in targets:
             cfg = agent_configs.get(agent)
-            target_dir = cfg["dir"]
+            if cfg.get("nested"):
+                target_dir = cfg["dir"] / skill_name
+                target_file = target_dir / "SKILL.md"
+            else:
+                target_dir = cfg["dir"]
+                target_file = target_dir / f"{skill_name}{cfg['ext']}"
+
             target_dir.mkdir(parents=True, exist_ok=True)
-            target_file = target_dir / f"{skill_name}{cfg['ext']}"
 
             # Remove existing link/file if present
             if target_file.exists() or target_file.is_symlink():
@@ -105,10 +117,12 @@ def install_skills(target_agent: str = "all", use_symlinks: bool = True, repo_ro
                 # Relative symlink keeps the repository portable across environments
                 rel_source = Path(os.path.relpath(skill_md, start=target_dir))
                 target_file.symlink_to(rel_source)
-                print(f"[{agent}] Linked {target_file.name} -> {skill_md.relative_to(repo_root)}")
+                display_target = f"{skill_name}/{target_file.name}" if cfg.get("nested") else target_file.name
+                print(f"[{agent}] Linked {display_target} -> {skill_md.relative_to(repo_root)}")
             else:
                 shutil.copy2(skill_md, target_file)
-                print(f"[{agent}] Copied {skill_md.relative_to(repo_root)} -> {target_file.name}")
+                display_target = f"{skill_name}/{target_file.name}" if cfg.get("nested") else target_file.name
+                print(f"[{agent}] Copied {skill_md.relative_to(repo_root)} -> {display_target}")
             
             installed_count += 1
 

@@ -48,7 +48,7 @@ The installer projects rules into each target agent's expected path using its de
 
 | Agent Target                 | Rule Directory          | File Extension | Projection Mode     |
 |:-----------------------------|:------------------------|:---------------|:--------------------|
-| **Gemini CLI / Antigravity** | `.gemini/instructions/` | `.md`          | Flat File Namespace |
+| **Gemini CLI / Antigravity** | `.gemini/skills/`      | `SKILL.md`     | Nested Package      |
 | **Cursor**                   | `.cursor/rules/`        | `.mdc`         | Flat File Namespace |
 | **Windsurf**                 | `.windsurf/rules/`      | `.md`          | Flat File Namespace |
 | **Claude Code**              | `.claude/commands/`     | `.md`          | Flat File Namespace |

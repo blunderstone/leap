@@ -32,7 +32,7 @@ We will implement the Skill Staging and Multi-Agent Installation Infrastructure 
   - Read each subdirectory of `.skills/` that contains a `SKILL.md` file.
   - Extract the skill name: parse the yaml frontmatter's `name:` attribute if present, otherwise fall back to the subdirectory's name.
   - Maintain an agent configuration mapping:
-    - `gemini`: target `.gemini/instructions/`, extension `.md`
+    - `gemini`: target `.gemini/skills/`, nested SKILL.md layout
     - `cursor`: target `.cursor/rules/`, extension `.mdc`
     - `windsurf`: target `.windsurf/rules/`, extension `.md`
     - `claude`: target `.claude/commands/`, extension `.md`
