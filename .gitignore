@@ -13,6 +13,7 @@ __pycache__/
 *.venv
 *.pyc
 dev-note-*
+*.bak
 
 # AI Agent projected rules directories
 .gemini/

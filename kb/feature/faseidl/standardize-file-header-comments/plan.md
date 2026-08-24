@@ -111,11 +111,11 @@ All Shell scripts (`.sh` or extensionless executable scripts) must use `#` comme
 
 ### Success Criteria
 
-- [ ] A standardized `COPYRIGHT` template file is created at the repository root.
-- [ ] All 10 Python files under `check-md/src/check_md/` have standard, accurate header docstrings.
-- [ ] No syntax or import errors exist.
-- [ ] `check-md` runs clean on all modified files.
-- [ ] All package test suites pass successfully.
+- [x] A standardized `COPYRIGHT` template file is created at the repository root.
+- [x] All 10 Python files under `check-md/src/check_md/` have standard, accurate header docstrings.
+- [x] No syntax or import errors exist.
+- [x] `check-md` runs clean on all modified files.
+- [x] All package test suites pass successfully.
 
 ---
 
@@ -217,9 +217,11 @@ We will run `check-md kb/` and `check-md check-md/src` and other folders to veri
 ## Decision Points
 
 ### After Phase 1
+
 - Proceed to Phase 2 if all `check-md/src/check_md/` files compile, pass existing tests, and comply with the linter.
 
 ### After Phase 2
+
 - Proceed to Phase 3 if all python tests and scripts compile, pass existing tests, and comply with the linter.
 
 ## Notes
