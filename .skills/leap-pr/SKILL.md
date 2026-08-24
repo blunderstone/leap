@@ -1,7 +1,7 @@
 ---
 name: leap-pr
 description: Reads completion-summary.md and drafts a reviewer-friendly PR description (pr-description.md).
-version: 1.0.0
+version: 1.1.0
 parameters:
 
   - name: feature_name
@@ -13,6 +13,16 @@ parameters:
     type: string
     description: GitHub/author username
     required: true
+
+  - name: pr_title
+    type: string
+    description: Optional custom title for the Pull Request. If omitted, dynamically generated from the feature's title.
+    required: false
+
+  - name: draft
+    type: boolean
+    description: Whether to create the Pull Request as a draft (default is true)
+    required: false
 
 ---
 
@@ -40,13 +50,19 @@ This skill guides AI coding agents in drafting clear, reviewer-focused Pull Requ
    - Read the committed `completion-summary.md` to extract the overview, key changes, testing outcomes, and breaking changes.
    - **Carry Over Metadata & Issue Closures:** Ensure that `pr-description.md` carries forward the exact same metadata as the completion summary (branch, base branch, etc.) and **critically, all GitHub issue closing keywords (such as "Closes #12" or "Fixes #12")**. Since GitHub/GitLab parse the PR body itself to trigger auto-closures, these references must reside in the final PR description to function.
    - Run `check-md` to ensure `pr-description.md` meets repository linter standards.
-3. **Offer Programmatic PR Creation:** Offer to create the Pull Request on behalf of the developer:
+3. **Determine PR Title & Draft Options:**
+   - **Dynamic PR Title Generation:** Do not use the last commit message or a generic placeholder. Instead, generate an intelligent, descriptive title by reading the primary H1 heading of `completion-summary.md` (or `goals.md`). Extract the core feature description, strip words like "Completion Summary" or "Goals", convert the description to lowercase, and prefix it with an appropriate conventional commit prefix (e.g., `feat(workflow): <feature-description>`, `fix(api): <feature-description>`). Always present this generated title to the user for confirmation or editing. If `pr_title` is supplied as a parameter, use it directly.
+   - **Draft Mode Choice:** Ask the developer whether they want to submit the Pull Request as a **Draft** or as **Ready for Review**. If the `draft` parameter is explicitly provided, respect it.
+4. **Offer Programmatic PR Creation:** Offer to create the Pull Request on behalf of the developer:
 
    - **Check for GitHub CLI (`gh`):** Check if the GitHub CLI is installed and authenticated (`which gh` and `gh auth status`).
    - **Programmatic PR:** If `gh` is available, offer to execute `gh pr create` using either the committed `completion-summary.md` or `pr-description.md` as the body file:
      ```bash
-     # Example command
-     gh pr create --title "feat(workflow): <title>" --body-file kb/feature/<user>/<feature>/completion-summary.md --draft
+     # Example command (as draft)
+     gh pr create --title "<approved-title>" --body-file kb/feature/<user>/<feature>/completion-summary.md --draft
+
+     # Example command (ready for review)
+     gh pr create --title "<approved-title>" --body-file kb/feature/<user>/<feature>/completion-summary.md
      ```
 
    - **Manual Fallback:** If `gh` is not available, push the branch (`git push -u origin <branch>`) and print a pre-filled Git push command and a direct link to open the browser PR creation page.
@@ -68,9 +84,11 @@ Upon successful execution, print a summary in the following structure:
 [leap-pr] Pull Request Preparation Complete!
 
 - Summary Mode: [e.g., Using completion-summary.md directly / Drafted pr-description.md]
+- PR Title: <approved-title>
+- Submission Mode: [Draft / Ready for Review]
 - Markdown Validation: PASSED (check-md ran cleanly)
 
 ==> Programmatic PR Option:
 I detected that the GitHub CLI (gh) is [available/not available]. 
-Would you like me to push this branch and programmatically create the PR as a draft for you?
+Would you like me to push this branch and programmatically create the PR as a [draft / standard pull request] for you?
 ```
