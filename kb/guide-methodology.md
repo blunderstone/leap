@@ -1086,12 +1086,31 @@ You must never "race ahead" or combine drafting and execution into a single, uni
 #### 2. Checkbox Control (Success Criteria)
 
 - Under no circumstances may you modify incomplete checkboxes (`- [ ]`) to complete (`- [x]`) in any `goals.md`, `plan.md`, or project checklists on your own.
-- Marking a checkbox as complete is a **human-only action**. You may only check a box if the user has explicitly reviewed the implemented behavior and instructed you to do so.
+- Marking a checkbox as complete requires **explicit human review and authorization**. You may only update a checkbox to completed (`[x]`) on the developer's behalf after they have explicitly reviewed the implemented behavior and instructed you to do so.
 
 #### 3. Feature Branch Finalization
 
 - You must never unilaterally decide that a feature is complete.
 - Do not write the `completion-summary.md` or stage any commits until the human developer has verified all success criteria, checked off the success checkboxes, and explicitly directed you to finalize the feature branch.
+
+#### 4. Sequential Phase Gating (No Jumping Ahead)
+
+- **One Phase Per Turn:** During the feature execution phase, you must strictly limit your implementation scope to the single planned Phase requested by the human developer. You must NEVER write code, add tests, or modify files for any other phase in the same conversational turn or session.
+- **Mandatory Pausing at Phase Boundaries:** At the end of every planned phase, you must halt, present your completed work (e.g., code, tests, or documentation) along with linter and validation results, and **stop and wait for explicit human review and approval** before starting any work on the next phase. This is a hard gate.
+- **TDD Exceptions Still Gate:** Permitting a bypass of test-first TDD for non-functional tasks (such as editing markdown, tweaking configurations, or reorganizing assets) is NOT a loophole to bypass gating. Non-functional phases must still stop, present their completed work, and wait for human review/approval before committing and ending their turn.
+- **Atomic Phase Commits:** Every planned phase must have its own separate, dedicated git commit. You are strictly prohibited from combining or staging changes from multiple phases into a single commit.
+
+#### 5. Turn-Gated Feature Finalization
+
+- **Two-Step Finalization:** The feature finalization process (compiling completion summaries, final success criteria assessments, and performing the final git commit) is a strict two-step, turn-gated workflow. You are strictly prohibited from compiling the `completion-summary.md` and performing the finalization git commit or success checkbox updates in a single conversation turn.
+- **First-Turn Gating:** On the first turn of feature finalization, you must only gather git information, draft the `completion-summary.md` file (uncommitted), and present the checklist assessment. You MUST STOP and wait for the developer's explicit review and approval of these files and checklist assessment.
+- **Second-Turn Commit:** You may only update the success checkboxes in `goals.md`/`plan.md` on the developer's behalf and perform the final milestone commit on a subsequent turn AFTER the user has explicitly confirmed their approval.
+
+#### 6. Turn-Gated PR Preparation and Submission
+
+- **Two-Step Submission:** Preparing and submitting a Pull Request (generating titles, drafting descriptions, pushing branches, and creating the pull request) is a strict two-step, turn-gated workflow. You are strictly prohibited from generating titles, drafting descriptions, and executing a branch push or PR creation in a single conversation turn.
+- **First-Turn Gating:** On the first turn of PR preparation, you must only draft the PR description (if requested), generate the proposed conventional PR title, and present them along with the PR creation options. You MUST STOP and wait for the developer to review and approve the title and settings.
+- **Second-Turn Submission:** You may only execute the branch push or create the Pull Request on a subsequent turn AFTER the user has explicitly reviewed and approved your proposed title, description, and submission settings.
 
 ## LEAP Compliance Levels
 
