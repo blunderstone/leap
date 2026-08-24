@@ -438,6 +438,50 @@ else
   print_warning "Skipped .gitignore configuration."
 fi
 
+# 4d. Configure Git Pre-Commit Hook (Only for LEAP Repository Maintainers)
+if [ "$LEAP_DIR" = "." ]; then
+  print_step "Configuring Git Pre-Commit Hook"
+  echo "The LEAP pre-commit hook automatically runs 'run-all-checks.sh' before any git commit, preventing broken code or linter failures from being committed."
+
+  ask_yes_no "Install LEAP git pre-commit hook?" "y" "Installs the pre-commit hook into your active git repository to physically block broken commits."
+  if [ "$PROMPT_RESULT" = "y" ]; then
+    HOOK_DIR=""
+    if [ -f ".git" ]; then
+      # Submodule pointer file
+      GIT_DIR_POINTER=$(cat .git)
+      if [[ "$GIT_DIR_POINTER" =~ ^gitdir:\ (.*) ]]; then
+        HOOK_DIR="${BASH_REMATCH[1]}/hooks"
+      fi
+    elif [ -d ".git" ]; then
+      HOOK_DIR=".git/hooks"
+    fi
+
+    if [ -n "$HOOK_DIR" ]; then
+      mkdir -p "$HOOK_DIR"
+      HOOK_DEST="$HOOK_DIR/pre-commit"
+      
+      # Backup existing hook if present
+      if [ -f "$HOOK_DEST" ]; then
+        cp "$HOOK_DEST" "$HOOK_DEST.bak"
+        print_success "Saved backup of existing pre-commit hook to $HOOK_DEST.bak"
+      fi
+      
+      # Copy canonical pre-commit hook
+      if [ -f "scripts/git-pre-commit" ]; then
+        cp "scripts/git-pre-commit" "$HOOK_DEST"
+        chmod +x "$HOOK_DEST"
+        print_success "Installed pre-commit hook to $HOOK_DEST and marked as executable."
+      else
+        print_warning "Source pre-commit hook script not found at scripts/git-pre-commit."
+      fi
+    else
+      print_warning "Could not determine git hooks directory. Skipped pre-commit hook installation."
+    fi
+  else
+    print_warning "Skipped pre-commit hook installation."
+  fi
+fi
+
 # 5. Configure QMD Semantic Search
 print_step "Configuring QMD Semantic Search"
 echo "QMD is an on-device semantic search engine that lets AI agents find your documentation."

@@ -18,8 +18,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import re
 import subprocess
 import sys
+
+
+def strip_ansi(text: str) -> str:
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', text)
 
 
 def test_main_module_execution() -> None:
@@ -35,11 +41,14 @@ def test_main_module_execution() -> None:
     # Should exit successfully
     assert result.returncode == 0, f"Expected exit code 0, got {result.returncode}\nStderr: {result.stderr}"
 
+    # Strip ANSI escape codes
+    stdout = strip_ansi(result.stdout)
+
     # Should show help text - strip leading whitespace for assertion
-    stripped_output = result.stdout.strip()
+    stripped_output = stdout.strip()
     assert stripped_output.startswith("Usage:"), \
         f"Expected help to start with 'Usage:', got:\n{stripped_output[:100]}"
 
     # Should contain key CLI options
-    assert "--fix" in result.stdout, "Help should mention --fix option"
-    assert "--format" in result.stdout, "Help should mention --format option"
+    assert "--fix" in stdout, "Help should mention --fix option"
+    assert "--format" in stdout, "Help should mention --format option"
