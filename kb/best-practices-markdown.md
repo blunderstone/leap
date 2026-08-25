@@ -100,6 +100,34 @@ Consecutive label-value pairs need `<br>` tags to prevent unwanted wrapping.
 
 **See:** [ADR leap-adr-002](../adr/leap-adr-002__markdown-formatting-standards.md) for complete formatting standards.
 
+## Hyperlink & Issue Referencing Standards
+
+To maintain clean navigation and professional standards across all Markdown documentation, follow these hyperlinking guidelines:
+
+### Explicitly Hyperlink GitHub Issues
+
+Any reference to a GitHub issue in any Markdown file must be explicitly hyperlinked to its respective URL on GitHub. Do not write bare issue numbers (e.g., `#14` or `issue 14`) without an active, clickable hyperlink.
+
+**Why:** Bare issue references are not clickable in many standard Markdown renderers (especially local readers or IDE extensions), introducing navigation friction for developers. Explicit hyperlinks guarantee instant access across all environments.
+
+#### Example violation
+
+```markdown
+This was resolved in #14.
+We are tracking this under issue #32.
+```
+
+#### Correct
+
+```markdown
+This was resolved in [#14](https://github.com/blunderstone/leap/issues/14).
+We are tracking this under [Issue #32](https://github.com/blunderstone/leap/issues/32).
+```
+
+### Fragile Anchor Links
+
+Avoid using emojis or highly volatile structural text inside heading anchors (e.g., `[Implicit CLA](CONTRIBUTING.md#⚖️-implicit-cla)`). This can break across different Markdown parsers (such as GitHub, local linters, or documentation site generators). Use direct file references or clean, emoji-free heading anchors where possible.
+
 ## When to Run check-md
 
 ### During Development
@@ -668,11 +696,11 @@ markdownlint kb/ --json > markdownlint-report.json
 ## Related Documentation
 
 - [ADR leap-adr-002: Markdown Formatting Standards](../adr/leap-adr-002__markdown-formatting-standards.md)
-- [Onboarding Guide](guide-markdown-quality-onboarding.md)
-- [Baseline Metrics](metrics-markdown-quality-baseline.txt) - Current project status
+- [LEAP Installation & Setup Guide](guide-installation.md)
+- [LEAP Methodology Guide](guide-methodology.md)
+- [LEAP Cheatsheet](guide-cheatsheet.md)
 - [check-md README](../check-md/README.md)
 - [Integration Templates](../check-md/templates/README.md)
-- [CLAUDE.md ADR leap-adr-002 Section](../CLAUDE.md#️-critical-adr-002-markdown-compliance)
 
 ## Summary
 

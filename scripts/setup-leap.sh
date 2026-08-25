@@ -261,26 +261,27 @@ write_claude() {
   write_file_safe "CLAUDE.md" "Created CLAUDE.md (Claude Code / Cline / Roo Code / Cursor)" << 'EOF'
 # Claude Developer Guide (LEAP Compliant)
 
-This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** methodology. Please respect the following guidelines for all code changes, architecture decisions, and feature implementations.
+This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** methodology.
 
-## LEAP Principles
+## Workspace Skills (Preferred)
 
-1. **Documentation First**: Before modifying or creating code, check if there is an active feature branch folder in `kb/feature/<username>/<feature-name>/`.
-   - Ensure a `goals.md` exists outlining the requirements.
-   - For complex, multi-phase changes, verify there is an execution `plan.md`.
-   - Update plans and document phase completions as you work.
-2. **Test Throughout**: Write unit and integration tests for every implemented phase. Target 90%+ coverage.
-3. **Completion Summary**: Create or update `completion-summary.md` in the feature folder before considering the implementation complete.
-4. **Agent-Friendly Style**: All Markdown documents in `kb/` must conform to LEAP Markdown standards (semantic headings, blank line block separation, consecutive metadata `<br>` tags).
+If specialized workspace skills are available (e.g., `leap-start`, `leap-dev`, `leap-pr`, `leap-handoff`, `leap-finish`), you **MUST** activate and follow them for managing feature lifecycles, TDD, and phase reviews.
 
-## Markdown Compliance (check-md)
+## Fallback LEAP Guidelines (If Skills Are Not Used)
 
-Always lint and format markdown documents before finalizing them. This project uses the `check-md` utility.
+1. **Documentation First**: Always review the requirements in `kb/feature/<username>/<feature-name>/goals.md` and the incremental phases in `plan.md` before editing code.
+2. **Sequential Phase Gating**: Work on only **one phase at a time**. After completing a phase, stop, present your completed work (code and test coverage), and **wait for explicit human review and approval** before proceeding to any subsequent phase.
+3. **Testing & Coverage**: Write tests progressively during each phase (TDD). Maintain a target of 90%+ coverage.
+4. **Markdown Standards**: All Markdown documentation in `kb/` must conform to LEAP formatting rules.
+
+## Global Markdown Validation (check-md)
+
+The `check-md` Markdown linter is globally installed and available on your system PATH. You can execute it directly from any workspace directory:
 
 - **Check files**: `check-md kb/`
 - **Auto-fix violations**: `check-md kb/ --fix`
 
-Run `check-md` to verify formatting compliance. Do not bypass markdown errors.
+Always run `check-md` to verify formatting compliance. Do not bypass Markdown linter errors.
 
 ## Build and Test Commands
 
@@ -296,20 +297,22 @@ write_gemini() {
   write_file_safe "GEMINI.md" "Created GEMINI.md (Gemini CLI / Antigravity CLI / AGENTS.md)" << 'EOF'
 # Gemini & Antigravity Developer Guide (LEAP Compliant)
 
-This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** paradigm. Every task must be carried out following our documentation-first and testing-first lifecycle.
+This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** paradigm.
 
-## LEAP Paradigm Guidelines
+## Workspace Skills (Preferred)
 
-1. **Knowledge Retrieval**: Always scan the project's root `kb/` directory first. Familiarize yourself with design constraints, guide documents (`leap/kb/guide-*.md`), and implementation blueprints (`leap/kb/impl-*.md`).
-2. **Feature Branch Lifecycle**:
-   - Locate your feature directory at `kb/feature/<username>/<feature-name>/`.
-   - Read `goals.md` and `plan.md` before coding.
-   - Author detailed phase journals (`phase-1.md`, etc.) for complex features.
-   - Document a comprehensive summary in `completion-summary.md` on completion.
-3. **Testing Rigor**: All code edits must be backed by automated test coverage. Proactively run the test commands.
-4. **Markdown Standards**: Markdown files must strictly comply with `check-md` Rules 1-5.
+If specialized workspace skills are available (e.g., `leap-start`, `leap-dev`, `leap-pr`, `leap-handoff`, `leap-finish`), you **MUST** activate and follow them for managing feature lifecycles, TDD, and phase reviews.
+
+## Fallback LEAP Guidelines (If Skills Are Not Used)
+
+1. **Documentation First**: Scan the project's `kb/` directory and review the active feature folder `kb/feature/<username>/<feature-name>/`. Read `goals.md` and `plan.md` before coding.
+2. **Sequential Phase Gating**: Work on only **one phase at a time**. After completing a phase, stop, present your completed work (code and test coverage), and **wait for explicit human review and approval** before proceeding to any subsequent phase.
+3. **Testing Rigor**: All code edits must be backed by progressive automated test coverage. Target 90%+ coverage.
+4. **Markdown Standards**: Ensure Markdown files comply with `check-md` Rules 1-5.
 
 ## Tooling Commands
+
+The `check-md` Markdown linter is globally installed and available on your system PATH. You can execute it directly from any workspace directory:
 
 - **Check MD Compliance**: `check-md kb/`
 - **Auto-Fix MD Errors**: `check-md kb/ --fix`
@@ -323,13 +326,12 @@ write_copilot() {
   write_file_safe ".github/copilot-instructions.md" "Created .github/copilot-instructions.md (GitHub Copilot)" << 'EOF'
 # GitHub Copilot Custom Instructions (LEAP Compliant)
 
-This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** methodology. Please respect the following guidelines for all code changes, architecture decisions, and feature implementations.
+This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** methodology.
 
-- **Documentation First**: Always respect and follow requirements and plans inside the `kb/` directory, specifically `kb/feature/<username>/<feature-name>/goals.md` and `plan.md`.
-- **Markdown Standards**: Ensure markdown changes comply with check-md standards:
-  - Separate block elements with empty lines.
-  - Use proper headings (# for title, ##, ###, etc.) instead of bold text.
-  - Use <br> tags for consecutive metadata lists.
+- **LEAP Workspace Skills**: If specialized workspace skills are available (`leap-start`, `leap-dev`, etc.), prioritize using them.
+- **Documentation First**: Always review the requirements in `kb/feature/<username>/<feature-name>/goals.md` and the incremental phases in `plan.md` before editing code.
+- **Sequential Phase Gating**: Implement only one phase at a time. Pause and ask the developer for explicit review and approval before proceeding to the next phase.
+- **Markdown Standards**: The `check-md` Markdown linter is globally installed on the PATH and can be run directly from any directory. Ensure all Markdown changes comply with `check-md` Rules 1-5.
 - **Testing**: Maintain high test coverage (90%+). Proactively verify code behaves correctly.
 EOF
 }
@@ -339,11 +341,13 @@ write_cursor() {
   write_file_safe ".cursorrules" "Created .cursorrules (Cursor / Windsurf)" << 'EOF'
 # Cursor Rules (LEAP Compliant)
 
-This project follows the **Literate (Extended-by-Agent) Programming (LEAP)** methodology. Please respect the following guidelines for all code changes, architecture decisions, and feature implementations.
+This project adopts the **Literate (Extended-by-Agent) Programming (LEAP)** methodology.
 
+- **LEAP Workspace Skills**: If specialized workspace skills are available (`leap-start`, `leap-dev`, etc.), prioritize activating and following them.
 - **Documentation First**: Always check `kb/feature/<username>/<feature-name>/goals.md` and `plan.md` before modifying or creating code.
-- **Markdown Standards**: Ensure markdown files comply with check-md rules (proper headings, blank lines around code blocks/lists, <br> for metadata). Run `check-md kb/ --fix` to verify.
-- **Testing**: Proactively write unit and integration tests. Target 90%+ coverage.
+- **Sequential Phase Gating**: Implement only one phase at a time. Stop and ask the developer for explicit review and approval before proceeding to any subsequent phase.
+- **Markdown Standards**: The `check-md` Markdown linter is globally installed on your system PATH and can be run directly from any directory. Ensure Markdown files comply with `check-md` Rules 1-5 (run `check-md kb/ --fix` to verify).
+- **Testing**: Proactively write unit and integration tests (target 90%+ coverage).
 EOF
 }
 

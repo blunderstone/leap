@@ -300,11 +300,11 @@ The tests are the AI's instructions. Make them clear, precise, and complete.
 
 ### Learn More About Test Quality
 
-This document focuses on the TDD workflow. For comprehensive guidance on writing high-quality tests, see:
+This document focuses on the TDD workflow. For comprehensive guidance on writing high-quality tests and our testing rigor, see:
 
-- **[best-practices-testing.md](best-practices-testing.md)** - Complete testing standards including assertion patterns, exact verification strategies, and common pitfalls to avoid
+- **[guide-methodology.md](guide-methodology.md)** - Core LEAP methodology, testing requirements, and verification standards
 
-**Required reading:** Every developer practicing TDD must understand the test quality standards in best-practices-testing.md.
+**Required reading:** Every developer practicing TDD must understand the testing standards in guide-methodology.md.
 
 ---
 
@@ -347,9 +347,9 @@ fun calculateDiscount(customer: Customer, price: Double): Double {
 
 **Checkpoint:** Tests must compile before proceeding.
 
-##### Step 2: Ensure Tests Follow best-practices-testing.md
+##### Step 2: Ensure Tests Follow Quality Guidelines
 
-Review tests against [best-practices-testing.md](best-practices-testing.md):
+Review tests against our quality guidelines:
 
 - ✅ Descriptive assertion messages providing context
 - ✅ Exact verification using `assertEquals()` with precise expected values

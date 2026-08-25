@@ -115,5 +115,5 @@ For a complete explanation of the methodology, compliance requirements, and guid
 
 This project is licensed under the terms of **The Apache License, Version 2.0** (see [`LICENSE`](LICENSE)).
 
-By contributing to this repository, you agree that your submissions are governed by the terms outlined in our [Contributing Guide](CONTRIBUTING.md#⚖️-contribution-licensing-agreement-implicit-cla).
+By contributing to this repository, you agree that your submissions are governed by the terms outlined in our [Contributing Guide](CONTRIBUTING.md#contribution-licensing-agreement-implicit-cla).
 

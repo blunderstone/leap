@@ -62,7 +62,7 @@ modern development environment.
 ### Knowledge Base (`kb`) Directory
 
 A `kb` directory is a _knowledge base_ consisting of a structured collection of Markdown
-_knowledge documents_. These documents should follow [markdown best practices](markdown_formatting_best_practice.md),
+_knowledge documents_. These documents should follow [markdown best practices](best-practices-markdown.md),
 particularly ensuring blank lines separate block elements (code blocks, lists, tables) from
 paragraph text for consistent rendering across different Markdown processors.
 
