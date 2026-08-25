@@ -26,12 +26,15 @@ Additionally, the term "Markdown" should be consistently treated as a proper nou
 
 ### Functional Requirements
 
-- **REQ-1 (Purge ADR 008):** Update every reference to "ADR 008" or "ADR-008" to "ADR 002" or "ADR-002" across the entire repository. This includes:
-  - Linter implementation code (`check-md/src/check_md/rules.py`, `check-md/src/check_md/cli.py`, etc.)
-  - Tests (`check-md/tests/`)
-  - Integration templates (`check-md/templates/`)
-  - Build/package configuration (`check-md/pyproject.toml`)
-  - Documentation files (such as `kb/adr/leap-adr-002__markdown-formatting-standards.md` and `check-md/WORKFLOW-DEMONSTRATION.md`)
+- **REQ-1 (Purge ADR 008):** Update every reference to "ADR 008" or "ADR-008" across the entire repository.
+  - In public-facing messages (such as CLI help descriptions, user logs, pre-commit hook templates, and package descriptions), refer to it as **"LEAP ADR 002"** (instead of just "ADR 002") to ensure users understand the context.
+  - In code identifiers, comments, and internal docstrings, update "ADR 008" to "LEAP ADR 002" or "ADR 002" as appropriate.
+  - This includes:
+    - Linter implementation code (`check-md/src/check_md/rules.py`, `check-md/src/check_md/cli.py`, etc.)
+    - Tests (`check-md/tests/`)
+    - Integration templates (`check-md/templates/`)
+    - Build/package configuration (`check-md/pyproject.toml`)
+    - Documentation files (such as `kb/adr/leap-adr-002__markdown-formatting-standards.md` and `check-md/WORKFLOW-DEMONSTRATION.md`)
 - **REQ-2 (Capitalize Markdown):** Audit and capitalize "markdown" to "Markdown" as a proper noun in all natural language text (documentation, comments, help strings, CLI output logs, templates).
   - Code identifiers (such as variables, function names, types, e.g. `markdown_lines`), command executions (like `check-md`), file extensions (`.md`), URLs, and path names should not be changed where it would cause syntax or execution errors.
 
