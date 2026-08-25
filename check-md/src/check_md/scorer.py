@@ -1,5 +1,5 @@
 """
-scorer.py — Compliance scoring for markdown files.
+scorer.py — Compliance scoring for Markdown files.
 
 Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)
 

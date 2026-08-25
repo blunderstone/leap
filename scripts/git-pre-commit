@@ -37,7 +37,21 @@ echo "=================================================="
 echo "LEAP pre-commit hook: running quality checks..."
 echo "=================================================="
 
-# Run checks
+# 1. Run check-md on staged Markdown files (fast local gate)
+if command -v check-md >/dev/null 2>&1; then
+  echo "Running check-md on staged Markdown files..."
+  if ! check-md --staged; then
+    echo "=================================================="
+    echo "✗ LEAP GATING FAILURE: Markdown violations found." >&2
+    echo "Please run 'check-md --staged --fix' to resolve them." >&2
+    echo "=================================================="
+    exit 1
+  fi
+else
+  echo "Warning: check-md not found on your PATH. Skipping staged Markdown checks." >&2
+fi
+
+# 2. Run the full unified workspace check suite
 if ! bash "$RUNNER"; then
   echo "=================================================="
   echo "✗ LEAP GATING FAILURE: Commit rejected." >&2

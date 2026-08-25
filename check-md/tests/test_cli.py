@@ -438,7 +438,7 @@ class TestCliBasicUsage:
         ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
         stdout = ansi_escape.sub('', result.stdout)
 
-        assert "Check markdown files" in stdout
+        assert "Check Markdown files" in stdout
         assert "--verbose" in stdout
         assert "--format" in stdout
 
@@ -538,7 +538,7 @@ class TestCliErrorHandling:
     """Test CLI error handling."""
 
     def test_exits_with_error_on_no_files(self, tmp_path: Path) -> None:
-        """Should exit with code 2 when no markdown files found."""
+        """Should exit with code 2 when no Markdown files found."""
         empty_dir = tmp_path / "empty"
         empty_dir.mkdir()
 
@@ -546,7 +546,7 @@ class TestCliErrorHandling:
 
         assert result.exit_code == 2
         # Typer writes errors to stderr
-        assert "No markdown files found" in result.stderr or result.exit_code == 2
+        assert "No Markdown files found" in result.stderr or result.exit_code == 2
 
     def test_handles_invalid_format(self, tmp_path: Path) -> None:
         """Should reject invalid format option."""

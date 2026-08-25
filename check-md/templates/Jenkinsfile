@@ -62,7 +62,7 @@ pipeline {
             echo 'Run: check-md kb/ docs/ --fix'
         }
         success {
-            echo 'All markdown files are compliant with ADR 008'
+            echo 'All Markdown files are compliant with LEAP ADR 002'
         }
     }
 }

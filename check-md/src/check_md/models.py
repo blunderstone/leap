@@ -32,7 +32,7 @@ class Severity(Enum):
 
 @dataclass
 class Violation:
-    """Represents a single markdown formatting violation.
+    """Represents a single Markdown formatting violation.
 
     Attributes:
         rule_id: Rule identifier (e.g., "ADR-002-R1")

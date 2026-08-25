@@ -76,12 +76,12 @@ class TestMarkdownChecker:
             checker.check_file("/nonexistent/file.md")
 
     def test_check_file_raises_on_non_markdown(self, checker: MarkdownChecker) -> None:
-        """Should raise ValueError for non-.md files."""
+        """Should raise ValueError for non-Markdown files."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
             temp_path = f.name
 
         try:
-            with pytest.raises(ValueError, match="Not a markdown file"):
+            with pytest.raises(ValueError, match="Not a Markdown file"):
                 checker.check_file(temp_path)
         finally:
             Path(temp_path).unlink()
@@ -200,3 +200,17 @@ class TestMarkdownChecker:
             assert isinstance(result.violations, list)
         finally:
             Path(temp_path).unlink()
+
+    def test_rules_no_adr_008_references(self, checker: MarkdownChecker) -> None:
+        """Should ensure that no loaded rules contain references to the obsolete 'ADR 008'."""
+        for rule in checker.rules:
+            # Check rule descriptions and docstrings
+            rule_id = rule.rule_id
+            description = rule.description or ""
+            docstring = rule.__doc__ or ""
+
+            assert "ADR 008" not in description, f"Rule {rule_id} description contains 'ADR 008'"
+            assert "ADR-008" not in description, f"Rule {rule_id} description contains 'ADR-008'"
+            assert "ADR 008" not in docstring, f"Rule {rule_id} docstring contains 'ADR 008'"
+            assert "ADR-008" not in docstring, f"Rule {rule_id} docstring contains 'ADR-008'"
+

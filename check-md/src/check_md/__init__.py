@@ -1,7 +1,7 @@
 """
 __init__.py — Package initialization for check-md.
 
-check-md: Markdown linter enforcing ADR 008 formatting standards.
+check-md: Markdown linter enforcing LEAP ADR 002 formatting standards.
 
 Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)
 
