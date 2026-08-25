@@ -55,10 +55,10 @@ Additionally, the term "Markdown" should be consistently treated as a proper nou
 
 ## Success Criteria
 
-- [ ] Every reference to "ADR 008" or "ADR-008" is updated to "ADR 002" or "ADR-002" across the codebase.
-- [ ] Natural language occurrences of "markdown" are capitalized to "Markdown" across all documentation and source code prose.
-- [ ] No regression in linter functionality: all Python tests pass successfully.
-- [ ] All modified Markdown files pass the `check-md` linter with zero errors.
+- [x] Every reference to "ADR 008" or "ADR-008" is updated to "ADR 002" or "ADR-002" across the codebase.
+- [x] Natural language occurrences of "markdown" are capitalized to "Markdown" across all documentation and source code prose.
+- [x] No regression in linter functionality: all Python tests pass successfully.
+- [x] All modified Markdown files pass the `check-md` linter with zero errors.
 
 ## Constraints
 

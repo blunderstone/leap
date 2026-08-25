@@ -42,8 +42,8 @@ This implementation plan outlines the systematic cleanup of the obsolete ADR 008
 
 ### Success Criteria
 
-- [ ] Every "ADR 008" / "ADR-008" reference is purged and updated to "ADR 002" / "ADR-002" across python source code, config files, test cases, templates, and documentation.
-- [ ] All `check-md` test suites pass cleanly.
+- [x] Every "ADR 008" / "ADR-008" reference is purged and updated to "ADR 002" / "ADR-002" across python source code, config files, test cases, templates, and documentation.
+- [x] All `check-md` test suites pass cleanly.
 
 ---
 
@@ -68,6 +68,6 @@ This implementation plan outlines the systematic cleanup of the obsolete ADR 008
 
 ### Success Criteria
 
-- [ ] Capitalization of "Markdown" is standardized as a proper noun across all prose in the repository.
-- [ ] All tests in `check-md` pass successfully.
-- [ ] All modified documentation files pass `check-md` validation with zero errors.
+- [x] Capitalization of "Markdown" is standardized as a proper noun across all prose in the repository.
+- [x] All tests in `check-md` pass successfully.
+- [x] All modified documentation files pass `check-md` validation with zero errors.
