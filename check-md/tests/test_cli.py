@@ -438,7 +438,7 @@ class TestCliBasicUsage:
         ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
         stdout = ansi_escape.sub('', result.stdout)
 
-        assert "Check markdown files" in stdout
+        assert "Check Markdown files" in stdout
         assert "--verbose" in stdout
         assert "--format" in stdout
 

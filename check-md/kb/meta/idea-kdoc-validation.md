@@ -8,11 +8,11 @@
 
 ## Overview
 
-Extend check-md to detect and optionally fix ADR 008 markdown violations within KDoc comments in Kotlin source files.
+Extend check-md to detect and optionally fix LEAP ADR 002 markdown violations within KDoc comments in Kotlin source files.
 
 ## Context
 
-During code review, ADR 008 violations were discovered in KDoc comments (e.g., using `**bold**` for structural headers instead of proper markdown headers). Currently, check-md only validates standalone markdown files, missing violations embedded in source code documentation.
+During code review, LEAP ADR 002 violations were discovered in KDoc comments (e.g., using `**bold**` for structural headers instead of proper markdown headers). Currently, check-md only validates standalone markdown files, missing violations embedded in source code documentation.
 
 ## Motivation
 
@@ -29,7 +29,7 @@ Add KDoc validation capability to check-md:
 
 1. **File Pattern Matching**: Identify `.kt` files during scanning
 2. **KDoc Extraction**: Parse Kotlin files to extract KDoc comment blocks (`/** ... */`)
-3. **Markdown Validation**: Apply existing ADR 008 rules to extracted markdown
+3. **Markdown Validation**: Apply existing LEAP ADR 002 rules to extracted markdown
 4. **Source Location Tracking**: Report violations with file name, line numbers, and KDoc context
 
 ### Auto-Fix Strategy
@@ -37,7 +37,7 @@ Add KDoc validation capability to check-md:
 When `--fix` flag is used:
 
 1. Extract KDoc blocks with precise line/column locations
-2. Apply ADR 008 fixes to markdown content
+2. Apply LEAP ADR 002 fixes to markdown content
 3. Replace original KDoc blocks in source file
 4. Preserve surrounding code and formatting
 
@@ -95,7 +95,7 @@ src/main/kotlin/com/example/util/Throttler.kt:67
 
 ## Benefits
 
-1. **Automated Compliance**: Catch ADR 008 violations in KDoc automatically
+1. **Automated Compliance**: Catch LEAP ADR 002 violations in KDoc automatically
 2. **Consistent Documentation**: Same standards for standalone docs and code comments
 3. **Developer Experience**: Fix violations with `--fix` flag
 4. **CI Integration**: Block PRs with KDoc violations
@@ -106,7 +106,7 @@ src/main/kotlin/com/example/util/Throttler.kt:67
 ### Scope
 
 - Focus exclusively on Kotlin KDoc comments
-- Apply all ADR 008 markdown formatting rules
+- Apply all LEAP ADR 002 markdown formatting rules
 - No support for JavaDoc (uses HTML, not markdown)
 
 ### Technical Challenges
@@ -121,7 +121,7 @@ src/main/kotlin/com/example/util/Throttler.kt:67
 ### Alternatives Considered
 
 1. **Separate Tool**: Create kdoc-check instead of extending check-md
-   - ❌ Duplication of ADR 008 rules
+   - ❌ Duplication of LEAP ADR 002 rules
    - ❌ Separate configuration and CI integration
 
 2. **IDE Plugin**: Rely on IDE linting
@@ -137,7 +137,7 @@ src/main/kotlin/com/example/util/Throttler.kt:67
 ### Phase 1: Detection Only
 
 - Parse `.kt` files and extract KDoc blocks
-- Apply ADR 008 rules to extracted markdown
+- Apply LEAP ADR 002 rules to extracted markdown
 - Report violations with line numbers
 - No auto-fix capability
 
@@ -149,7 +149,7 @@ src/main/kotlin/com/example/util/Throttler.kt:67
 
 ## Success Criteria
 
-1. Detect ADR 008 violations in KDoc with 100% accuracy
+1. Detect LEAP ADR 002 violations in KDoc with 100% accuracy
 2. Auto-fix violations without corrupting source code
 3. Performance: < 5s for 1000 Kotlin files
 4. Zero false positives in test suite

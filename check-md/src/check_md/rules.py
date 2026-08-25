@@ -1,5 +1,5 @@
 """
-rules.py — Rule implementations for ADR 008 markdown formatting standards.
+rules.py — Rule implementations for LEAP ADR 002 Markdown formatting standards.
 
 Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)
 
@@ -192,7 +192,7 @@ class Rule(ABC):
 
 class Rule1SemanticHeadings(Rule):
     """
-    ADR 008 Rule 1: Use proper heading levels, not bold text for structure.
+    LEAP ADR 002 Rule 1: Use proper heading levels, not bold text for structure.
 
     Detects:
     - Standalone bold text that should be a heading
@@ -303,7 +303,7 @@ class Rule1SemanticHeadings(Rule):
 
 class Rule2BlockSeparation(Rule):
     """
-    ADR 008 Rule 2: Blank lines before block constructs.
+    LEAP ADR 002 Rule 2: Blank lines before block constructs.
 
     Detects missing blank lines before:
     - Lists (-, *, +, 1.)
@@ -426,10 +426,10 @@ class Rule2BlockSeparation(Rule):
 
 class Rule3HeadingIncrement(Rule):
     """
-    ADR 008 Rule 3: Heading levels should only increment by 1.
+    LEAP ADR 002 Rule 3: Heading levels should only increment by 1.
 
     Aligned with MD001 (markdownlint) and remark-lint heading-increment.
-    Enforces ADR 008 line 70: "Never skip heading levels".
+    Enforces LEAP ADR 002: "Never skip heading levels".
 
     Valid sequences:
     - Increments of 1: # → ##, ## → ### → ####
@@ -780,7 +780,7 @@ class Rule3HeadingIncrement(Rule):
 
 class Rule4NestedCodeBlocks(Rule):
     """
-    ADR 008 Rule 4: Proper escaping for nested code blocks.
+    LEAP ADR 002 Rule 4: Proper escaping for nested code blocks.
 
     Detects:
     - Code blocks (```) inside other code blocks with insufficient fence length
@@ -801,7 +801,7 @@ class Rule4NestedCodeBlocks(Rule):
         """
         Check entire file for nested code block violations.
 
-        Per ADR 008 Rule 4 and CommonMark spec:
+        Per LEAP ADR 002 Rule 4 and CommonMark spec:
         - A fence with a language tag always opens a new block
         - A fence without a language tag closes the current block if length >= opening fence
         - A fence without a language tag opens a nested block if length < opening fence
@@ -960,13 +960,13 @@ class Rule4NestedCodeBlocks(Rule):
 
 class Rule5LabelValueSequences(Rule):
     """
-    ADR 008 Rule 5: Label-value sequences require line breaks.
+    LEAP ADR 002 Rule 5: Label-value sequences require line breaks.
 
     Detects consecutive label-value lines that are missing <br> tags.
     Label-value pattern: **Label:** value or **Label**: value
 
     When label-value lines appear consecutively, they should end with <br>
-    (except the last line in the sequence) to prevent markdown from wrapping
+    (except the last line in the sequence) to prevent Markdown from wrapping
     them into a single paragraph.
     """
 

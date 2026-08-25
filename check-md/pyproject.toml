@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "check-md"
 version = "1.0.0"
-description = "Markdown linter enforcing ADR 008 formatting standards"
+description = "Markdown linter enforcing LEAP ADR 002 formatting standards"
 authors = [
     {name = "F. Andy Seidl", email = "andy@seidlweb.com"}
 ]

@@ -35,7 +35,7 @@ from .scorer import calculate_project_score, format_score_indicator
 
 app = typer.Typer(
     name="check-md",
-    help="Check markdown files for ADR 008 formatting compliance",
+    help="Check Markdown files for LEAP ADR 002 formatting compliance",
     add_completion=False,
 )
 
@@ -464,7 +464,7 @@ def main(
         help="Force cleanup of backups without verification (use with --clean-backups)",
     ),
 ) -> None:
-    """Check markdown files for ADR 008 formatting compliance.
+    """Check Markdown files for LEAP ADR 002 formatting compliance.
 
     Examples:
 

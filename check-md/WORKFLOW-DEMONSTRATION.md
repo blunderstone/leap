@@ -1,8 +1,8 @@
-# check-md Workflow Demonstration: Markdown Linting for ADR 008 Compliance
+# check-md Workflow Demonstration: Markdown Linting for LEAP ADR 002 Compliance
 
 ## Purpose
 
-Demonstrates complete workflow for checking markdown files against ADR 008 formatting standards using the check-md CLI tool.
+Demonstrates complete workflow for checking Markdown files against LEAP ADR 002 formatting standards using the check-md CLI tool.
 
 ### Scope
 
@@ -101,7 +101,7 @@ Expected: Help text showing available options
 
 ## Overview
 
-The **check-md** CLI enforces ADR 008 markdown formatting standards, detecting common issues:
+The **check-md** CLI enforces LEAP ADR 002 Markdown formatting standards, detecting common issues:
 
 - **Rule 1 (Semantic Headings)**: Detects bold text used instead of proper headings
 - **Rule 2 (Block Separation)**: Detects missing blank lines before block elements
@@ -616,7 +616,7 @@ The **check-md** CLI workflow delivers value across multiple dimensions:
 
 ### Documentation Quality
 
-- **Consistency**: Enforces ADR 008 standards across all markdown files
+- **Consistency**: Enforces LEAP ADR 002 standards across all Markdown files
 - **Readability**: Catches formatting issues that harm document comprehension
 - **Maintainability**: Standardized formatting reduces cognitive load for readers
 
@@ -672,7 +672,7 @@ The **check-md** CLI workflow delivers value across multiple dimensions:
 
 1. **Documentation Audits**: Run `check-md kb/` to audit all documentation
 2. **Track Compliance**: Use JSON output for metrics dashboards
-3. **Set Standards**: Enforce ADR 008 compliance for all new documentation
+3. **Set Standards**: Enforce LEAP ADR 002 compliance for all new documentation
 
 ---
 

@@ -439,7 +439,7 @@ check-md --staged
 
 - Full guide: `check-md/README.md`
 - Integration: `check-md/templates/README.md`
-- Workflow: See CLAUDE.md "ADR 008 Compliance" section
+- Workflow: See GEMINI.md "Markdown Validation" section
 
 #### Complementary Tools
 
@@ -449,14 +449,14 @@ check-md --staged
 
 ### AI Assistant Context
 
-This ADR is integrated into CLAUDE.md with automated enforcement via `check-md`:
+This ADR is integrated into GEMINI.md with automated enforcement via `check-md`:
 
 - AI assistants run `check-md <file> --fix --quiet` before presenting files
 - Common violations documented with ❌/✅ examples
 - Ignore comments available for intentional violations
 - Auto-fix handles 90%+ of violations automatically
 
-See CLAUDE.md "⚠️ CRITICAL: ADR 008 Markdown Compliance" section for complete workflow.
+See GEMINI.md "Markdown Validation" section for complete workflow.
 
 ---
 
