@@ -127,7 +127,8 @@ The test suite of `check-md` remains at its original exceptionally high test cov
 
 ## Permanent Documentation Assessment
 
-**Assessment Questions Evaluation:**
+### Assessment Questions Evaluation
+
 - **Did we learn something valuable about the technology or domain?** No.
 - **Did we make an architectural decision that should be recorded?** No, the re-naming and standardisation are straightforward.
 - **Did we discover a best practice worth sharing?** Yes, the convention of capitalizing "Markdown" as a proper noun in English prose and utilizing `'gitignore'` for pathspec pattern compilation. This is now fully documented.
