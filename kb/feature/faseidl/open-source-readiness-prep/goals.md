@@ -7,7 +7,7 @@
 
 ## Quick Summary
 
-Address outstanding open-source readiness requirements, specifically focusing on auditing and clearing any obsolete "Source-Available" or "Community Scale License" references to consistently present LEAP as Open Source (Apache-2.0), adding global `check-md` instruction capabilities to setup configurations, enforcing explicitly hyperlinked GitHub issues in markdown standards, permanently locking agent behaviors to prevent "jumping ahead" in implementation phases, and performing a thorough sweep to resolve any broken hyperlinks between documents.
+Address outstanding open-source readiness requirements, specifically focusing on auditing and clearing any obsolete "Source-Available" or "Community Scale License" references to consistently present LEAP as Open Source (Apache-2.0), adding global `check-md` instruction capabilities to setup configurations, enforcing explicitly hyperlinked GitHub issues in Markdown standards, permanently locking agent behaviors to prevent "jumping ahead" in implementation phases, and performing a thorough sweep to resolve any broken hyperlinks between documents.
 
 ---
 
@@ -55,12 +55,12 @@ Finally, we must conduct a comprehensive audit of all internal hyperlinks across
 
 ## Success Criteria
 
-- [ ] Defunct/obsolete references to "Source-Available" or "Community Scale License" audited and removed/corrected across the repository.
-- [ ] `scripts/setup-leap.sh` templates updated to inform agents that `check-md` is globally installed and runnable from any workspace directory.
-- [ ] `kb/best-practices-markdown.md` updated with the rule requiring all GitHub issue references to be explicitly hyperlinked.
-- [ ] All agent instruction templates in `scripts/setup-leap.sh` and root `GEMINI.md` updated to promote LEAP skills and keep fallback phase-boundary gating concise.
-- [ ] Comprehensive sweep of internal hyperlinks completed, and all broken or fragile links resolved.
-- [ ] Modified markdown files pass `check-md kb/` linter with zero errors.
+- [x] Defunct/obsolete references to "Source-Available" or "Community Scale License" audited and removed/corrected across the repository.
+- [x] `scripts/setup-leap.sh` templates updated to inform agents that `check-md` is globally installed and runnable from any workspace directory.
+- [x] `kb/best-practices-markdown.md` updated with the rule requiring all GitHub issue references to be explicitly hyperlinked.
+- [x] All agent instruction templates in `scripts/setup-leap.sh` and root `GEMINI.md` updated to promote LEAP skills and keep fallback phase-boundary gating concise.
+- [x] Comprehensive sweep of internal hyperlinks completed, and all broken or fragile links resolved.
+- [x] Modified Markdown files pass `check-md kb/` linter with zero errors.
 
 ---
 

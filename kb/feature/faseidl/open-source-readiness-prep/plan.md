@@ -39,10 +39,10 @@ This implementation plan details a systematic approach to cleaning up obsolete b
 
 ### Success Criteria
 
-- [ ] All defunct references to "Source-Available" or "Community Scale License" purged or corrected.
-- [ ] `kb/best-practices-markdown.md` successfully updated with the GitHub issue hyperlinking guideline.
-- [ ] All cross-document links audited, and fragile or broken links (including the Contributing Guide link in `README.md`) resolved.
-- [ ] Modified Markdown files pass `check-md kb/` linter with zero errors.
+- [x] All defunct references to "Source-Available" or "Community Scale License" purged or corrected.
+- [x] `kb/best-practices-markdown.md` successfully updated with the GitHub issue hyperlinking guideline.
+- [x] All cross-document links audited, and fragile or broken links (including the Contributing Guide link in `README.md`) resolved.
+- [x] Modified Markdown files pass `check-md kb/` linter with zero errors.
 
 ---
 
@@ -68,10 +68,10 @@ This implementation plan details a systematic approach to cleaning up obsolete b
 
 ### Success Criteria
 
-- [ ] `scripts/setup-leap.sh` templates updated with global linter instructions, LEAP skills promotion, and concise fallback gating guidelines.
-- [ ] Root `GEMINI.md` updated and synchronized with the same guidance.
-- [ ] Local execution of `setup-leap.sh` verified and runs cleanly.
-- [ ] Modified files pass `check-md kb/` with zero errors.
+- [x] `scripts/setup-leap.sh` templates updated with global linter instructions, LEAP skills promotion, and concise fallback gating guidelines.
+- [x] Root `GEMINI.md` updated and synchronized with the same guidance.
+- [x] Local execution of `setup-leap.sh` verified and runs cleanly.
+- [x] Modified files pass `check-md kb/` with zero errors.
 
 ---
 
@@ -94,10 +94,10 @@ This implementation plan details a systematic approach to cleaning up obsolete b
 
 ### Success Criteria
 
-- [ ] All Markdown files in the repository pass `check-md` with zero violations.
-- [ ] Final `completion-summary.md` compiled and presented to the developer.
-- [ ] Checkboxes in `goals.md` and `plan.md` updated to checked upon developer agreement.
-- [ ] Features folder is clean and organized.
+- [x] All Markdown files in the repository pass `check-md` with zero violations.
+- [x] Final `completion-summary.md` compiled and presented to the developer.
+- [x] Checkboxes in `goals.md` and `plan.md` updated to checked upon developer agreement.
+- [x] Features folder is clean and organized.
 
 ---
 
