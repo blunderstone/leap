@@ -200,3 +200,17 @@ class TestMarkdownChecker:
             assert isinstance(result.violations, list)
         finally:
             Path(temp_path).unlink()
+
+    def test_rules_no_adr_008_references(self, checker: MarkdownChecker) -> None:
+        """Should ensure that no loaded rules contain references to the obsolete 'ADR 008'."""
+        for rule in checker.rules:
+            # Check rule descriptions and docstrings
+            rule_id = rule.rule_id
+            description = rule.description or ""
+            docstring = rule.__doc__ or ""
+
+            assert "ADR 008" not in description, f"Rule {rule_id} description contains 'ADR 008'"
+            assert "ADR-008" not in description, f"Rule {rule_id} description contains 'ADR-008'"
+            assert "ADR 008" not in docstring, f"Rule {rule_id} docstring contains 'ADR 008'"
+            assert "ADR-008" not in docstring, f"Rule {rule_id} docstring contains 'ADR-008'"
+

@@ -520,9 +520,9 @@ class TestRule3HeadingIncrement:
     def test_known_violation_pattern_from_claude_md(self, rule: Rule3HeadingIncrement) -> None:
         """Should detect pattern from historical CLAUDE.md violation (## → ####)."""
         lines = [
-            "## ⚠️ CRITICAL: ADR 008 Markdown Compliance",
+            "## ⚠️ CRITICAL: ADR 002 Markdown Compliance",
             "",
-            "#### ALWAYS check markdown files for ADR 008 compliance before presenting to user.",
+            "#### ALWAYS check markdown files for ADR 002 compliance before presenting to user.",
         ]
 
         violations = rule.check_file(lines)
