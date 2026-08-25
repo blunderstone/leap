@@ -127,7 +127,7 @@ def find_markdown_files(
 
     if include:
         # Use pathspec for proper gitignore-style ** matching
-        spec = pathspec.PathSpec.from_lines('gitwildmatch', [include])
+        spec = pathspec.PathSpec.from_lines('gitignore', [include])
         filtered_files = {
             f for f in filtered_files
             if spec.match_file(get_match_path(f))
@@ -136,7 +136,7 @@ def find_markdown_files(
     # Apply CLI exclude patterns
     if exclude:
         # Use pathspec for proper gitignore-style ** matching
-        spec = pathspec.PathSpec.from_lines('gitwildmatch', exclude)
+        spec = pathspec.PathSpec.from_lines('gitignore', exclude)
         filtered_files = {
             f for f in filtered_files
             if not spec.match_file(get_match_path(f))
@@ -145,7 +145,7 @@ def find_markdown_files(
     # Apply config exclude patterns
     if exclude_patterns:
         # Use pathspec for proper gitignore-style ** matching
-        spec = pathspec.PathSpec.from_lines('gitwildmatch', exclude_patterns)
+        spec = pathspec.PathSpec.from_lines('gitignore', exclude_patterns)
         filtered_files = {
             f for f in filtered_files
             if not spec.match_file(get_match_path(f))
