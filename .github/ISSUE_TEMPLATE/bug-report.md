@@ -11,6 +11,7 @@ assignees: ''
 
 ## Reproduction Steps
 [Describe how to reproduce the issue, providing concrete steps, command-line arguments, or code snippets. Include actual examples if possible.]
+
 1. [Step 1]
 2. [Step 2]
 
@@ -25,6 +26,7 @@ assignees: ''
 [Provide a clear and concise description of what you expected to happen.]
 
 ## Environment Details
+
 - **OS:** [e.g. macOS, Ubuntu, Windows]
 - **Python Version:** [e.g. 3.11]
 - **check-md Version:** [e.g. 1.0.0]

@@ -16,10 +16,12 @@ assignees: ''
 [What improvement are you suggesting? Describe the new process, guidelines, or tool change.]
 
 ## Benefits
+
 *   [Benefit 1]
 *   [Benefit 2]
 
 ## Drawbacks
+
 *   [Drawback 1]
 *   [Drawback 2]
 

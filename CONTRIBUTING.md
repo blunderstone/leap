@@ -76,7 +76,7 @@ We utilize Test-Driven Development (TDD) as our standard practice for all new fe
 
 ---
 
-## ⚖️ Contribution Licensing Agreement (Implicit CLA)
+## Contribution Licensing Agreement (Implicit CLA)
 
 To maintain clean intellectual property hygiene and allow us to offer both a robust, free open-source core and premium commercial enterprise features/services, we utilize an **Implicit Sublicensable Contribution** model.
 
