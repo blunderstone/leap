@@ -27,7 +27,7 @@ from .rules import FixStrategy, Rule, get_all_rules
 
 
 class FileFixer:
-    """Fixes violations in markdown files with backup support."""
+    """Fixes violations in Markdown files with backup support."""
 
     def __init__(self, strategy: FixStrategy = FixStrategy.CONSERVATIVE) -> None:
         """Initialize fixer with rules.

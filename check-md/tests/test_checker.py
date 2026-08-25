@@ -76,12 +76,12 @@ class TestMarkdownChecker:
             checker.check_file("/nonexistent/file.md")
 
     def test_check_file_raises_on_non_markdown(self, checker: MarkdownChecker) -> None:
-        """Should raise ValueError for non-.md files."""
+        """Should raise ValueError for non-Markdown files."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
             temp_path = f.name
 
         try:
-            with pytest.raises(ValueError, match="Not a markdown file"):
+            with pytest.raises(ValueError, match="Not a Markdown file"):
                 checker.check_file(temp_path)
         finally:
             Path(temp_path).unlink()

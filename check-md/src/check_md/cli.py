@@ -85,7 +85,7 @@ def find_markdown_files(
     exclude: Optional[List[str]],
     exclude_patterns: Optional[List[str]] = None,
 ) -> List[Path]:
-    """Find all markdown files from given paths.
+    """Find all Markdown files from given paths.
 
     Args:
         paths: List of file/directory paths or glob patterns
@@ -94,7 +94,7 @@ def find_markdown_files(
         exclude_patterns: Optional list of glob patterns to exclude (from config)
 
     Returns:
-        List of Path objects for markdown files
+        List of Path objects for Markdown files
     """
     found_files: set[Path] = set()
 
@@ -155,7 +155,7 @@ def find_markdown_files(
 
 
 def get_staged_files() -> List[Path]:
-    """Get list of staged markdown files from git.
+    """Get list of staged Markdown files from git.
 
     Returns:
         List of Path objects for staged .md files
@@ -411,7 +411,7 @@ def main(
     staged: bool = typer.Option(
         False,
         "--staged",
-        help="Check only git-staged markdown files",
+        help="Check only git-staged Markdown files",
     ),
     format: Literal["text", "json", "github"] = typer.Option(
         "text",
@@ -493,7 +493,7 @@ def main(
         if staged:
             file_list = get_staged_files()
             if not file_list:
-                typer.echo("No staged markdown files found", err=True)
+                typer.echo("No staged Markdown files found", err=True)
                 raise typer.Exit(code=0)
         elif files:
             file_list = find_markdown_files(files, include, exclude, exclude_patterns)
@@ -502,7 +502,7 @@ def main(
             file_list = find_markdown_files(["."], include, exclude, exclude_patterns)
 
         if not file_list:
-            typer.echo("No markdown files found", err=True)
+            typer.echo("No Markdown files found", err=True)
             raise typer.Exit(code=2)
 
         # Handle rollback operation

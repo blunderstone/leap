@@ -26,9 +26,9 @@ from .rules import Rule, build_ignore_set, get_all_rules
 
 
 class MarkdownChecker:
-    """Orchestrates checking of markdown files against rules.
+    """Orchestrates checking of Markdown files against rules.
 
-    Coordinates execution of multiple rules against markdown files,
+    Coordinates execution of multiple rules against Markdown files,
     aggregates violations, and returns results.
     """
 
@@ -41,13 +41,13 @@ class MarkdownChecker:
         self.rules = rules if rules is not None else get_all_rules()
 
     def check_file(self, file_path: Union[str, Path]) -> FileResult:
-        """Check a single markdown file against all rules.
+        """Check a single Markdown file against all rules.
 
         Reads the file, runs all configured rules, aggregates violations,
         and returns a FileResult.
 
         Args:
-            file_path: Path to markdown file (string or Path object)
+            file_path: Path to Markdown file (string or Path object)
 
         Returns:
             FileResult containing path, violations, and line count
@@ -62,7 +62,7 @@ class MarkdownChecker:
             raise FileNotFoundError(f"File not found: {path}")
 
         if path.suffix.lower() != ".md":
-            raise ValueError(f"Not a markdown file: {path}")
+            raise ValueError(f"Not a Markdown file: {path}")
 
         # Read file
         with open(path, "r", encoding="utf-8") as f:
@@ -92,10 +92,10 @@ class MarkdownChecker:
         )
 
     def check_files(self, file_paths: list[Union[str, Path]]) -> list[FileResult]:
-        """Check multiple markdown files.
+        """Check multiple Markdown files.
 
         Checks each file independently, skipping files that don't exist
-        or aren't markdown files (with a warning printed).
+        or aren't Markdown files (with a warning printed).
 
         Args:
             file_paths: List of paths to check
