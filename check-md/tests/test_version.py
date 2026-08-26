@@ -21,6 +21,7 @@ limitations under the License.
 import json
 from pathlib import Path
 import re
+import yaml
 import check_md
 
 def test_version_alignment():
@@ -72,3 +73,25 @@ def test_version_alignment():
         config_data = json.load(f)
     assert "$schema" in config_data, "Config does not have a $schema"
     assert "packages" in config_data, "Config does not define 'packages'"
+
+def test_github_action_workflow():
+    test_dir = Path(__file__).parent
+    workflow_path = test_dir / "../../.github/workflows/release-please.yml"
+    assert workflow_path.exists(), "release-please.yml workflow does not exist"
+    
+    with open(workflow_path, "r") as f:
+        config = yaml.safe_load(f)
+    
+    # Assert trigger is push to main
+    assert "on" in config, "workflow must have 'on' trigger"
+    on_trigger = config["on"]
+    assert "push" in on_trigger, "workflow must trigger on push"
+    assert "branches" in on_trigger["push"], "push trigger must restrict branches"
+    assert "main" in on_trigger["push"]["branches"], "push trigger must include 'main'"
+
+    # Assert permissions
+    assert "permissions" in config, "workflow must declare explicit permissions"
+    perms = config["permissions"]
+    assert perms.get("contents") == "write", "contents permission must be write"
+    assert perms.get("pull-requests") == "write", "pull-requests permission must be write"
+
