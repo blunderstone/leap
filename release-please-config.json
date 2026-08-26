@@ -8,7 +8,8 @@
       "extra-files": [
         {
           "type": "toml",
-          "path": "check-md/pyproject.toml"
+          "path": "check-md/pyproject.toml",
+          "jsonpath": "$.project.version"
         },
         "check-md/src/check_md/__init__.py",
         {
