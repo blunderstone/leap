@@ -1,10 +1,6 @@
 # LEAP: Literate (Extended-by-Agent) Programming
 
-**Status:** Stable<br>
-**Author:** F. Andy Seidl<br>
-**Date:** 2026-08-08
-
----
+[![Latest Release](https://img.shields.io/github/v/release/blunderstone/leap)](https://github.com/blunderstone/leap/releases)
 
 ## Overview
 
@@ -101,13 +97,14 @@ The interactive `setup-leap.sh` configurator will **automatically generate** pre
 
 ## More Information
 
-For a complete explanation of the methodology, compliance requirements, and guides, refer to the following resources in the `leap/kb/` directory:
+For a complete explanation of the methodology, compliance requirements, and guides, refer to the following resources in the `kb/` directory:
 
-- **[LEAP Methodology Guide](leap/kb/guide-methodology.md)**: Comprehensive deep dive into LP history, agent workflows, and core principles.
-- **[LEAP Cheatsheet](leap/kb/guide-cheatsheet.md)**: Quick reference for branch names, folders, and markdown standards.
-- **[Compliance Levels](leap/kb/guide-compliance-levels.md)**: Essential, Standard, and Comprehensive criteria.
-- **[Markdown Formatting Standards ADR](leap/kb/adr/leap-adr-002__markdown-formatting-standards.md)**: Detailed reasoning behind `check-md` rules.
-- **[QMD Configuration Guide](leap/kb/guide-qmd-config.md)**: Setup instructions for semantic search.
+- **[LEAP Methodology Guide](kb/guide-methodology.md)**: Comprehensive deep dive into LP history, agent workflows, and core principles.
+- **[LEAP Cheatsheet](kb/guide-cheatsheet.md)**: Quick reference for branch names, folders, and markdown standards.
+- **[Compliance Levels](kb/guide-compliance-levels.md)**: Essential, Standard, and Comprehensive criteria.
+- **[Markdown Formatting Standards ADR](kb/adr/leap-adr-002__markdown-formatting-standards.md)**: Detailed reasoning behind `check-md` rules.
+- **[QMD Configuration Guide](kb/guide-qmd-config.md)**: Setup instructions for semantic search.
+- **[Changelog](CHANGELOG.md)**: Automated release and version history driven by Conventional Commits.
 
 ---
 
