@@ -13,6 +13,40 @@ We utilize a manifest-driven lockstep versioning strategy that covers the entire
 
 ---
 
+## The Release Please Workflow (Step-by-Step)
+
+Release Please does not publish releases the instant a code PR is merged. Instead, it maintains a **rolling Release Pull Request** that acts as a release preparation stage.
+
+The publication workflow operates in four clear steps:
+
+### Step 1: Developers Push Conventional Commits
+
+All feature and fix branches are merged into the default branch (`main`) using Conventional Commits (e.g., `feat(api): ...` or `fix(linter): ...`).
+
+### Step 2: Release Please Opens or Updates a Rolling Release PR
+
+On every push to `main`, the Release Please GitHub Action triggers. It scans the commit history since the last release tag:
+
+1. If there are eligible changes (like `feat` or `fix`), it automatically **opens a new Release Pull Request** (typically titled `chore(main): release vX.Y.Z-beta.N`).
+2. If a Release PR is already open, it automatically **appends new commits** to that existing PR, updates the draft changelog, and recalculates the next version bump.
+
+### Step 3: Merging the Release PR Publishes the Release
+
+The Release PR acts as your release staging ground. To actually execute and publish a release:
+
+1. Review the automated `CHANGELOG.md` edits and version bumps in the open Release PR.
+2. When ready to publish, **simply merge the Release Pull Request** into `main`!
+
+### Step 4: Automated Tagging and GitHub Release
+
+Upon merging the Release PR, the Release Please Action triggers again. It detects that a release branch has been merged and automatically:
+
+1. Creates the corresponding git version tag (e.g., `v1.0.0-beta.0`) on `main`.
+2. Creates and publishes an official, beautiful **GitHub Release** containing the compiled changelog notes.
+3. This published release is what shields.io and other badge services query to display the current version.
+
+---
+
 ## Conventional Commits
 
 Version increments and changelog entries are completely driven by **Conventional Commits** pushed to the default branch (`main`).
@@ -129,4 +163,23 @@ When the RC is verified, and we are ready for a general, stable launch.
 
 ## Submodule Boundaries
 
-The release management workflow described in this guide is **strictly scoped** to the LEAP repository itself. It operates entirely independently of any parent repositories that consume LEAP as a submodule. Downstream consuming repositories must manage their submodule pointers manually or use their own external versioning and integration workflows.
+The release management workflow described in this guide is **strictly scoped** to the LEAP repository itself. It operates entirely independently of any parent repositories that consume LEAP as a submodule.
+
+### Submodule Version Locking Best Practice
+
+Because the `main` branch acts as an active, rolling development stream (the equivalent of a `SNAPSHOT` release), pointing a parent project's Git submodule directly to the `main` branch introduces the risk of consuming unreleased, in-development changes.
+
+For this reason, we strongly recommend that **all consuming repositories lock their submodule pointers to specific tagged release versions** (e.g., `v1.0.0-beta.0`) rather than tracking the `main` branch:
+
+1. **Locking to a Tag:**
+
+   ```bash
+   # Switch the submodule to a specific release tag
+   cd leap
+   git checkout tags/v1.0.0-beta.0
+   cd ..
+   git add leap
+   git commit -m "chore: lock LEAP submodule to v1.0.0-beta.0"
+   ```
+
+2. **Updating to New Releases:** When a new release is published (e.g., `v1.0.0`), developers should explicitly pull the tags, checkout the new tag in the submodule, and commit the updated submodule pointer. This ensures that the parent codebase is always building against a stable, immutable, and fully validated release.
