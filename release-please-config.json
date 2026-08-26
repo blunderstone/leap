@@ -11,12 +11,7 @@
           "path": "check-md/pyproject.toml",
           "jsonpath": "$.project.version"
         },
-        "check-md/src/check_md/__init__.py",
-        {
-          "type": "toml",
-          "path": "check-md/uv.lock",
-          "jsonpath": "$.package[?(@.name=='check-md')].version"
-        }
+        "check-md/src/check_md/__init__.py"
       ]
     }
   }
