@@ -64,12 +64,12 @@ Our first open-source release will be a repository-wide **beta** release. This f
 
 ## Success Criteria
 
-- [ ] `release-please-config.json` successfully drafted and validated against Google's official v4 schema.
-- [ ] `.release-please-manifest.json` initialized with the first beta version target.
-- [ ] Versions in `check-md/pyproject.toml`, `check-md/src/check_md/__init__.py`, and `check-md/uv.lock` aligned to the target beta version.
-- [ ] `.github/workflows/release-please.yml` successfully created with correct event triggers and minimal security permissions.
-- [ ] Complete developer guide (`kb/guide-release-management.md`) written and integrated, including explicit beta -> rc -> stable transition guides.
-- [ ] All created and modified Markdown files pass `check-md kb/` with zero errors.
+- [x] `release-please-config.json` successfully drafted and validated against Google's official v4 schema.
+- [x] `.release-please-manifest.json` initialized with the first beta version target.
+- [x] Versions in `check-md/pyproject.toml`, `check-md/src/check_md/__init__.py`, and `check-md/uv.lock` aligned to the target beta version.
+- [x] `.github/workflows/release-please.yml` successfully created with correct event triggers and minimal security permissions.
+- [x] Complete developer guide (`kb/guide-release-management.md`) written and integrated, including explicit beta -> rc -> stable transition guides.
+- [x] All created and modified Markdown files pass `check-md kb/` with zero errors.
 
 ---
 

@@ -42,10 +42,10 @@ We will implement Google's Release Please for repository-wide release automation
 
 ### Success Criteria
 
-- [ ] `release-please-config.json` successfully drafted and validated.
-- [ ] `.release-please-manifest.json` successfully created.
-- [ ] Versions in `check-md/pyproject.toml`, `check-md/src/check_md/__init__.py`, and `check-md/uv.lock` updated and marked correctly.
-- [ ] Python unit tests and `check-md` validation checks pass with zero errors.
+- [x] `release-please-config.json` successfully drafted and validated.
+- [x] `.release-please-manifest.json` successfully created.
+- [x] Versions in `check-md/pyproject.toml`, `check-md/src/check_md/__init__.py`, and `check-md/uv.lock` updated and marked correctly.
+- [x] Python unit tests and `check-md` validation checks pass with zero errors.
 
 ### Explicitly Deferred
 
@@ -85,8 +85,8 @@ We will implement Google's Release Please for repository-wide release automation
 
 ### Success Criteria
 
-- [ ] `.github/workflows/release-please.yml` created and syntax-checked.
-- [ ] Action triggers and GITHUB_TOKEN permissions properly restricted.
+- [x] `.github/workflows/release-please.yml` created and syntax-checked.
+- [x] Action triggers and GITHUB_TOKEN permissions properly restricted.
 
 ### Rationale
 
@@ -116,9 +116,9 @@ GitHub Actions is the execution engine that parses our Conventional Commits and 
 
 ### Success Criteria
 
-- [ ] `kb/guide-release-management.md` successfully written and integrated.
-- [ ] Transition procedures (beta -> rc -> stable) fully documented.
-- [ ] `check-md` linter passes 100%.
+- [x] `kb/guide-release-management.md` successfully written and integrated.
+- [x] Transition procedures (beta -> rc -> stable) fully documented.
+- [x] `check-md` linter passes 100%.
 
 ### Rationale
 
