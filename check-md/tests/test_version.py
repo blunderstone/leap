@@ -25,10 +25,6 @@ import yaml
 import check_md
 
 def test_version_alignment():
-    # 1. Check version in check_md package
-    pkg_version = check_md.__version__
-    assert pkg_version == "1.0.0-beta.0", f"Package version in check_md.__init__ is {pkg_version}, expected 1.0.0-beta.0"
-
     # Find pyproject.toml
     test_dir = Path(__file__).parent
     pyproject_path = test_dir / "../pyproject.toml"
@@ -39,9 +35,12 @@ def test_version_alignment():
     version_match = re.search(r'^version\s*=\s*"([^"]+)"', pyproject_content, re.MULTILINE)
     assert version_match, "Could not find version in pyproject.toml"
     toml_version = version_match.group(1)
-    assert toml_version == "1.0.0-beta.0", f"pyproject.toml version is {toml_version}, expected 1.0.0-beta.0"
 
-    # 2. Check uv.lock version for check-md package
+    # 1. Check version in check_md package matches pyproject.toml
+    pkg_version = check_md.__version__
+    assert pkg_version == toml_version, f"Package version in check_md.__init__ is {pkg_version}, expected {toml_version}"
+
+    # 2. Check uv.lock version for check-md package matches pyproject.toml
     uv_lock_path = test_dir / "../uv.lock"
     assert uv_lock_path.exists(), "uv.lock does not exist"
     uv_content = uv_lock_path.read_text()
@@ -56,15 +55,15 @@ def test_version_alignment():
                 check_md_lock_version = v_match.group(1)
                 break
     
-    assert check_md_lock_version == "1.0.0-beta.0", f"uv.lock package version for check-md is {check_md_lock_version}, expected 1.0.0-beta.0"
+    assert check_md_lock_version == toml_version, f"uv.lock package version for check-md is {check_md_lock_version}, expected {toml_version}"
 
-    # 3. Check .release-please-manifest.json
+    # 3. Check .release-please-manifest.json matches pyproject.toml
     manifest_path = test_dir / "../../.release-please-manifest.json"
     assert manifest_path.exists(), ".release-please-manifest.json does not exist"
     with open(manifest_path, "r") as f:
         manifest_data = json.load(f)
     assert "." in manifest_data, "Manifest does not contain root package '.' entry"
-    assert manifest_data["."] == "1.0.0-beta.0", f"Manifest version is {manifest_data['.']}, expected 1.0.0-beta.0"
+    assert manifest_data["."] == toml_version, f"Manifest version is {manifest_data['.']}, expected {toml_version}"
 
     # 4. Check release-please-config.json
     config_path = test_dir / "../../release-please-config.json"
