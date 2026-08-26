@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/resources/schema.json",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "prerelease": true,
+      "prerelease-type": "beta",
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "check-md/pyproject.toml"
+        },
+        "check-md/src/check_md/__init__.py",
+        {
+          "type": "toml",
+          "path": "check-md/uv.lock",
+          "jsonpath": "$.package[?(@.name=='check-md')].version"
+        }
+      ]
+    }
+  }
+}
