@@ -1,0 +1,41 @@
+version: 2
+
+updates:
+  # check-md is a uv project (pyproject.toml + uv.lock). The "uv" ecosystem
+  # updates both files together; "pip" does not maintain uv.lock.
+  - package-ecosystem: "uv"
+    directory: "/check-md"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(check-md)"
+    # Routine minor/patch bumps arrive as a single PR. Majors and security
+    # updates are excluded from the group so each gets its own reviewable PR.
+    groups:
+      python-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "*"
+
+  # Workflows are only read from the repository root, so scan "/".
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      actions-minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+        patterns:
+          - "*"

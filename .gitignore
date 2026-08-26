@@ -1,0 +1,25 @@
+venv/
+node_modules/
+dist/
+__pycache__/
+*.log
+*.tmp
+.DS_Store
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.env
+*.venv
+*.pyc
+dev-note-*
+*.bak
+.coverage
+coverage.xml
+
+# AI Agent projected rules directories
+.gemini/
+.cursor/
+.windsurf/
+.claude/
+.aider/

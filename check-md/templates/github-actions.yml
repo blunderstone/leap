@@ -1,0 +1,50 @@
+# GitHub Actions workflow for check-md
+#
+# Installation:
+#   1. Create .github/workflows/ directory in your repository
+#   2. Copy this file to .github/workflows/check-md.yml
+#   3. Customize the paths and thresholds as needed
+#
+# This workflow runs check-md on markdown files in your repository
+# and fails the build if violations are found or score is below threshold.
+
+name: Markdown Quality Check
+
+on:
+  push:
+    branches: [ main, dev ]
+    paths:
+      - '**.md'
+      - '.github/workflows/check-md.yml'
+  pull_request:
+    branches: [ main, dev ]
+    paths:
+      - '**.md'
+
+jobs:
+  check-markdown:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install check-md
+        run: |
+          pip install check-md
+
+      - name: Check markdown files
+        run: |
+          check-md kb/ docs/ --format github --min-score 80
+        continue-on-error: false
+
+      - name: Generate compliance report
+        if: always()
+        run: |
+          echo "## Markdown Compliance Report" >> $GITHUB_STEP_SUMMARY
+          check-md kb/ docs/ --format json | python -m json.tool >> $GITHUB_STEP_SUMMARY || true

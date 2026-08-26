@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# git-pre-commit — Git pre-commit hook for LEAP repository gating.
+#
+# Blocks commits if run-all-checks.sh fails.
+#
+# Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)
+#
+# Copyright 2026 Blunderstone LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -euo pipefail
+
+# Determine repository root
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+# Path to the unified test runner
+RUNNER="$REPO_ROOT/scripts/run-all-checks.sh"
+
+if [ ! -f "$RUNNER" ]; then
+  echo "Error: LEAP unified test runner not found at $RUNNER" >&2
+  echo "Commit blocked." >&2
+  exit 1
+fi
+
+echo "=================================================="
+echo "LEAP pre-commit hook: running quality checks..."
+echo "=================================================="
+
+# 1. Run check-md on staged Markdown files (fast local gate)
+if command -v check-md >/dev/null 2>&1; then
+  echo "Running check-md on staged Markdown files..."
+  if ! check-md --staged; then
+    echo "=================================================="
+    echo "✗ LEAP GATING FAILURE: Markdown violations found." >&2
+    echo "Please run 'check-md --staged --fix' to resolve them." >&2
+    echo "=================================================="
+    exit 1
+  fi
+else
+  echo "Warning: check-md not found on your PATH. Skipping staged Markdown checks." >&2
+fi
+
+# 2. Run the full unified workspace check suite
+if ! bash "$RUNNER"; then
+  echo "=================================================="
+  echo "✗ LEAP GATING FAILURE: Commit rejected." >&2
+  echo "Please resolve linter/test failures before committing." >&2
+  echo "=================================================="
+  exit 1
+fi
+
+echo "=================================================="
+echo "✓ LEAP GATING SUCCESS: Commit allowed."
+echo "=================================================="
+exit 0

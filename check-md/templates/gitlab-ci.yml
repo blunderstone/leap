@@ -1,0 +1,39 @@
+# GitLab CI configuration for check-md
+#
+# Installation:
+#   Add this job to your .gitlab-ci.yml file
+#
+# This job runs check-md on markdown files and fails the pipeline
+# if violations are found or score is below threshold.
+
+check-markdown:
+  stage: test
+  image: python:3.11-slim
+
+  before_script:
+    - pip install check-md
+
+  script:
+    - check-md kb/ docs/ --min-score 80
+
+  rules:
+    # Only run on markdown file changes
+    - changes:
+      - "**/*.md"
+      - ".gitlab-ci.yml"
+
+  artifacts:
+    when: always
+    reports:
+      # GitLab can parse JSON output
+      junit: markdown-report.json
+    paths:
+      - markdown-report.json
+    expire_in: 1 week
+
+# Optional: Allow markdown violations but warn
+check-markdown-warn:
+  extends: check-markdown
+  allow_failure: true
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"'

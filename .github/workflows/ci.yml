@@ -1,0 +1,43 @@
+name: CI Gating Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      NO_COLOR: "1"
+      FORCE_COLOR: "0"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Sync check-md development environment
+        run: |
+          cd check-md
+          uv sync --frozen --all-extras
+
+      - name: Install check-md linter tool
+        run: |
+          uv tool install --editable check-md
+
+      - name: Run Unified Check Runner
+        run: |
+          chmod +x scripts/run-all-checks.sh
+          ./scripts/run-all-checks.sh

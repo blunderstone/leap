@@ -1,0 +1,53 @@
+name: Python Dependency Security Audit
+
+on:
+  push:
+    branches: [ main, dev ]
+    paths:
+      - check-md/pyproject.toml
+      - check-md/uv.lock
+      - .github/workflows/security-audit.yml
+  pull_request:
+    branches: [ main, dev ]
+    paths:
+      - check-md/pyproject.toml
+      - check-md/uv.lock
+      - .github/workflows/security-audit.yml
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  pip-audit:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: check-md
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      # Audit the versions pinned in uv.lock rather than a fresh resolution.
+      # Dependabot alerts fire on uv.lock, so auditing whatever `pip install`
+      # happens to resolve would miss the very pins that get flagged.
+      - name: Export locked dependencies
+        run: >
+          uv export --frozen --all-extras --no-emit-project
+          -o "$RUNNER_TEMP/requirements-audit.txt"
+
+      - name: Audit Python dependencies
+        run: >
+          uvx pip-audit --progress-spinner off
+          -r "$RUNNER_TEMP/requirements-audit.txt"

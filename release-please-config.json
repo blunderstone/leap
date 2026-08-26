@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/resources/schema.json",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "prerelease": true,
+      "prerelease-type": "beta",
+      "extra-files": [
+        {
+          "type": "toml",
+          "path": "check-md/pyproject.toml",
+          "jsonpath": "$.project.version"
+        },
+        "check-md/src/check_md/__init__.py"
+      ]
+    }
+  }
+}
