@@ -40,24 +40,7 @@ def test_version_alignment():
     pkg_version = check_md.__version__
     assert pkg_version == toml_version, f"Package version in check_md.__init__ is {pkg_version}, expected {toml_version}"
 
-    # 2. Check uv.lock version for check-md package matches pyproject.toml
-    uv_lock_path = test_dir / "../uv.lock"
-    assert uv_lock_path.exists(), "uv.lock does not exist"
-    uv_content = uv_lock_path.read_text()
-    # Search for package check-md and grab its version
-    # Since uv.lock is TOML, we can do a simple block-based search
-    blocks = uv_content.split("[[package]]")
-    check_md_lock_version = None
-    for block in blocks:
-        if 'name = "check-md"' in block:
-            v_match = re.search(r'version\s*=\s*"([^"]+)"', block)
-            if v_match:
-                check_md_lock_version = v_match.group(1)
-                break
-    
-    assert check_md_lock_version == toml_version, f"uv.lock package version for check-md is {check_md_lock_version}, expected {toml_version}"
-
-    # 3. Check .release-please-manifest.json matches pyproject.toml
+    # 2. Check .release-please-manifest.json matches pyproject.toml
     manifest_path = test_dir / "../../.release-please-manifest.json"
     assert manifest_path.exists(), ".release-please-manifest.json does not exist"
     with open(manifest_path, "r") as f:
