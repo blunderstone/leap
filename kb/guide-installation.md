@@ -82,7 +82,34 @@ git config submodule.recurse true
 
 #### 3. Pin Submodule to a Stable Release (Highly Recommended)
 
-By default, the submodule tracks the latest development commit on the remote's primary branch (`main`). For team environments and long-term stability, we highly recommend pinning the submodule to a specific stable release tag (e.g., `v1.1.0-beta.0`):
+By default, the submodule tracks the latest development commit on the remote's primary branch (`main`). For team environments and long-term stability, we highly recommend pinning the submodule to a specific stable release tag (e.g., `v1.1.0-beta.0`).
+
+##### Option A: Automated Pinning (Recommended)
+
+LEAP provides an automated pinning utility, `pin-leap.sh`, in the `scripts/` directory of the submodule. This script automates the entire update flow:
+
+1. Verifies that the host repository is clean (no unstaged/uncommitted changes).
+2. Automatically creates and switches to a standardized, compliant branch (e.g., `chore/pin-leap-<version>`).
+3. Updates the submodule pointer to your requested version (or the newest stable semantic version if you pass `latest`).
+4. Auto-generates a LEAP Compliance Level 1 feature folder (`kb/feature/pin-leap-<version>/`) with pre-populated `goals.md` and `completion-summary.md` files.
+5. Stages the updated submodule reference and generated documentation files.
+
+To pin your submodule automatically, run the script from your project root:
+
+```bash
+# Pin to a specific version/tag/commit/branch
+bash leap/scripts/pin-leap.sh v1.1.0
+
+# Automatically resolve and pin to the latest stable release tag
+bash leap/scripts/pin-leap.sh latest
+
+# Run interactively (will prompt for target version)
+bash leap/scripts/pin-leap.sh
+```
+
+##### Option B: Manual Pinning
+
+If you prefer to perform the pinning process manually, run the following commands:
 
 ```bash
 # Navigate into the submodule directory
