@@ -35,3 +35,9 @@ If workspace skills are not active, you must follow these core guidelines:
 - Refer to `kb/guide-document-taxonomy.md` for naming and organization rules.
 - Refer to `kb/template-adr.md` for Architecture Decision Records (ADRs).
 - Refer to `kb/guide-methodology.md` for feature branch lifecycle and Gating Mandates for AI Agents.
+
+---
+
+## Metadata & Formatting Standards
+
+- **Date Formatting:** Always format dates using the ISO 8601 standard (`YYYY-MM-DD`) across all markdown documents (such as goals, plans, completion summaries, ADRs, and guides) instead of natural-language or localized formats (e.g., 'Thursday, August 27, 2026').

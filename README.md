@@ -60,7 +60,7 @@ If your project is managed under Git, run the following single command in your p
 git submodule add https://github.com/blunderstone/leap.git leap && bash leap/scripts/setup-leap.sh
 ```
 
-*(Note: If you use GitHub SSH keys, you can run `git submodule add git@github.com:blunderstone/leap.git leap && bash leap/scripts/setup-leap.sh` instead. To pin the submodule to a specific stable release, check out the desired tag inside the submodule folder and commit the pin: `cd leap && git checkout v1.1.0-beta.0 && cd .. && git add leap && git commit -m "pin leap submodule to stable release"`.)*
+*(Note: If you use GitHub SSH keys, you can run `git submodule add git@github.com:blunderstone/leap.git leap && bash leap/scripts/setup-leap.sh` instead. To easily pin or update the submodule to a specific release tag, commit, or the `'latest'` stable version while auto-generating LEAP compliance documents, use the automated pinning utility: `bash leap/scripts/pin-leap.sh latest`.)*
 
 ### Path B: Direct Copy / Embedding
 
