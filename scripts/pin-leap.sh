@@ -193,7 +193,7 @@ COMPLIANCE_DIR="kb/feature/pin-leap-$TARGET_VERSION"
 print_step "Generating LEAP Compliance Level 1 documents"
 
 mkdir -p "$COMPLIANCE_DIR"
-CURRENT_DATE=$(date "+%A, %B %d, %Y")
+CURRENT_DATE=$(date "+%Y-%m-%d")
 
 cat <<EOF > "$COMPLIANCE_DIR/goals.md"
 # Pin LEAP to $TARGET_VERSION Goals

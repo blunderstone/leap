@@ -1,7 +1,7 @@
 # Submodule Pinning Utility Goals
 
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)<br>
-**Date:** Thursday, August 27, 2026
+**Date:** 2026-08-27
 
 ---
 
@@ -62,11 +62,11 @@ This feature delivers a self-contained shell script `pin-leap.sh` located in the
 
 ## Success Criteria
 
-- [ ] Command-line script `scripts/pin-leap.sh` is fully implemented and executable.
-- [ ] Script successfully rejects execution on dirty working directories.
-- [ ] Script automatically creates a standard `chore/pin-leap-<target>` branch and pins the submodule to the requested release tag.
-- [ ] Comprehensive shell-based test suite (`scripts/tests/pin-leap.test.sh`) is written and passes cleanly.
-- [ ] Documentation is updated to include the new pinning procedure.
+- [x] Command-line script `scripts/pin-leap.sh` is fully implemented and executable.
+- [x] Script successfully rejects execution on dirty working directories.
+- [x] Script automatically creates a standard `chore/pin-leap-<target>` branch and pins the submodule to the requested release tag.
+- [x] Comprehensive shell-based test suite (`scripts/tests/pin-leap.test.sh`) is written and passes cleanly.
+- [x] Documentation is updated to include the new pinning procedure.
 
 ## Constraints
 

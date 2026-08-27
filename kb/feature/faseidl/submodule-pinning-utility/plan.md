@@ -1,7 +1,7 @@
 # Submodule Pinning Utility Implementation Plan
 
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)<br>
-**Date:** Thursday, August 27, 2026
+**Date:** 2026-08-27
 
 ---
 
@@ -43,9 +43,9 @@ This plan details the development of the LEAP Submodule Pinning Utility (`script
 
 ### Success Criteria
 
-- [ ] Script `scripts/pin-leap.sh` is initialized.
-- [ ] Script rejects execution under uninitialized git trees, missing submodules, or dirty working directories.
-- [ ] Test harness `scripts/tests/pin-leap.test.sh` is created and successfully verifies all validation paths.
+- [x] Script `scripts/pin-leap.sh` is initialized.
+- [x] Script rejects execution under uninitialized git trees, missing submodules, or dirty working directories.
+- [x] Test harness `scripts/tests/pin-leap.test.sh` is created and successfully verifies all validation paths.
 
 **Rationale:** Establishing environment validations and the test harness first ensures we have a stable sandbox to safely test our Git-modifying operations in the subsequent phases.
 
@@ -82,10 +82,10 @@ This plan details the development of the LEAP Submodule Pinning Utility (`script
 
 ### Success Criteria
 
-- [ ] Script correctly resolves `"latest"` semantic version tags.
-- [ ] Script automatically creates a Level 1 LEAP feature folder containing pre-populated `goals.md` and `completion-summary.md`.
-- [ ] Script successfully checks out a clean feature/chore branch, pins the submodule, and stages the modification.
-- [ ] Automated tests in `scripts/tests/pin-leap.test.sh` verify the entire branching, checkout, document generation, and resolution flow.
+- [x] Script correctly resolves `"latest"` semantic version tags.
+- [x] Script automatically creates a Level 1 LEAP feature folder containing pre-populated `goals.md` and `completion-summary.md`.
+- [x] Script successfully checks out a clean feature/chore branch, pins the submodule, and stages the modification.
+- [x] Automated tests in `scripts/tests/pin-leap.test.sh` verify the entire branching, checkout, document generation, and resolution flow.
 
 ---
 
@@ -111,7 +111,7 @@ This plan details the development of the LEAP Submodule Pinning Utility (`script
 
 ### Success Criteria
 
-- [ ] `kb/guide-installation.md` contains clear pinning instructions.
-- [ ] `README.md` is updated with reference to `pin-leap.sh`.
-- [ ] `check-md` linter passes completely without errors across the entire knowledge base.
-- [ ] Test harness passes 100% of test cases.
+- [x] `kb/guide-installation.md` contains clear pinning instructions.
+- [x] `README.md` is updated with reference to `pin-leap.sh`.
+- [x] `check-md` linter passes completely without errors across the entire knowledge base.
+- [x] Test harness passes 100% of test cases.
