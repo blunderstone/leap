@@ -40,6 +40,7 @@ This feature delivers a self-contained shell script `pin-leap.sh` located in the
 - **REQ-6 (Staging & Commit Guidance):** The script must automatically stage the submodule change (`git add leap`) and either commit it with a compliant message (`chore(deps): pin LEAP submodule to <version>`) or guide the developer on how to do so.
 - **REQ-7 (Latest Tag Resolution):** The script must support resolving `"latest"` to the newest stable semantic version tag (and fall back gracefully to pre-releases if no stable releases exist), clearly printing the resolved tag before proceeding.
 - **REQ-8 (Setup Documentation):** Add clear instructions on how to use `pin-leap.sh` to pin the submodule to `kb/guide-installation.md` and `README.md`, ensuring consumers have direct documentation on how to perform updates.
+- **REQ-9 (LEAP Level 1 Compliance):** To ensure the pinning change adheres to LEAP practices inside the consuming repository, the script must automatically initialize and populate a LEAP Compliance Level 1 feature directory structure (e.g., `kb/feature/pin-leap-<version>/`), generating both a pre-populated `goals.md` and `completion-summary.md` file.
 
 ### Non-Functional Requirements
 
