@@ -2,8 +2,8 @@
 
 **Feature:** [Feature Name]<br>
 **Author:** [Your Name](https://www.linkedin.com/in/your-profile/)<br>
-**Date Started:** [Date]<br>
-**Date Completed:** [Date]<br>
+**Date Started:** [YYYY-MM-DD]<br>
+**Date Completed:** [YYYY-MM-DD]<br>
 **Status:** [in-progress | completed]
 
 ---

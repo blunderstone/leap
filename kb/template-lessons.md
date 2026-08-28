@@ -1,8 +1,8 @@
 # Lessons Learned: [Topic]
 
 **Author:** [Your Name](https://www.linkedin.com/in/your-profile/)<br>
-**Date:** [Date]<br>
-**Last Updated:** [Date]
+**Date:** [YYYY-MM-DD]<br>
+**Last Updated:** [YYYY-MM-DD]
 
 ---
 
