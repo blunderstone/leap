@@ -44,9 +44,9 @@ We will implement a reusable shell assertion library at `scripts/lib/assert.sh` 
 
 ### Success Criteria
 
-- [ ] `scripts/lib/assert.sh` successfully created with all functions implemented.
-- [ ] Dedicated unit test suite `scripts/tests/test_assert_lib.sh` implemented and passing.
-- [ ] API is documented via standardized shell header comments.
+- [x] `scripts/lib/assert.sh` successfully created with all functions implemented.
+- [x] Dedicated unit test suite `scripts/tests/test_assert_lib.sh` implemented and passing.
+- [x] API is documented via standardized shell header comments.
 
 ---
 
@@ -74,9 +74,9 @@ We will implement a reusable shell assertion library at `scripts/lib/assert.sh` 
 
 ### Success Criteria
 
-- [ ] All four legacy test suites refactored and passing completely.
-- [ ] `scripts/run-all-checks.sh` includes the new assertion unit tests.
-- [ ] Total workspace tests run and exit cleanly (exit code 0).
+- [x] All four legacy test suites refactored and passing completely.
+- [x] `scripts/run-all-checks.sh` includes the new assertion unit tests.
+- [x] Total workspace tests run and exit cleanly (exit code 0).
 
 ---
 
@@ -98,9 +98,9 @@ We will implement a reusable shell assertion library at `scripts/lib/assert.sh` 
 
 ### Success Criteria
 
-- [ ] Guide for parent repository and internal consumers written at `kb/guide-shell-assertion-library.md`.
-- [ ] Markdown checks pass without errors.
-- [ ] Handoff documentation complete.
+- [x] Guide for parent repository and internal consumers written at `kb/guide-shell-assertion-library.md`.
+- [x] Markdown checks pass without errors.
+- [x] Handoff documentation complete.
 
 ---
 
