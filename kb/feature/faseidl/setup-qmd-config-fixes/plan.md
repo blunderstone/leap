@@ -48,11 +48,11 @@ This implementation plan covers updating `setup-leap.sh` to pass the `--remove-l
 
 ### Success Criteria
 
-- [ ] `setup-leap.sh` invokes `qmd-config` with `--remove-legacy`.
-- [ ] Warning retry advice printed by `setup-leap.sh` includes `--remove-legacy`.
-- [ ] `qmd-config` writes a generic description to `/`.
-- [ ] New behavioral test in `test_setup_flags.sh` asserts that `--remove-legacy` is correctly passed.
-- [ ] Existing test suites and the overall check-runner pass with 100% success.
+- [x] `setup-leap.sh` invokes `qmd-config` with `--remove-legacy`.
+- [x] Warning retry advice printed by `setup-leap.sh` includes `--remove-legacy`.
+- [x] `qmd-config` writes a generic description to `/`.
+- [x] New behavioral test in `test_setup_flags.sh` asserts that `--remove-legacy` is correctly passed.
+- [x] Existing test suites and the overall check-runner pass with 100% success.
 
 ### Explicitly Deferred
 

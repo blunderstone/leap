@@ -48,11 +48,11 @@ Issue #53: Currently, `qmd-config` writes a project-specific description into th
 
 ## Success Criteria
 
-- [ ] `setup-leap.sh` passes `--remove-legacy` to `qmd-config`.
-- [ ] The retry warning printed by `setup-leap.sh` specifies `--remove-legacy`.
-- [ ] `qmd-config` writes the generic LEAP convention description to the global `/` context slot instead of a project-specific string.
-- [ ] Existing pre-commit/setup and QMD configuration test suites pass successfully.
-- [ ] New or updated tests cover the changed behavior.
+- [x] `setup-leap.sh` passes `--remove-legacy` to `qmd-config`.
+- [x] The retry warning printed by `setup-leap.sh` specifies `--remove-legacy`.
+- [x] `qmd-config` writes the generic LEAP convention description to the global `/` context slot instead of a project-specific string.
+- [x] Existing pre-commit/setup and QMD configuration test suites pass successfully.
+- [x] New or updated tests cover the changed behavior.
 
 ## Constraints
 
