@@ -4,7 +4,7 @@
     ".": {
       "release-type": "simple",
       "prerelease": true,
-      "prerelease-type": "beta",
+      "prerelease-type": "rc",
       "extra-files": [
         {
           "type": "toml",
