@@ -316,6 +316,11 @@ elif [ "$cmd" = "collection" ]; then
     exit 0
   fi
 elif [ "$cmd" = "context" ]; then
+  subcmd="$1"
+  shift
+  if [ "$subcmd" = "add" ]; then
+    echo "MOCK_CONTEXT_ADD: uri=$1 text=$2"
+  fi
   exit 0
 else
   exit 0
@@ -341,6 +346,7 @@ out_idem=$("$r_idem/utils/qmd/qmd-config" --no-schedule 2>&1); rc_idem=$?
 set -e
 assert_contains "zero exit on idempotent skip" "rc=$rc_idem" "rc=0"
 assert_contains "skipped message" "$out_idem" "already exists (skipped)"
+assert_contains "generic workstation-safe context is registered" "$out_idem" "MOCK_CONTEXT_ADD: uri=/ text=This index may hold knowledge bases"
 
 echo "Test 12c: context addition warns and skips on missing collection"
 r_ctx=$(make_repo missing-context-repo "https://github.com/example-org/missing-context-repo.git")
