@@ -3,7 +3,8 @@
 **Branch:** `faseidl/standardize-date-formatting`<br>
 **Base Branch:** `main`<br>
 **Date:** 2026-08-27<br>
-**Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)
+**Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)<br>
+**Closes:** #37
 
 ---
 
