@@ -4,6 +4,7 @@ about: Propose an improvement or change to the LEAP methodology itself
 title: '[LEAP-PROPOSAL] '
 labels: enhancement
 assignees: ''
+
 ---
 
 ## Context

@@ -180,6 +180,34 @@ class TestInstallSkills(unittest.TestCase):
         cursor_target = self.project_root / ".cursor" / "rules" / "leap-test.mdc"
         self.assertFalse(cursor_target.exists())
 
+    def test_install_comma_separated_agents(self):
+        """Should install for multiple comma-separated agents specifically."""
+        # Create a test skill
+        skill_dir = self.skills_dir / "leap-test"
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        skill_md = skill_dir / "SKILL.md"
+        skill_md.write_text("---\nname: leap-test\n---\n# Content", encoding="utf-8")
+
+        # Install for gemini and cursor only, with spacing
+        install_skills_mod.install_skills(
+            target_agent="gemini, cursor", 
+            use_symlinks=True, 
+            repo_root=self.project_root, 
+            skills_dir=self.skills_dir
+        )
+
+        # Gemini should exist
+        gemini_target = self.project_root / ".gemini" / "skills" / "leap-test" / "SKILL.md"
+        self.assertTrue(gemini_target.is_symlink())
+
+        # Cursor should exist
+        cursor_target = self.project_root / ".cursor" / "rules" / "leap-test.mdc"
+        self.assertTrue(cursor_target.is_symlink())
+
+        # Claude should NOT exist
+        claude_target = self.project_root / ".claude" / "commands" / "leap-test.md"
+        self.assertFalse(claude_target.exists())
+
     def test_install_skills_overwrite(self):
         """Should safely overwrite existing symlinks/files on subsequent runs."""
         skill_dir = self.skills_dir / "leap-test"

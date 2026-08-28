@@ -63,7 +63,7 @@ else
   # Scenario 1: All checks pass
   echo "Scenario 1: All checks pass"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "All checks pass exits with 0" 0 "$code" "$out"
@@ -71,7 +71,7 @@ else
   # Scenario 2: check-md fails
   echo "Scenario 2: check-md fails"
   set +e
-  out=$(CHECK_MD="false" PYTEST="true" INSTALL_SKILLS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="false" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing check-md exits with 1" 1 "$code" "$out"
@@ -79,7 +79,7 @@ else
   # Scenario 3: pytest fails
   echo "Scenario 3: pytest fails"
   set +e
-  out=$(CHECK_MD="true" PYTEST="false" INSTALL_SKILLS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="false" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing pytest exits with 1" 1 "$code" "$out"
@@ -87,7 +87,7 @@ else
   # Scenario 4: install-skills tests fail
   echo "Scenario 4: install-skills tests fail"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="false" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="false" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing install-skills tests exits with 1" 1 "$code" "$out"
@@ -95,10 +95,18 @@ else
   # Scenario 5: QMD config tests fail
   echo "Scenario 5: QMD config tests fail"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" QMD_TEST="false" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="false" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing QMD config tests exits with 1" 1 "$code" "$out"
+
+  # Scenario 6: Setup flags tests fail
+  echo "Scenario 6: Setup flags tests fail"
+  set +e
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="false" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  code=$?
+  set -e
+  assert_exit_code "Failing setup flags tests exits with 1" 1 "$code" "$out"
 fi
 
 # ---- report summary ---------------------------------------------------------

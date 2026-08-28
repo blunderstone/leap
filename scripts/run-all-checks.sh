@@ -68,7 +68,7 @@ run_check() {
 }
 
 # Run the 4 checks
-run_check "check-md (Markdown Linter)" "${CHECK_MD:-}" check-md kb/ || exit 1
+run_check "check-md (Markdown Linter)" "${CHECK_MD:-}" check-md || exit 1
 
 if [ -f "check-md/.venv/bin/pytest" ]; then
   run_check "pytest (Python Linter tests)" "${PYTEST:-}" check-md/.venv/bin/pytest check-md/tests/ || exit 1
@@ -77,6 +77,8 @@ else
 fi
 
 run_check "install-skills (Python unit tests)" "${INSTALL_SKILLS_TEST:-}" python3 scripts/tests/test_install_skills.py || exit 1
+
+run_check "setup-leap flags (Shell tests)" "${SETUP_FLAGS_TEST:-}" bash scripts/tests/test_setup_flags.sh || exit 1
 
 run_check "QMD config (Shell tests)" "${QMD_TEST:-}" bash scripts/qmd/tests/qmd-config.test.sh || exit 1
 

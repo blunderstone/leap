@@ -1,0 +1,14 @@
+# .check-md.yml — Repository-wide Markdown linter configuration
+
+exclude:
+  - ".venv/"
+  - "check-md/.venv/"
+  - "htmlcov/"
+  - "check-md/htmlcov/"
+  - ".gemini/"
+  - ".claude/"
+  - ".cursor/"
+  - ".aider/"
+  - ".windsurf/"
+  - "*.bak"
+  - "**/*.bak"

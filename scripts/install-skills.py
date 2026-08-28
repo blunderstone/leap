@@ -88,7 +88,10 @@ def install_skills(target_agent: str = "all", use_symlinks: bool = True, repo_ro
     # Normalize target_agent input
     target_agent = target_agent.lower().strip()
     
-    targets = list(agent_configs.keys()) if target_agent == "all" else [target_agent]
+    if target_agent == "all":
+        targets = list(agent_configs.keys())
+    else:
+        targets = [t.strip() for t in target_agent.split(",") if t.strip()]
 
     # Validate target agent selection
     for agent in targets:
