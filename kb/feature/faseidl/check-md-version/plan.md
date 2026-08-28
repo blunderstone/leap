@@ -10,6 +10,7 @@
 We will implement the standard, eager `--version` command-line flag in the `check-md` CLI. The CLI is built using the `typer` library, which provides robust support for eager option callbacks. We will execute this feature in two distinct phases to ensure strict validation, high test coverage, and complete compatibility with existing system scripts.
 
 **Development Approach:** Use Test-Driven Development (TDD) throughout:
+
 1. Write failing integration/CLI tests validating `--version` behavior (RED).
 2. Implement the version callback and flag in `cli.py` (GREEN).
 3. Refactor and verify (REFACTOR).
@@ -46,10 +47,10 @@ We will implement the standard, eager `--version` command-line flag in the `chec
 
 ### Success Criteria
 
-- [ ] Unit tests for the `--version` flag are written and fail before implementation (RED state).
-- [ ] Implement the callback and register option to make tests pass (GREEN state).
-- [ ] Coverage for the newly introduced code matches or exceeds the 90% target.
-- [ ] `check-md` linter runs successfully across its own codebase.
+- [x] Unit tests for the `--version` flag are written and fail before implementation (RED state).
+- [x] Implement the callback and register option to make tests pass (GREEN state).
+- [x] Coverage for the newly introduced code matches or exceeds the 90% target.
+- [x] `check-md` linter runs successfully across its own codebase.
 
 **Rationale:** Implementing this via TDD ensures the interface behaves precisely as specified before it is integrated into downstream scripts.
 

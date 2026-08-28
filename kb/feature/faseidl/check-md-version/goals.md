@@ -12,6 +12,7 @@ Add a standard, eager `--version` command-line flag to the `check-md` CLI that o
 ## Executive Summary
 
 Currently, the `check-md` linter lacks a `--version` CLI flag. This lack of a version flag causes tooling issues:
+
 1. LEAP's submodule conversion and setup tooling expect to run `check-md --version` for follow-up reports.
 2. Downstream CI/CD pipelines cannot easily verify successful installation or query the linter's active version.
 3. Because `check-md` is often installed in an "editable" mode during development, standard tools like `pip show` can report stale or misleading information. 
@@ -42,6 +43,7 @@ This is a standard CLI enhancement using Typer's built-in callback capabilities.
   ```text
   check-md <version> (<absolute-path-to-package-directory>)
   ```
+
 - **REQ-3:** Running `check-md --version` must immediately exit with status code 0, without requiring other command-line arguments (e.g. file paths) and without executing any linting logic.
 - **REQ-4:** The printed version must dynamically read from the package's `__version__` attribute defined in `check_md/__init__.py`.
 
@@ -65,11 +67,11 @@ This is a standard CLI enhancement using Typer's built-in callback capabilities.
 
 ## Success Criteria
 
-- [ ] `check-md --version` prints the version from `__version__` and the absolute package path.
-- [ ] `check-md --version` exits with status 0.
-- [ ] Command works without passing any paths or files.
-- [ ] CLI tests are implemented and pass successfully.
-- [ ] `check-md` linting and all existing test cases continue to pass.
+- [x] `check-md --version` prints the version from `__version__` and the absolute package path.
+- [x] `check-md --version` exits with status 0.
+- [x] Command works without passing any paths or files.
+- [x] CLI tests are implemented and pass successfully.
+- [x] `check-md` linting and all existing test cases continue to pass.
 
 ## Constraints
 
