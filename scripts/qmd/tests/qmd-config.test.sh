@@ -276,6 +276,99 @@ set -e
 assert_contains "nonzero exit when canonical missing" "rc=$rc" "rc=1"
 assert_contains "clear not-found message" "$out" "shared qmd-config not found"
 
+# ---- Test 12: qmd-config collision behavior --------------------------------
+
+echo "Test 12: qmd-config collision and idempotent behavior"
+MOCK_BIN="$WORK/mock-bin"
+mkdir -p "$MOCK_BIN"
+MOCK_QMD="$MOCK_BIN/qmd"
+
+cat > "$MOCK_QMD" <<'MOCK_EOF'
+#!/usr/bin/env bash
+cmd="$1"
+shift
+
+if [ "$cmd" = "status" ]; then
+  exit 0
+elif [ "$cmd" = "update" ] || [ "$cmd" = "embed" ]; then
+  exit 0
+elif [ "$cmd" = "collection" ]; then
+  subcmd="$1"
+  shift
+  if [ "$subcmd" = "add" ]; then
+    # Parse arguments
+    name_val=""
+    while [ $# -gt 0 ]; do
+      if [ "$1" = "--name" ]; then
+        name_val="$2"
+        break
+      fi
+      shift
+    done
+
+    case "$name_val" in
+      *collision*)
+        echo "A collection already exists for this path and pattern: other-collection" >&2
+        exit 1
+        ;;
+      *already-exists*)
+        echo "Collection '$name_val' already exists." >&2
+        exit 1
+        ;;
+      *)
+        exit 0
+        ;;
+    esac
+  elif [ "$subcmd" = "show" ]; then
+    col_name="$1"
+    case "$col_name" in
+      *missing-context*)
+        exit 1
+        ;;
+      *)
+        exit 0
+        ;;
+    esac
+  else
+    exit 0
+  fi
+elif [ "$cmd" = "context" ]; then
+  exit 0
+else
+  exit 0
+fi
+MOCK_EOF
+chmod +x "$MOCK_QMD"
+
+OLD_PATH="$PATH"
+export PATH="$MOCK_BIN:$PATH"
+
+echo "Test 12a: path/pattern collision triggers exit 1 with suggestion"
+r_col=$(make_repo collision-repo "https://github.com/example-org/collision-repo.git")
+set +e
+out_col=$("$r_col/utils/qmd/qmd-config" --no-schedule 2>&1); rc_col=$?
+set -e
+assert_contains "nonzero exit on collision" "rc=$rc_col" "rc=1"
+assert_contains "suggests --remove-legacy" "$out_col" "--remove-legacy"
+
+echo "Test 12b: idempotent skip for actual name match succeeds"
+r_idem=$(make_repo already-exists-repo "https://github.com/example-org/already-exists-repo.git")
+set +e
+out_idem=$("$r_idem/utils/qmd/qmd-config" --no-schedule 2>&1); rc_idem=$?
+set -e
+assert_contains "zero exit on idempotent skip" "rc=$rc_idem" "rc=0"
+assert_contains "skipped message" "$out_idem" "already exists (skipped)"
+
+echo "Test 12c: context addition warns and skips on missing collection"
+r_ctx=$(make_repo missing-context-repo "https://github.com/example-org/missing-context-repo.git")
+set +e
+out_ctx=$("$r_ctx/utils/qmd/qmd-config" --no-schedule 2>&1); rc_ctx=$?
+set -e
+assert_contains "zero exit on missing context target" "rc=$rc_ctx" "rc=0"
+assert_contains "warning message printed" "$out_ctx" "Warning: target collection"
+
+export PATH="$OLD_PATH"
+
 # ---- summary ----------------------------------------------------------------
 
 echo ""
