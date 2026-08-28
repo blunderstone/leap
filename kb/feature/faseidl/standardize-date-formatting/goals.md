@@ -58,11 +58,11 @@ This is a straightforward, high-impact standardization task with minimal risk of
 
 ## Success Criteria
 
-- [ ] ADR `kb/adr/leap-adr-003__standardize-date-formatting.md` is drafted and accepted.
-- [ ] All `kb/template-*.md` files use the standardized `[YYYY-MM-DD]` placeholder.
-- [ ] `kb/adr/leap-adr-002__markdown-formatting-standards.md` is updated with a non-substantive pointer to the new ADR 003.
-- [ ] Automated setup scripts output dates strictly in `YYYY-MM-DD` format.
-- [ ] `check-md` runs and passes successfully on all modified files.
+- [x] ADR `kb/adr/leap-adr-003__standardize-date-formatting.md` is drafted and accepted.
+- [x] All `kb/template-*.md` files use the standardized `[YYYY-MM-DD]` placeholder.
+- [x] `kb/adr/leap-adr-002__markdown-formatting-standards.md` is updated with a non-substantive pointer to the new ADR 003.
+- [x] Automated setup scripts output dates strictly in `YYYY-MM-DD` format.
+- [x] `check-md` runs and passes successfully on all modified files.
 
 ## Constraints
 

@@ -39,10 +39,10 @@ We will standardize all date formatting in the LEAP repository to the ISO 8601 f
 
 ### Success Criteria
 
-- [ ] `kb/adr/leap-adr-003__standardize-date-formatting.md` is successfully created with `accepted` status.
-- [ ] `kb/adr/leap-adr-002__markdown-formatting-standards.md` is updated with a non-substantive update pointer to ADR 003.
-- [ ] All 11 `kb/template-*.md` files are standardized with `[YYYY-MM-DD]` placeholders.
-- [ ] All updated files pass `check-md` cleanly with no violations.
+- [x] `kb/adr/leap-adr-003__standardize-date-formatting.md` is successfully created with `accepted` status.
+- [x] `kb/adr/leap-adr-002__markdown-formatting-standards.md` is updated with a non-substantive update pointer to ADR 003.
+- [x] All 11 `kb/template-*.md` files are standardized with `[YYYY-MM-DD]` placeholders.
+- [x] All updated files pass `check-md` cleanly with no violations.
 
 **Rationale:** Establishing the architectural decision first creates the formal policy context for the subsequent template modifications.
 
@@ -69,9 +69,9 @@ We will standardize all date formatting in the LEAP repository to the ISO 8601 f
 
 ### Success Criteria
 
-- [ ] Portability of `date "+%Y-%m-%d"` in scripts is verified.
-- [ ] The automated date-validation rule issue is successfully filed on GitHub.
-- [ ] All workspace tests and validation checks pass cleanly.
+- [x] Portability of `date "+%Y-%m-%d"` in scripts is verified.
+- [x] The automated date-validation rule issue is successfully filed on GitHub.
+- [x] All workspace tests and validation checks pass cleanly.
 
 **Rationale:** Adding automated script checks and filing formal GitHub issues for tool enhancements ensures that standards are systematically enforced and future improvements are transparently tracked.
 
