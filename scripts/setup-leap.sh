@@ -636,10 +636,10 @@ echo "QMD is an on-device semantic search engine that lets AI agents find your d
 ask_yes_no "Run QMD semantic search configurator?" "n" "Registers your document collections, registers your local project with the local AI agent, and installs pre-commit hooks to keep the index updated automatically." "$OVERRIDE_QMD"
 QMD_FAILED=false
 if [ "$PROMPT_RESULT" = "y" ]; then
-  if bash "$LEAP_DIR/scripts/qmd/qmd-config" --repo-root "$REPO_ROOT"; then
+  if bash "$LEAP_DIR/scripts/qmd/qmd-config" --repo-root "$REPO_ROOT" --remove-legacy; then
     print_success "QMD semantic search configured successfully."
   else
-    print_warning "QMD configuration failed or was cancelled. You can retry via 'bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT'."
+    print_warning "QMD configuration failed or was cancelled. You can retry via 'bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT --remove-legacy'."
     QMD_FAILED=true
   fi
 else
@@ -650,7 +650,7 @@ print_step "LEAP Initialization Complete!"
 if [ "$QMD_FAILED" = true ]; then
   echo -e "${RED}${BOLD}LEAP Setup Incomplete (Warnings Detected)${NC}"
   echo "  - Please fix the QMD path errors or clean up any broken pre-commit hooks before committing!"
-  echo "  - You can retry QMD setup via: bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT"
+  echo "  - You can retry QMD setup via: bash $LEAP_DIR/scripts/qmd/qmd-config --repo-root $REPO_ROOT --remove-legacy"
   exit 1
 else
   echo -e "${GREEN}${BOLD}Congratulations! Your project is now fully LEAP-ready.${NC}"

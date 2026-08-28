@@ -70,6 +70,25 @@ assert_exists "CLAUDE.md" "CLAUDE.md"
 assert_exists "GEMINI.md" "GEMINI.md"
 assert_not_exists ".cursorrules" ".cursorrules"
 
+# Test 4: --qmd flag passes --remove-legacy to qmd-config
+echo "Testing setup-leap.sh --qmd passes --remove-legacy..."
+# Create a spy qmd-config in the sandboxed workspace's scripts/qmd directory
+rm -f qmd_args.log
+cat > scripts/qmd/qmd-config << 'EOF'
+#!/usr/bin/env bash
+echo "$@" > qmd_args.log
+exit 0
+EOF
+chmod +x scripts/qmd/qmd-config
+
+set +e
+out=$(bash scripts/setup-leap.sh --yes --qmd < /dev/null 2>&1)
+code=$?
+set -e
+assert_exit_code "Setup with --qmd exits with 0" 0 "$code"
+assert_exists "qmd_args.log" "qmd_args.log"
+assert_contains "qmd-config was invoked with --remove-legacy" "$(cat qmd_args.log)" "--remove-legacy"
+
 echo ""
 echo "Test summary: PASS=$PASS FAIL=$FAIL"
 
