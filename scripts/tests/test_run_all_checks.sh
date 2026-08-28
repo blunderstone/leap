@@ -31,25 +31,8 @@ SCRIPT="$HERE/../run-all-checks.sh"
 PASS=0
 FAIL=0
 
-# ---- assertion helpers ------------------------------------------------------
-
-assert_exit_code() { # label expected_code actual_code [output]
-  local label="$1"
-  local expected="$2"
-  local actual="$3"
-  local output="${4:-}"
-  
-  if [ "$actual" -eq "$expected" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s (exit %d)\n" "$label" "$actual"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s\n       expected exit code %d, but got %d\n" "$label" "$expected" "$actual"
-    if [ -n "$output" ]; then
-      printf '       ---- output ----\n%s\n       ----------------\n' "$output"
-    fi
-  fi
-}
+# Sourcing assertion helpers
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/assert.sh"
 
 # ---- verification scenarios --------------------------------------------------
 
@@ -63,7 +46,7 @@ else
   # Scenario 1: All checks pass
   echo "Scenario 1: All checks pass"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" ASSERT_LIB_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "All checks pass exits with 0" 0 "$code" "$out"
@@ -71,7 +54,7 @@ else
   # Scenario 2: check-md fails
   echo "Scenario 2: check-md fails"
   set +e
-  out=$(CHECK_MD="false" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="false" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" ASSERT_LIB_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing check-md exits with 1" 1 "$code" "$out"
@@ -79,7 +62,7 @@ else
   # Scenario 3: pytest fails
   echo "Scenario 3: pytest fails"
   set +e
-  out=$(CHECK_MD="true" PYTEST="false" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="false" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" ASSERT_LIB_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing pytest exits with 1" 1 "$code" "$out"
@@ -87,7 +70,7 @@ else
   # Scenario 4: install-skills tests fail
   echo "Scenario 4: install-skills tests fail"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="false" SETUP_FLAGS_TEST="true" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="false" SETUP_FLAGS_TEST="true" QMD_TEST="true" ASSERT_LIB_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing install-skills tests exits with 1" 1 "$code" "$out"
@@ -95,7 +78,7 @@ else
   # Scenario 5: QMD config tests fail
   echo "Scenario 5: QMD config tests fail"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="false" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="false" ASSERT_LIB_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing QMD config tests exits with 1" 1 "$code" "$out"
@@ -103,10 +86,18 @@ else
   # Scenario 6: Setup flags tests fail
   echo "Scenario 6: Setup flags tests fail"
   set +e
-  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="false" QMD_TEST="true" bash "$SCRIPT" 2>&1)
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="false" QMD_TEST="true" ASSERT_LIB_TEST="true" bash "$SCRIPT" 2>&1)
   code=$?
   set -e
   assert_exit_code "Failing setup flags tests exits with 1" 1 "$code" "$out"
+
+  # Scenario 7: assert-lib tests fail
+  echo "Scenario 7: assert-lib tests fail"
+  set +e
+  out=$(CHECK_MD="true" PYTEST="true" INSTALL_SKILLS_TEST="true" SETUP_FLAGS_TEST="true" QMD_TEST="true" ASSERT_LIB_TEST="false" bash "$SCRIPT" 2>&1)
+  code=$?
+  set -e
+  assert_exit_code "Failing assert-lib tests exits with 1" 1 "$code" "$out"
 fi
 
 # ---- report summary ---------------------------------------------------------

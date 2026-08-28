@@ -31,62 +31,8 @@ PIN_SCRIPT="$ROOT/scripts/pin-leap.sh"
 PASS=0
 FAIL=0
 
-# ---- assertion helpers ------------------------------------------------------
-
-assert_exit_code() { # label expected_code actual_code [output]
-  local label="$1"
-  local expected="$2"
-  local actual="$3"
-  local output="${4:-}"
-  
-  if [ "$actual" -eq "$expected" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s (exit %d)\n" "$label" "$actual"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s\n       expected exit code %d, but got %d\n" "$label" "$expected" "$actual"
-    if [ -n "$output" ]; then
-      printf '       ---- output ----\n%s\n       ----------------\n' "$output"
-    fi
-  fi
-}
-
-assert_exists() {
-  local label="$1"
-  local path="$2"
-  if [ -f "$path" ] || [ -d "$path" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s exists\n" "$label"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s does not exist: %s\n" "$label" "$path"
-  fi
-}
-
-assert_equals() {
-  local label="$1"
-  local expected="$2"
-  local actual="$3"
-  if [ "$actual" = "$expected" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s matches expected: '%s'\n" "$label" "$expected"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s\n       expected: '%s'\n       got:      '%s'\n" "$label" "$expected" "$actual"
-  fi
-}
-
-assert_true() {
-  local label="$1"
-  local val="$2"
-  if [ "$val" = "true" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s\n" "$label"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s\n" "$label"
-  fi
-}
+# Sourcing assertion helpers
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/assert.sh"
 
 # ---- main test runner --------------------------------------------------------
 

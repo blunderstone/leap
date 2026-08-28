@@ -39,25 +39,8 @@ mkdir -p "$HOME/Library/LaunchAgents"
 PASS=0
 FAIL=0
 
-# ---- assertion helpers ------------------------------------------------------
-
-assert_contains() { # label output needle
-  if printf '%s\n' "$2" | grep -qF -- "$3"; then
-    PASS=$((PASS+1)); printf "  ok   %s\n" "$1"
-  else
-    FAIL=$((FAIL+1)); printf "  FAIL %s\n       expected to find: %s\n" "$1" "$3"
-    printf '       ---- output ----\n%s\n       ----------------\n' "$2"
-  fi
-}
-
-assert_absent() { # label output needle
-  if printf '%s\n' "$2" | grep -qF -- "$3"; then
-    FAIL=$((FAIL+1)); printf "  FAIL %s\n       expected NOT to find: %s\n" "$1" "$3"
-    printf '       ---- output ----\n%s\n       ----------------\n' "$2"
-  else
-    PASS=$((PASS+1)); printf "  ok   %s\n" "$1"
-  fi
-}
+# Sourcing assertion helpers
+source "$(dirname "${BASH_SOURCE[0]}")/../../lib/assert.sh"
 
 # ---- repo builders ----------------------------------------------------------
 
