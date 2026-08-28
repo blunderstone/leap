@@ -52,11 +52,11 @@ We will:
 
 ## Success Criteria
 
-- [ ] `qmd-config` correctly identifies and reports actual idempotent skips when a collection with the same name already exists.
-- [ ] `qmd-config` aborts execution and returns exit code 1 when a path/pattern collision with a different collection name is detected.
-- [ ] When a path/pattern collision occurs, the output suggests running with `--remove-legacy`.
-- [ ] `emit_context` does not crash when attempting to add context to a non-existent collection, but instead prints a warning.
-- [ ] New automated tests are added and pass successfully.
+- [x] `qmd-config` correctly identifies and reports actual idempotent skips when a collection with the same name already exists.
+- [x] `qmd-config` aborts execution and returns exit code 1 when a path/pattern collision with a different collection name is detected.
+- [x] When a path/pattern collision occurs, the output suggests running with `--remove-legacy`.
+- [x] `emit_context` does not crash when attempting to add context to a non-existent collection, but instead prints a warning.
+- [x] New automated tests are added and pass successfully.
 
 ## Constraints
 

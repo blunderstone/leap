@@ -48,9 +48,9 @@ Our approach will employ Test-Driven Development (TDD):
 
 ### Success Criteria
 
-- [ ] A new test case is added to `scripts/qmd/tests/qmd-config.test.sh` targeting path/pattern collision behavior.
-- [ ] The test case successfully triggers the bug where `qmd-config` incorrectly reports success/skip on collision.
-- [ ] The test fails on the current implementation (TDD RED verified).
+- [x] A new test case is added to `scripts/qmd/tests/qmd-config.test.sh` targeting path/pattern collision behavior.
+- [x] The test case successfully triggers the bug where `qmd-config` incorrectly reports success/skip on collision.
+- [x] The test fails on the current implementation (TDD RED verified).
 
 ### Explicitly Deferred
 
@@ -83,11 +83,11 @@ Our approach will employ Test-Driven Development (TDD):
 
 ### Success Criteria
 
-- [ ] `emit_collection` correctly distinguishes idempotent skip from path/pattern collisions.
-- [ ] `emit_collection` suggests running with `--remove-legacy` on path/pattern collision.
-- [ ] `emit_context` safely guards against registering context for non-existent collections.
-- [ ] All automated tests pass successfully (TDD GREEN verified).
-- [ ] Workspace remains clean and linter (`check-md`) passes.
+- [x] `emit_collection` correctly distinguishes idempotent skip from path/pattern collisions.
+- [x] `emit_collection` suggests running with `--remove-legacy` on path/pattern collision.
+- [x] `emit_context` safely guards against registering context for non-existent collections.
+- [x] All automated tests pass successfully (TDD GREEN verified).
+- [x] Workspace remains clean and linter (`check-md`) passes.
 
 ### Explicitly Deferred
 
