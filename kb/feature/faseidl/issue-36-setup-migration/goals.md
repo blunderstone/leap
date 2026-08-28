@@ -89,16 +89,16 @@ Requires careful updates to shell and python scripts to implement non-interactiv
 
 ## Success Criteria
 
-- [ ] A root-level `.check-md.yml` configuration is added and used.
-- [ ] `scripts/run-all-checks.sh` successfully lints the entire repository.
-- [ ] All template-generated guides (such as `CLAUDE.md`) are verified to be lint-clean upon creation.
-- [ ] Setup script closing instructions promote modern skills.
-- [ ] Custom skills are only installed for selected/configured agents.
-- [ ] Gitignore patterns added by the setup script are root-anchored with a leading slash.
-- [ ] Non-interactive automation is supported via CLI flags and verified via test execution.
-- [ ] Submodule migration instructions are documented in `kb/guide-installation.md`.
-- [ ] Rules for non-markdown artifacts are documented in `kb/guide-document-taxonomy.md`.
-- [ ] All automated check suites and tests pass successfully.
+- [x] A root-level `.check-md.yml` configuration is added and used.
+- [x] `scripts/run-all-checks.sh` successfully lints the entire repository.
+- [x] All template-generated guides (such as `CLAUDE.md`) are verified to be lint-clean upon creation.
+- [x] Setup script closing instructions promote modern skills.
+- [x] Custom skills are only installed for selected/configured agents.
+- [x] Gitignore patterns added by the setup script are root-anchored with a leading slash.
+- [x] Non-interactive automation is supported via CLI flags and verified via test execution.
+- [x] Submodule migration instructions are documented in `kb/guide-installation.md`.
+- [x] Rules for non-markdown artifacts are documented in `kb/guide-document-taxonomy.md`.
+- [x] All automated check suites and tests pass successfully.
 
 ## Constraints
 
