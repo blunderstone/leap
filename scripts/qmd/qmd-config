@@ -254,10 +254,19 @@ emit_collection() { # name path mask
     if [ $status -eq 0 ]; then
       echo "  ✓ $1"
     else
-      if echo "$err_out" | grep -iq "already exists"; then
+      # REQ-1: Only treat as an idempotent skip if the error explicitly states the
+      # requested collection name already exists. This prevents path/pattern collisions
+      # with different collection names from being falsely treated as successful skips.
+      if echo "$err_out" | grep -iq "Collection '$1' already exists"; then
         echo "  ✓ $1 already exists (skipped)"
       else
         echo "  ✗ failed to register $1: $err_out" >&2
+        # REQ-2: If registration failed due to a path/pattern collision with a different
+        # collection, suggest running with the --remove-legacy option to clean up.
+        if echo "$err_out" | grep -iq "already exists"; then
+          echo "      💡 Suggestion: A collection path/pattern collision was detected." >&2
+          echo "                  Run qmd-config with the --remove-legacy option to clean up legacy collections." >&2
+        fi
         exit 1
       fi
     fi
@@ -268,7 +277,27 @@ emit_context() { # uri text
   if [ "$DRY_RUN" = true ]; then
     echo "CONTEXT $1"
   else
-    qmd context add "$1" "$2"
+    local uri="$1"
+    local text="$2"
+
+    # REQ-3: Verify that the target collection exists before attempting to attach
+    # context to it. This avoids downstream crashes if a previous registration failed or was skipped.
+    if [ "${uri#qmd://}" != "$uri" ]; then
+      local without_scheme="${uri#qmd://}"
+      local collection="${without_scheme%%/*}"
+
+      set +e
+      qmd collection show "$collection" &>/dev/null
+      local exists=$?
+      set -e
+
+      if [ $exists -ne 0 ]; then
+        echo "  ⚠ Warning: target collection '$collection' not found. Skipping context registration." >&2
+        return 0
+      fi
+    fi
+
+    qmd context add "$uri" "$text"
   fi
 }
 
