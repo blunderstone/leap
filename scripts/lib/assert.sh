@@ -4,6 +4,11 @@
 # Provides standard assertion functions that manage PASS/FAIL counters
 # and output standard results in a format friendly to LEAP test runners.
 #
+# Documentation:
+#   Refer to 'kb/guide-shell-assertion-library.md' for API signatures,
+#   examples, and instructions for parent repository integration.
+#   Please ensure any edits here are kept in sync with that guide.
+#
 # Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)
 #
 # Copyright 2026 Blunderstone LLC
