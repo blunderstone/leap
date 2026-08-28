@@ -41,3 +41,40 @@ If workspace skills are not active, you must follow these core guidelines:
 ## Metadata & Formatting Standards
 
 - **Date Formatting:** Always format dates using the ISO 8601 standard (`YYYY-MM-DD`) across all markdown documents (such as goals, plans, completion summaries, ADRs, and guides) instead of natural-language or localized formats (e.g., 'Thursday, August 27, 2026').
+
+---
+
+## Conventional Commit Guidelines
+
+LEAP is a Literate Programming framework. Structured Markdown files (such as ADRs, templates, and guides) are primary deliverables of the repository. To ensure our automated release workflow handles documentation and development commits appropriately, all contributors must follow these guidelines:
+
+### Release-Triggering Prefixes (`feat` / `fix`)
+
+Only `feat(...)` and `fix(...)` conventional commits trigger automated releases and version bumps.
+
+- **Framework Deliverables:** When adding or updating primary documentation deliverables (such as standardized templates, architectural guidelines, or core guides under `kb/`), use release-triggering prefixes:
+  - `feat(kb): add guide for ...`
+  - `feat(templates): create template for ...`
+  - `fix(kb): correct instructions in ...`
+- **Application Code:** Use standard prefixes for Python tool or codebase changes:
+  - `feat(cli): add new rule ...`
+  - `fix(checker): resolve parsing bug in ...`
+
+### Non-Release-Triggering Prefixes (`docs` / `chore` / `refactor` / etc.)
+
+These prefixes are visible in the changelog (if configured) but **do not** trigger a release.
+
+- **Auxiliary Documentation:** Use the raw `docs(...)` or `docs:` prefix *only* for auxiliary, non-release-worthy changes (e.g., correcting typos, formatting files, or updating repository-level READMEs):
+  - `docs(readme): update installation instructions`
+  - `docs: fix typo in CONTRIBUTING.md`
+- **Refactoring & Workflow:** Use `refactor(...)` or `chore(...)` for maintenance and tooling changes:
+  - `refactor(checker): simplify rules engine`
+  - `chore(deps): bump dependencies`
+
+### Strict Ephemeral Directory Rules
+
+- **Drafting & Development:** Commits modifying files in ephemeral directories (such as `kb/feature/` where goals, plans, and completion summaries are drafted) **MUST NEVER** use `feat` or `fix` prefixes.
+- **Allowed Prefixes:** Always use non-release-triggering prefixes for ephemeral drafts, such as:
+  - `chore(workflow): establish goals for <feature>`
+  - `docs(workflow): draft implementation plan for <feature>`
+
