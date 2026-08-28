@@ -12,6 +12,6 @@ You may utilize this software, scripts, and documentation under the terms of thi
 
 ---
 
-### Required Notice
+## Required Notice
 
 `Copyright (c) 2026 Blunderstone LLC`

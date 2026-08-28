@@ -68,7 +68,7 @@ run_check() {
 }
 
 # Run the 4 checks
-run_check "check-md (Markdown Linter)" "${CHECK_MD:-}" check-md kb/ || exit 1
+run_check "check-md (Markdown Linter)" "${CHECK_MD:-}" check-md || exit 1
 
 if [ -f "check-md/.venv/bin/pytest" ]; then
   run_check "pytest (Python Linter tests)" "${PYTEST:-}" check-md/.venv/bin/pytest check-md/tests/ || exit 1

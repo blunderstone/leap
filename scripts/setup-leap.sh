@@ -286,7 +286,9 @@ Always run `check-md` to verify formatting compliance. Do not bypass Markdown li
 ## Build and Test Commands
 
 List your project-specific build and test commands here.
+
 For example:
+
 - **Build**: `npm run build` or `cargo build`
 - **Test**: `npm run test` or `cargo test`
 EOF
