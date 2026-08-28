@@ -646,3 +646,28 @@ class TestCliFixStrategies:
         assert "#### Violation" in md_file.read_text()
         # Should show preview
         assert "would be modified" in result.stdout.lower() or "dry run" in result.stdout.lower()
+
+
+class TestCliVersion:
+    """Test CLI version option."""
+
+    def test_version_flag_prints_version_and_exits(self) -> None:
+        """Should print check-md version and exit 0."""
+        from check_md import __version__
+
+        result = runner.invoke(app, ["--version"])
+
+        assert result.exit_code == 0
+        assert f"check-md {__version__}" in result.stdout
+        # Verify it includes the absolute package path (enclosed in parentheses)
+        package_dir = Path(__file__).parent.parent / "src" / "check_md"
+        assert f"({package_dir.resolve()})" in result.stdout
+
+    def test_version_flag_is_eager(self, tmp_path: Path) -> None:
+        """Should print version and exit 0 even if combined with other arguments."""
+        result = runner.invoke(app, ["nonexistent_file.md", "--version"])
+
+        assert result.exit_code == 0
+        from check_md import __version__
+        assert f"check-md {__version__}" in result.stdout
+

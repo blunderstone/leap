@@ -40,6 +40,15 @@ app = typer.Typer(
 )
 
 
+def version_callback(value: bool):
+    """Callback to print version and exit."""
+    if value:
+        from . import __version__
+        package_dir = Path(__file__).parent.resolve()
+        typer.echo(f"check-md {__version__} ({package_dir})")
+        raise typer.Exit()
+
+
 def find_config_file() -> Optional[Path]:
     """Find .check-md.yml config file starting from current directory.
 
@@ -385,6 +394,13 @@ def main(
     files: Optional[List[str]] = typer.Argument(
         None,
         help="Files or directories to check (default: current directory)",
+    ),
+    version: Optional[bool] = typer.Option(
+        None,
+        "--version",
+        callback=version_callback,
+        is_eager=True,
+        help="Show the version and exit.",
     ),
     quiet: bool = typer.Option(
         False,
