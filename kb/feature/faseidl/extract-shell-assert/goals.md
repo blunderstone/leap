@@ -59,10 +59,10 @@ By extracting these assertions into a single reusable library (`scripts/lib/asse
 
 ## Success Criteria
 
-- [ ] Reusable assertion library `scripts/lib/assert.sh` implemented with all required assertion functions.
-- [ ] All four existing test suites refactored and executing successfully.
-- [ ] New test cases created to verify correctness of assertion functions under both passing and failing conditions.
-- [ ] Library API and usage documented clearly for internal and external developers.
+- [x] Reusable assertion library `scripts/lib/assert.sh` implemented with all required assertion functions.
+- [x] All four existing test suites refactored and executing successfully.
+- [x] New test cases created to verify correctness of assertion functions under both passing and failing conditions.
+- [x] Library API and usage documented clearly for internal and external developers.
 
 ## Constraints
 
