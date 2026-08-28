@@ -1,10 +1,10 @@
 # Tech Debt: [Topic]
 
 **Author:** [Your Name](https://www.linkedin.com/in/your-profile/)<br>
-**Date Created:** [Date]<br>
+**Date Created:** [YYYY-MM-DD]<br>
 **Status:** [open | in-progress | done]<br>
 **Tracking Issue:** [none | issue reference(s)]<br>
-**Last Updated:** [Date]
+**Last Updated:** [YYYY-MM-DD]
 
 [Status: the leading token must be one of `open`, `in-progress`, or `done`. A short qualifier may follow, separated by an em-dash, a hyphen, or a double hyphen — whichever is easiest to type; the enum token is what carries the meaning. For example `open — partially mitigated by the literal fast path; underlying cause unresolved` or `open - partially mitigated`. Location is authoritative: a document living in `kb/meta/` or `<module>/kb/` is unresolved, and a document that has been moved to the feature directory that resolved it is `done`. If the Status field is absent, infer status from location.]
 

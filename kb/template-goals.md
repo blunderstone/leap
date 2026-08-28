@@ -1,7 +1,7 @@
 # <Feature Name> Goals
 
 **Author:** [Your Name](https://www.linkedin.com/in/your-profile/)<br>
-**Date:** [Date]
+**Date:** [YYYY-MM-DD]
 
 ---
 

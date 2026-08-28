@@ -1,8 +1,9 @@
 # Markdown Formatting Standards for Documentation
 
-**Status:** accepted
-
-**Deciders:** F. Andy Seidl
+**Status:** accepted (supplemented by [leap-adr-003](leap-adr-003__standardize-date-formatting.md))<br>
+**Deciders:** F. Andy Seidl<br>
+**Date:** 2025-11-02<br>
+**Last Updated:** 2026-08-27
 
 ## Issue
 
@@ -351,6 +352,8 @@ Authentication is required before any user features can be deployed securely.
 
 ### Reference: Document Header Template
 
+> **Note:** For standardized date and timestamp formatting requirements (`YYYY-MM-DD`), refer to [leap-adr-003](leap-adr-003__standardize-date-formatting.md).
+
 ```markdown
 # Document Title
 
@@ -466,17 +469,3 @@ See GEMINI.md "Markdown Validation" section for complete workflow.
 - **Goals Template**: `kb/meta/goals-template.md`
 - **Plan Template**: `kb/meta/plan-template.md`
 - **Completion Summary Template**: `kb/meta/completion-summary-template.md`
-
----
-
-## History
-
-- **2025-11-02**: Initial ADR creation incorporating existing best practices and new heading standard
-- **2025-11-13**: Added `check-md` automated enforcement tool with auto-fix capabilities
-- **Test Case**: `kb/feature/faseidl/jcl-phase-1/transitive-query-use-cases.md` demonstrates all standards
-
----
-
-**Status:** accepted<br>
-**Deciders:** F. Andy Seidl<br>
-**Date:** 2025-11-02

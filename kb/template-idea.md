@@ -1,9 +1,9 @@
 # Idea: [Topic]
 
 **Author:** [Your Name](https://www.linkedin.com/in/your-profile/)<br>
-**Date:** [Date]<br>
+**Date:** [YYYY-MM-DD]<br>
 **Status:** [exploring | promising | declined | superseded | implemented]<br>
-**Last Updated:** [Date]
+**Last Updated:** [YYYY-MM-DD]
 
 ---
 

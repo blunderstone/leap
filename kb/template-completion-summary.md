@@ -2,7 +2,7 @@
 
 **Branch:** `<username>/<feature-branch-name>`<br>
 **Base Branch:** `<base-branch>`<br>
-**Date:** [Date]<br>
+**Date:** [YYYY-MM-DD]<br>
 **Author:** [Your Name](https://www.linkedin.com/in/your-profile/)
 
 ---
