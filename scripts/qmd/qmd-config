@@ -613,8 +613,10 @@ echo ""
 #======================================================================
 
 emit_context "/" \
-  "Project '$PREFIX': knowledge base organized per the LEAP document taxonomy. \
-Collections in this project are prefixed '$PREFIX-'."
+  "This index may hold knowledge bases from multiple projects, each registered under its own \
+prefix. Project collections are named <project>-adrs, <project>-features, <project>-guides, \
+<project>-meta, <project>-planning, and <project>-readmes, following the LEAP document \
+taxonomy. Unprefixed leap and leap-* collections hold shared LEAP methodology documentation."
 
 emit_context "qmd://${PREFIX}-adrs" \
   "Architecture Decision Records: significant design and technology choices with rationale. \
