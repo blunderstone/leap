@@ -52,9 +52,9 @@ To resolve this issue, we will implement a dual-action solution:
 
 ## Success Criteria
 
-- [ ] `release-please-config.json` is updated with a custom `changelog-sections` array.
-- [ ] `GEMINI.md` is updated with clear developer guidelines on conventional commit prefixes for LEAP-specific deliverables.
-- [ ] No `check-md` formatting or rules violations in updated or newly created files.
+- [x] `release-please-config.json` is updated with a custom `changelog-sections` array.
+- [x] `GEMINI.md` is updated with clear developer guidelines on conventional commit prefixes for LEAP-specific deliverables.
+- [x] No `check-md` formatting or rules violations in updated or newly created files.
 
 ## Constraints
 

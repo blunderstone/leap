@@ -37,8 +37,8 @@ The goal is to customize the automated `release-please` configuration and develo
 
 ### Success Criteria
 
-- [ ] `release-please-config.json` is updated and matches the desired structure.
-- [ ] JSON syntax is valid.
+- [x] `release-please-config.json` is updated and matches the desired structure.
+- [x] JSON syntax is valid.
 
 **Rationale:** Customizing `changelog-sections` enables `release-please` to display non-standard categories in the markdown output instead of ignoring them.
 
@@ -65,8 +65,8 @@ The goal is to customize the automated `release-please` configuration and develo
 
 ### Success Criteria
 
-- [ ] `GEMINI.md` contains the updated guidelines.
-- [ ] No `check-md` linter violations in modified or added files.
+- [x] `GEMINI.md` contains the updated guidelines.
+- [x] No `check-md` linter violations in modified or added files.
 
 **Rationale:** Updating developer guidelines is crucial to ensure team consensus and consistent use of appropriate commit prefixes to trigger releases correctly.
 
