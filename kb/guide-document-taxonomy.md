@@ -2,7 +2,7 @@
 
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)<br>
 **Date:** 2025-11-07<br>
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-08-28
 
 ---
 
@@ -315,6 +315,19 @@ kb/feature/faseidl/ontology-namespace-framework-enhancement/
 - Use lowercase with hyphens
 - Format: `<username>/<feature-name>`
 - Keep feature names concise and descriptive
+
+#### Non-Markdown Artifacts inside Feature Directories
+
+To preserve a clean, searchable, and linter-compliant documentation structure inside your feature folders, adhere to the following rules for non-markdown assets (such as test logs, baseline JSON/CSV files, mock outputs, or supporting helper scripts):
+
+- **Do Not Clutter Feature Roots**: Non-markdown files must never reside in the root of your feature directory (`kb/feature/<username>/<feature-name>/`).
+- **Use Nested Directories**: Place these supporting assets in dedicated subdirectories named:
+  - `artifacts/` for test outputs, raw logs, benchmark measurements, mock files, and baseline JSON/CSV assets.
+  - `scripts/` for custom automation, scratch scripts, or validation commands specific to that feature branch.
+- **Benefits**:
+  - **Zero-Noise Linter Scanning**: Prevents files from confusing Markdown linters like `check-md`.
+  - **Clean Semantic Search**: Keeps the semantic index (e.g., QMD) highly relevant by omitting large, repetitive JSON/CSV outputs.
+  - **High Repository Hygiene**: Keeps the workspace clean and understandable for other team members.
 
 ---
 

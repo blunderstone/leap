@@ -1,7 +1,7 @@
 # LEAP Installation & Setup Guide
 
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)<br>
-**Date:** 2026-08-19
+**Date:** 2026-08-28
 
 ---
 
@@ -121,6 +121,57 @@ git checkout v1.1.0-beta.0
 # Return to your project root and stage the pin update
 cd ..
 git add leap
+git commit -m "chore: pin leap submodule to stable release v1.1.0-beta.0"
+```
+
+#### 4. Migrating or Updating an Existing Submodule
+
+If your project already consumes `leap` as a Git submodule but you need to migrate to a new repository URL or force-update a pinned pointer to track a clean release tag (such as `v1.1.0-beta.0`), run the following commands in your consuming parent repository:
+
+##### Step 1: Update the Submodule Remote URL (If Required)
+
+If the upstream repository URL for LEAP has changed, update it inside your parent project:
+
+```bash
+git submodule set-url leap https://github.com/blunderstone/leap.git
+git submodule sync
+```
+
+##### Step 2: Fetch and Checkout the Stable Tag
+
+Since the history of the repository may have been updated, force-fetch upstream commits and tags inside the submodule directory, and checkout the target release:
+
+```bash
+# Navigate into the submodule directory
+cd leap
+
+# Force-fetch tags and commits from GitHub
+git fetch origin --tags --force
+
+# Check out the target stable tag
+git checkout v1.1.0-beta.0
+
+# Return to parent project root
+cd ..
+```
+
+##### Step 3: Run the Workspace Configurator
+
+Run the interactive setup bootstrapper to update all local configuration files and local agent instructions to ensure they conform to the new release:
+
+```bash
+bash leap/scripts/setup-leap.sh
+```
+
+##### Step 4: Stage and Commit the Submodule Update
+
+Commit the newly pinned submodule reference and updated configurator output files:
+
+```bash
+# Stage the submodule pointer update and any updated agent instruction files
+git add leap CLAUDE.md GEMINI.md .cursorrules .github/copilot-instructions.md
+
+# Commit the changes
 git commit -m "chore: pin leap submodule to stable release v1.1.0-beta.0"
 ```
 
