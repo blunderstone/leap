@@ -9,6 +9,7 @@
 # - PYTEST: pytest suite for check-md
 # - INSTALL_SKILLS_TEST: skills installation tests
 # - QMD_TEST: QMD configuration shell tests
+# - ASSERT_LIB_TEST: assertion library shell tests
 #
 # Author: F. Andy Seidl (https://www.linkedin.com/in/faseidl/)
 #
@@ -81,6 +82,8 @@ run_check "install-skills (Python unit tests)" "${INSTALL_SKILLS_TEST:-}" python
 run_check "setup-leap flags (Shell tests)" "${SETUP_FLAGS_TEST:-}" bash scripts/tests/test_setup_flags.sh || exit 1
 
 run_check "QMD config (Shell tests)" "${QMD_TEST:-}" bash scripts/qmd/tests/qmd-config.test.sh || exit 1
+
+run_check "assert-lib (Assertion library tests)" "${ASSERT_LIB_TEST:-}" bash scripts/tests/test_assert_lib.sh || exit 1
 
 echo "=================================================="
 echo "✓ All checks passed successfully!"

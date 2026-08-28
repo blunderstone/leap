@@ -30,29 +30,8 @@ ROOT="$HERE/../.."
 PASS=0
 FAIL=0
 
-assert_true() {
-  local label="$1"
-  local val="$2"
-  if [ "$val" = "true" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s\n" "$label"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s\n" "$label"
-  fi
-}
-
-assert_exists() {
-  local label="$1"
-  local path="$2"
-  if [ -f "$path" ] || [ -d "$path" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s exists\n" "$label"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s does not exist: %s\n" "$label" "$path"
-  fi
-}
+# Sourcing assertion helpers
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/assert.sh"
 
 # Create temp workspace
 TEMP_DIR=$(mktemp -d)

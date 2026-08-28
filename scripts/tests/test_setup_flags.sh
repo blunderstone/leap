@@ -9,42 +9,8 @@ ROOT="$HERE/../.."
 PASS=0
 FAIL=0
 
-assert_exit_code() {
-  local label="$1"
-  local expected="$2"
-  local actual="$3"
-  if [ "$actual" -eq "$expected" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s (exit %d)\n" "$label" "$actual"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s: expected %d, got %d\n" "$label" "$expected" "$actual"
-  fi
-}
-
-assert_exists() {
-  local label="$1"
-  local path="$2"
-  if [ -e "$path" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s exists: %s\n" "$label" "$path"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s does not exist: %s\n" "$label" "$path"
-  fi
-}
-
-assert_not_exists() {
-  local label="$1"
-  local path="$2"
-  if [ ! -e "$path" ]; then
-    PASS=$((PASS+1))
-    printf "  ok   %s does not exist (as expected): %s\n" "$label" "$path"
-  else
-    FAIL=$((FAIL+1))
-    printf "  FAIL %s exists but should not: %s\n" "$label" "$path"
-  fi
-}
+# Sourcing assertion helpers
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/assert.sh"
 
 # Create temp workspace
 TEMP_DIR=$(mktemp -d)
