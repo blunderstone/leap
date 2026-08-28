@@ -77,9 +77,9 @@ We will implement the standard, eager `--version` command-line flag in the `chec
 
 ### Success Criteria
 
-- [ ] `check-md --version` output contains the correct absolute path on the host system.
-- [ ] All workspace tests and checkers run and pass cleanly without any regression.
-- [ ] Success checkboxes in `goals.md` and `plan.md` are evaluated, confirmed, and updated.
+- [x] `check-md --version` output contains the correct absolute path on the host system.
+- [x] All workspace tests and checkers run and pass cleanly without any regression.
+- [x] Success checkboxes in `goals.md` and `plan.md` are evaluated, confirmed, and updated.
 
 **Rationale:** Manual verification from the shell ensures that editable installs and absolute path resolution function exactly as expected on real file systems.
 
