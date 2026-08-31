@@ -89,6 +89,28 @@ assert_exit_code "Setup with --qmd exits with 0" 0 "$code"
 assert_exists "qmd_args.log" "qmd_args.log"
 assert_contains "qmd-config was invoked with --remove-legacy" "$(cat qmd_args.log)" "--remove-legacy"
 
+# Test 5: Interactive default behavior (pressing Enter defaults to "yes" for standard options)
+echo "Testing setup-leap.sh interactive defaults (piping empty input)..."
+# Clean up files first
+rm -f CLAUDE.md GEMINI.md .cursorrules .github/copilot-instructions.md .gitignore .git/hooks/pre-commit
+# Create an empty .gitignore and pre-commit hook destination directory
+touch .gitignore
+mkdir -p .git/hooks
+
+set +e
+# Disable pipefail temporarily because yes "" will receive SIGPIPE (141) when setup-leap.sh exits
+set +o pipefail
+out=$(yes "" | bash scripts/setup-leap.sh 2>&1)
+code=$?
+set -o pipefail
+set -e
+
+assert_exit_code "Interactive setup with empty input exits with 0" 0 "$code"
+assert_exists "CLAUDE.md" "CLAUDE.md"
+assert_exists "GEMINI.md" "GEMINI.md"
+assert_exists ".cursorrules" ".cursorrules"
+assert_exists ".github/copilot-instructions.md" ".github/copilot-instructions.md"
+
 echo ""
 echo "Test summary: PASS=$PASS FAIL=$FAIL"
 
