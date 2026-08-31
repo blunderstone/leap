@@ -345,7 +345,7 @@ fi
 
 # 2b. Configure Submodule Recurse (if submodule)
 if [ "$IS_SUBMODULE" = true ]; then
-  ask_yes_no "Enable automatic Git Submodule updates?" "n" "Configures Git to automatically update the 'leap' folder during checkout or pull commands so you do not need to sync submodules manually." "$OVERRIDE_SUBMODULE_RECURSE"
+  ask_yes_no "Enable automatic Git Submodule updates?" "y" "Configures Git to automatically update the 'leap' folder during checkout or pull commands so you do not need to sync submodules manually." "$OVERRIDE_SUBMODULE_RECURSE"
   if [ "$PROMPT_RESULT" = "y" ]; then
     git config submodule.recurse true
     print_success "Enabled automatic submodule recursion (submodule.recurse = true)."
@@ -361,7 +361,7 @@ if command -v check-md &> /dev/null; then
 else
   if command -v uv &> /dev/null; then
     echo "  Modern 'uv' package manager detected!"
-    ask_yes_no "Install check-md globally using 'uv tool'?" "n" "Installs the markdown linter globally on your system PATH using the extremely fast 'uv' tool manager." "$OVERRIDE_CHECK_MD"
+    ask_yes_no "Install check-md globally using 'uv tool'?" "y" "Installs the markdown linter globally on your system PATH using the extremely fast 'uv' tool manager." "$OVERRIDE_CHECK_MD"
     if [ "$PROMPT_RESULT" = "y" ]; then
       uv tool install --editable "$LEAP_DIR/check-md"
       print_success "check-md installed successfully via uv tool."
@@ -372,7 +372,7 @@ else
     PIP_CMD="pip"
     command -v pip3 &> /dev/null && PIP_CMD="pip3"
     echo "  Python pip detected."
-    ask_yes_no "Install check-md in your active Python environment?" "n" "Installs the markdown linter in your current Python terminal environment using pip." "$OVERRIDE_CHECK_MD"
+    ask_yes_no "Install check-md in your active Python environment?" "y" "Installs the markdown linter in your current Python terminal environment using pip." "$OVERRIDE_CHECK_MD"
     if [ "$PROMPT_RESULT" = "y" ]; then
       $PIP_CMD install -e "$LEAP_DIR/check-md[dev]"
       print_success "check-md installed successfully via pip."
@@ -529,27 +529,27 @@ configure_gitignore() {
 INSTALLED_AGENTS=""
 
 # Ask Claude
-ask_yes_no "Configure Claude Guide (CLAUDE.md)?" "n" "Creates CLAUDE.md in your repository root, informing Claude-based coding agents (like Claude Code, Cline, Roo Code, and Cursor) to follow your LEAP rules." "$OVERRIDE_CLAUDE"
+ask_yes_no "Configure Claude Guide (CLAUDE.md)?" "y" "Creates CLAUDE.md in your repository root, informing Claude-based coding agents (like Claude Code, Cline, Roo Code, and Cursor) to follow your LEAP rules." "$OVERRIDE_CLAUDE"
 if [ "$PROMPT_RESULT" = "y" ]; then
   write_claude
   INSTALLED_AGENTS="${INSTALLED_AGENTS:+$INSTALLED_AGENTS,}claude"
 fi
 
 # Ask Gemini
-ask_yes_no "Configure Gemini & Antigravity Guide (GEMINI.md)?" "n" "Creates GEMINI.md in your repository root, which the Gemini CLI and the next-generation Antigravity CLI (agy) natively parse on startup." "$OVERRIDE_GEMINI"
+ask_yes_no "Configure Gemini & Antigravity Guide (GEMINI.md)?" "y" "Creates GEMINI.md in your repository root, which the Gemini CLI and the next-generation Antigravity CLI (agy) natively parse on startup." "$OVERRIDE_GEMINI"
 if [ "$PROMPT_RESULT" = "y" ]; then
   write_gemini
   INSTALLED_AGENTS="${INSTALLED_AGENTS:+$INSTALLED_AGENTS,}gemini"
 fi
 
 # Ask Copilot
-ask_yes_no "Configure GitHub Copilot Instructions?" "n" "Creates .github/copilot-instructions.md to automatically instruct GitHub Copilot Chat to align with your LEAP guidelines." "$OVERRIDE_COPILOT"
+ask_yes_no "Configure GitHub Copilot Instructions?" "y" "Creates .github/copilot-instructions.md to automatically instruct GitHub Copilot Chat to align with your LEAP guidelines." "$OVERRIDE_COPILOT"
 if [ "$PROMPT_RESULT" = "y" ]; then
   write_copilot
 fi
 
 # Ask Cursor
-ask_yes_no "Configure Cursor Rules (.cursorrules)?" "n" "Creates .cursorrules to automatically feed guidelines into Cursor's inline and chat-assistant contexts." "$OVERRIDE_CURSOR"
+ask_yes_no "Configure Cursor Rules (.cursorrules)?" "y" "Creates .cursorrules to automatically feed guidelines into Cursor's inline and chat-assistant contexts." "$OVERRIDE_CURSOR"
 if [ "$PROMPT_RESULT" = "y" ]; then
   write_cursor
   INSTALLED_AGENTS="${INSTALLED_AGENTS:+$INSTALLED_AGENTS,}cursor,windsurf"
@@ -559,7 +559,7 @@ fi
 print_step "Configuring Custom Agent Skills"
 echo "LEAP provides pre-built, staged AI agent skills under '.skills/' (e.g. leap-start, leap-dev, leap-resume, leap-handoff, leap-finish, leap-pr)."
 
-ask_yes_no "Install LEAP custom skills for your AI agents?" "n" "Creates relative symlinks projecting .skills/ custom instructions into your configured agent directories." "$OVERRIDE_SKILLS"
+ask_yes_no "Install LEAP custom skills for your AI agents?" "y" "Creates relative symlinks projecting .skills/ custom instructions into your configured agent directories." "$OVERRIDE_SKILLS"
 if [ "$PROMPT_RESULT" = "y" ]; then
   if [ -z "$INSTALLED_AGENTS" ]; then
     print_warning "No agents were configured (Claude, Gemini, or Cursor). Skipping custom skills installation."
@@ -578,7 +578,7 @@ fi
 print_step "Configuring .gitignore for LEAP Rule Projections"
 echo "To prevent cluttering your repository's git status, local agent folders (.cursor/, .gemini/, etc.), .bak files, and dev notes should be ignored."
 
-ask_yes_no "Configure your project's .gitignore for LEAP?" "n" "Appends standard LEAP and AI agent directories to your repository's .gitignore file." "$OVERRIDE_GITIGNORE"
+ask_yes_no "Configure your project's .gitignore for LEAP?" "y" "Appends standard LEAP and AI agent directories to your repository's .gitignore file." "$OVERRIDE_GITIGNORE"
 if [ "$PROMPT_RESULT" = "y" ]; then
   configure_gitignore
 else
@@ -590,7 +590,7 @@ if [ "$LEAP_DIR" = "." ]; then
   print_step "Configuring Git Pre-Commit Hook"
   echo "The LEAP pre-commit hook automatically runs 'run-all-checks.sh' before any git commit, preventing broken code or linter failures from being committed."
 
-  ask_yes_no "Install LEAP git pre-commit hook?" "n" "Installs the pre-commit hook into your active git repository to physically block broken commits." "$OVERRIDE_HOOKS"
+  ask_yes_no "Install LEAP git pre-commit hook?" "y" "Installs the pre-commit hook into your active git repository to physically block broken commits." "$OVERRIDE_HOOKS"
   if [ "$PROMPT_RESULT" = "y" ]; then
     HOOK_DIR=""
     if [ -f ".git" ]; then
@@ -633,7 +633,7 @@ fi
 print_step "Configuring QMD Semantic Search"
 echo "QMD is an on-device semantic search engine that lets AI agents find your documentation."
 
-ask_yes_no "Run QMD semantic search configurator?" "n" "Registers your document collections, registers your local project with the local AI agent, and installs pre-commit hooks to keep the index updated automatically." "$OVERRIDE_QMD"
+ask_yes_no "Run QMD semantic search configurator?" "y" "Registers your document collections, registers your local project with the local AI agent, and installs pre-commit hooks to keep the index updated automatically." "$OVERRIDE_QMD"
 QMD_FAILED=false
 if [ "$PROMPT_RESULT" = "y" ]; then
   if bash "$LEAP_DIR/scripts/qmd/qmd-config" --repo-root "$REPO_ROOT" --remove-legacy; then
