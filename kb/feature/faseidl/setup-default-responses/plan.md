@@ -45,9 +45,9 @@ We will update the interactive default answers in `scripts/setup-leap.sh` so tha
 
 ### Success Criteria
 
-- [ ] All standard prompt calls to `ask_yes_no` in `setup-leap.sh` use `"y"` as their default parameter.
-- [ ] Overwrite confirmation prompt calls to `ask_yes_no` in `setup-leap.sh` use `"n"` as their default parameter.
-- [ ] No regression is introduced in syntax or basic flow.
+- [x] All standard prompt calls to `ask_yes_no` in `setup-leap.sh` use `"y"` as their default parameter.
+- [x] Overwrite confirmation prompt calls to `ask_yes_no` in `setup-leap.sh` use `"n"` as their default parameter.
+- [x] No regression is introduced in syntax or basic flow.
 
 ---
 
@@ -68,9 +68,9 @@ We will update the interactive default answers in `scripts/setup-leap.sh` so tha
 
 ### Success Criteria
 
-- [ ] New carriage return interactive default test is implemented.
-- [ ] Test suite executes and passes 100% cleanly.
-- [ ] Project-wide check runner (`run-all-checks.sh`) succeeds.
+- [x] New carriage return interactive default test is implemented.
+- [x] Test suite executes and passes 100% cleanly.
+- [x] Project-wide check runner (`run-all-checks.sh`) succeeds.
 
 ---
 
@@ -88,8 +88,8 @@ We will update the interactive default answers in `scripts/setup-leap.sh` so tha
 
 ### Success Criteria
 
-- [ ] Documentation audit completed.
-- [ ] All occurrences of old setup prompt behaviors or defaults updated in the guides and readmes.
+- [x] Documentation audit completed.
+- [x] All occurrences of old setup prompt behaviors or defaults updated in the guides and readmes.
 
 ---
 

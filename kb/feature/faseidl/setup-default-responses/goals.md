@@ -51,11 +51,11 @@ By updating standard setup prompts to default to "y" (Yes), users can seamlessly
 
 ## Success Criteria
 
-- [ ] Interactive prompts for all standard non-destructive workspace configurations in `setup-leap.sh` default to "y".
-- [ ] Overwrite prompts explicitly continue to default to "n".
-- [ ] Non-interactive modes continue to work correctly under the new default paradigm.
-- [ ] Setup script automated tests run and pass cleanly.
-- [ ] Documentation audit completed and any affected references updated.
+- [x] Interactive prompts for all standard non-destructive workspace configurations in `setup-leap.sh` default to "y".
+- [x] Overwrite prompts explicitly continue to default to "n".
+- [x] Non-interactive modes continue to work correctly under the new default paradigm.
+- [x] Setup script automated tests run and pass cleanly.
+- [x] Documentation audit completed and any affected references updated.
 
 ## Constraints
 
