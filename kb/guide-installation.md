@@ -91,7 +91,7 @@ LEAP provides an automated pinning utility, `pin-leap.sh`, in the `scripts/` dir
 1. Verifies that the host repository is clean (no unstaged/uncommitted changes).
 2. Automatically creates and switches to a standardized, compliant branch (e.g., `chore/pin-leap-<version>`).
 3. Updates the submodule pointer to your requested version (or the newest stable semantic version if you pass `latest`).
-4. Auto-generates a LEAP Compliance Level 1 feature folder (`kb/feature/pin-leap-<version>/`) with pre-populated `goals.md` and `completion-summary.md` files.
+4. Auto-generates a LEAP Compliance Level 1 feature folder (`kb/feature/<username>/pin-leap-<version>/`) with pre-populated `goals.md` and `completion-summary.md` files.
 5. Stages the updated submodule reference and generated documentation files.
 
 To pin your submodule automatically, run the script from your project root:
