@@ -20,4 +20,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-__version__ = "1.4.0-rc.0" # x-release-please-version
+__version__ = "1.4.1-rc.0" # x-release-please-version

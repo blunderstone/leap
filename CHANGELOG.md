@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.1-rc.0](https://github.com/blunderstone/leap/compare/v1.4.0-rc.0...v1.4.1-rc.0) (2026-09-01)
+
+
+### Bug Fixes
+
+* **cli:** resolve pin-leap.sh heredoc corruption and path nesting ([#63](https://github.com/blunderstone/leap/issues/63)) ([50dc8ac](https://github.com/blunderstone/leap/commit/50dc8ac30e6694c28d2b9739927dab0f9a4b566e))
+* **cli:** update setup-leap.sh interactive prompt defaults to yes ([#61](https://github.com/blunderstone/leap/issues/61)) ([aa9dfcd](https://github.com/blunderstone/leap/commit/aa9dfcd22c295a9dd04019436fb86d46ba1ced9c))
+
+
+### Documentation Standards & Guides
+
+* **readme:** integrate official branding and website navigation links ([#66](https://github.com/blunderstone/leap/issues/66)) ([097b16d](https://github.com/blunderstone/leap/commit/097b16dbdeb24c25ebb4cb79f02065cc7fb95148))
+
 ## [1.4.0-rc.0](https://github.com/blunderstone/leap/compare/v1.3.0-rc.0...v1.4.0-rc.0) (2026-08-29)
 
 
