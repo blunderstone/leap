@@ -47,10 +47,10 @@ This feature will incorporate official LEAP design assets (namely the emblem and
 
 ## Success Criteria
 
-- [ ] README.md features the official LEAP branding asset(s) and points directly to `https://fasleap.org`.
-- [ ] README.md maintains full compatibility with GitHub light and dark mode backgrounds.
-- [ ] All `check-md` rules are perfectly satisfied on `README.md` and `goals.md` (no errors).
-- [ ] Goals and plans are fully approved and committed to the repository.
+- [x] README.md features the official LEAP branding asset(s) and points directly to `https://fasleap.org`.
+- [x] README.md maintains full compatibility with GitHub light and dark mode backgrounds.
+- [x] All `check-md` rules are perfectly satisfied on `README.md` and `goals.md` (no errors).
+- [x] Goals and plans are fully approved and committed to the repository.
 
 ## Constraints
 

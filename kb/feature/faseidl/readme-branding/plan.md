@@ -43,10 +43,10 @@ The strategy involves redesigning the top of the repository `README.md` to featu
 
 ### Success Criteria
 
-- [ ] README.md has a polished, centered branding header with the official emblem.
-- [ ] README.md links prominently to `https://fasleap.org`.
-- [ ] `check-md README.md` passes with zero lint violations.
-- [ ] Visual verification of the README.md layout on GitHub matches professional expectations.
+- [x] README.md has a polished, left-aligned branding header with the official emblem.
+- [x] README.md links prominently to `https://fasleap.org`.
+- [x] `check-md README.md` passes with zero lint violations.
+- [x] Visual verification of the README.md layout on GitHub matches professional expectations.
 
 ### Explicitly Deferred
 
