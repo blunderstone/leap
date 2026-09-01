@@ -192,36 +192,51 @@ print_success "Checked out '$TARGET_VERSION' in submodule '$SUBMODULE_REL_PATH'.
 COMPLIANCE_DIR="kb/feature/pin-leap-$TARGET_VERSION"
 print_step "Generating LEAP Compliance Level 1 documents"
 
-mkdir -p "$COMPLIANCE_DIR"
+# Dynamically query default base branch of the parent repository (defaulting to main)
+BASE_BRANCH=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's@^origin/@@' || echo "")
+BASE_BRANCH="${BASE_BRANCH:-main}"
+
+if ! mkdir -p "$COMPLIANCE_DIR"; then
+  print_error "Failed to create compliance directory: $COMPLIANCE_DIR"
+  exit 1
+fi
 CURRENT_DATE=$(date "+%Y-%m-%d")
 
-cat <<EOF > "$COMPLIANCE_DIR/goals.md"
-# Pin LEAP to $TARGET_VERSION Goals
+# Define functions to generate the compliance documents.
+# This keeps the quoted heredocs safe from command substitution, ensures correct heredoc placement,
+# and allows for clean exit status checking.
+
+generate_goals() {
+  cat <<'EOF' | sed \
+    -e "s|@TARGET_VERSION@|${TARGET_VERSION}|g" \
+    -e "s|@CURRENT_DATE@|${CURRENT_DATE}|g" \
+    > "$COMPLIANCE_DIR/goals.md"
+# Pin LEAP to @TARGET_VERSION@ Goals
 
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)<br>
-**Date:** $CURRENT_DATE
+**Date:** @CURRENT_DATE@
 
 ---
 
 ## Quick Summary
 
-Pin the LEAP submodule reference to version $TARGET_VERSION to align the repository with the latest standards.
+Pin the LEAP submodule reference to version @TARGET_VERSION@ to align the repository with the latest standards.
 
 ## Executive Summary
 
-To leverage the latest enhancements, bug fixes, and development skills provided by the LEAP repository, this change pins the local LEAP submodule to $TARGET_VERSION.
+To leverage the latest enhancements, bug fixes, and development skills provided by the LEAP repository, this change pins the local LEAP submodule to @TARGET_VERSION@.
 
 ## Objectives
 
-1. Update the git submodule reference for LEAP to version $TARGET_VERSION.
+1. Update the git submodule reference for LEAP to version @TARGET_VERSION@.
 2. Initialize LEAP Compliance Level 1 feature structure to document the pinning procedure.
 
 ## Requirements
 
 ### Functional Requirements
 
-- REQ-1: Verify that the parent repository's LEAP submodule points to tag or commit $TARGET_VERSION.
-- REQ-2: Ensure the feature directory is created under `kb/feature/pin-leap-$TARGET_VERSION`.
+- REQ-1: Verify that the parent repository's LEAP submodule points to tag or commit @TARGET_VERSION@.
+- REQ-2: Ensure the feature directory is created under `kb/feature/pin-leap-@TARGET_VERSION@`.
 
 ### Non-Functional Requirements
 
@@ -233,41 +248,60 @@ To leverage the latest enhancements, bug fixes, and development skills provided 
 
 ## Success Criteria
 
-- [x] LEAP submodule is checked out at $TARGET_VERSION.
-- [x] Level 1 Compliance directory `kb/feature/pin-leap-$TARGET_VERSION` is created and staged.
+- [x] LEAP submodule is checked out at @TARGET_VERSION@.
+- [x] Level 1 Compliance directory `kb/feature/pin-leap-@TARGET_VERSION@` is created and staged.
 EOF
+}
 
-cat <<EOF > "$COMPLIANCE_DIR/completion-summary.md"
-# Pin LEAP to $TARGET_VERSION Completion Summary
+generate_completion_summary() {
+  cat <<'EOF' | sed \
+    -e "s|@TARGET_VERSION@|${TARGET_VERSION}|g" \
+    -e "s|@CURRENT_DATE@|${CURRENT_DATE}|g" \
+    -e "s|@BASE_BRANCH@|${BASE_BRANCH}|g" \
+    -e "s|@SUBMODULE_REL_PATH@|${SUBMODULE_REL_PATH}|g" \
+    > "$COMPLIANCE_DIR/completion-summary.md"
+# Pin LEAP to @TARGET_VERSION@ Completion Summary
 
-**Branch:** `chore/pin-leap-$TARGET_VERSION`<br>
-**Base Branch:** `main`<br>
-**Date:** $CURRENT_DATE<br>
+**Branch:** `chore/pin-leap-@TARGET_VERSION@`<br>
+**Base Branch:** `@BASE_BRANCH@`<br>
+**Date:** @CURRENT_DATE@<br>
 **Author:** [F. Andy Seidl](https://www.linkedin.com/in/faseidl/)
 
 ---
 
 ## Overview
 
-The LEAP submodule was successfully updated and pinned to version $TARGET_VERSION. This update aligns our local development skills, linters, and guides with the latest upstream standards.
+The LEAP submodule was successfully updated and pinned to version @TARGET_VERSION@. This update aligns our local development skills, linters, and guides with the latest upstream standards.
 
 ## What Changed
 
 ### High-Level Summary
 
-- Switched the LEAP submodule to the target version $TARGET_VERSION.
+- Switched the LEAP submodule to the target version @TARGET_VERSION@.
 - Auto-generated LEAP Compliance Level 1 documentation for this pinning event.
 - Staged all changes for review.
 
 ### New Files
 
-- `kb/feature/pin-leap-$TARGET_VERSION/goals.md` - Compliance documentation goals.
-- `kb/feature/pin-leap-$TARGET_VERSION/completion-summary.md` - This completion summary.
+- `kb/feature/pin-leap-@TARGET_VERSION@/goals.md` - Compliance documentation goals.
+- `kb/feature/pin-leap-@TARGET_VERSION@/completion-summary.md` - This completion summary.
 
 ### Modified Files
 
-- `$SUBMODULE_REL_PATH` - Submodule pointer updated to $TARGET_VERSION.
+- `@SUBMODULE_REL_PATH@` - Submodule pointer updated to @TARGET_VERSION@.
 EOF
+}
+
+# Run generation with error checking
+if ! generate_goals; then
+  print_error "Failed to generate goals.md"
+  exit 1
+fi
+
+if ! generate_completion_summary; then
+  print_error "Failed to generate completion-summary.md"
+  exit 1
+fi
 
 print_success "Generated goals.md and completion-summary.md under $COMPLIANCE_DIR/"
 
