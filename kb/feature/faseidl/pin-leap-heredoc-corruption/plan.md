@@ -40,8 +40,8 @@ The goal is to fix the Markdown inline code (backtick) corruption bug in `script
 
 ### Success Criteria
 
-- [ ] New assertions added to `scripts/tests/pin-leap.test.sh`.
-- [ ] Test run fails with clear, descriptive assertion errors reflecting the bugs in Issue #60 (RED state reached).
+- [x] New assertions added to `scripts/tests/pin-leap.test.sh`.
+- [x] Test run fails with clear, descriptive assertion errors reflecting the bugs in Issue #60 (RED state reached).
 
 ---
 
@@ -74,11 +74,11 @@ The goal is to fix the Markdown inline code (backtick) corruption bug in `script
 
 ### Success Criteria
 
-- [ ] Unquoted heredocs in `scripts/pin-leap.sh` are refactored to use quoted heredocs piped through `sed`.
-- [ ] Base branch is dynamically queried and inserted into `completion-summary.md`.
-- [ ] No command execution or evaluation errors occur during document generation.
-- [ ] If directory creation or document generation fails, the script fails safely.
-- [ ] All automated tests in `scripts/tests/pin-leap.test.sh` pass successfully.
+- [x] Unquoted heredocs in `scripts/pin-leap.sh` are refactored to use quoted heredocs piped through `sed`.
+- [x] Base branch is dynamically queried and inserted into `completion-summary.md`.
+- [x] No command execution or evaluation errors occur during document generation.
+- [x] If directory creation or document generation fails, the script fails safely.
+- [x] All automated tests in `scripts/tests/pin-leap.test.sh` pass successfully.
 
 ---
 
@@ -96,8 +96,8 @@ The goal is to fix the Markdown inline code (backtick) corruption bug in `script
 
 ### Success Criteria
 
-- [ ] High-quality comments explaining the quoted-heredoc-to-sed pipeline strategy are in place.
-- [ ] All project validation checks via `scripts/run-all-checks.sh` run and pass.
+- [x] High-quality comments explaining the quoted-heredoc-to-sed pipeline strategy are in place.
+- [x] All project validation checks via `scripts/run-all-checks.sh` run and pass.
 
 ---
 
