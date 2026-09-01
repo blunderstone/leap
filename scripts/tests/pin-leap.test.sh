@@ -24,6 +24,9 @@
 
 set -euo pipefail
 
+# Force USER to be testuser for deterministic testing of LEAP compliance paths
+export USER="testuser"
+
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$HERE/../.."
 PIN_SCRIPT="$ROOT/scripts/pin-leap.sh"
@@ -167,14 +170,14 @@ assert_equals "Submodule checked out at v1.0.0" "$v1_0_0_commit" "$current_submo
 assert_absent "No command execution errors in output" "$out" "command not found"
 
 # - LEAP Level 1 compliance folder and files exist
-assert_exists "goals.md" "kb/feature/pin-leap-v1.0.0/goals.md"
-assert_exists "completion-summary.md" "kb/feature/pin-leap-v1.0.0/completion-summary.md"
+assert_exists "goals.md" "kb/feature/testuser/pin-leap-v1.0.0/goals.md"
+assert_exists "completion-summary.md" "kb/feature/testuser/pin-leap-v1.0.0/completion-summary.md"
 
 # - Verify that backticks are intact in generated files
-goals_content=$(cat "kb/feature/pin-leap-v1.0.0/goals.md")
-completion_content=$(cat "kb/feature/pin-leap-v1.0.0/completion-summary.md")
+goals_content=$(cat "kb/feature/testuser/pin-leap-v1.0.0/goals.md")
+completion_content=$(cat "kb/feature/testuser/pin-leap-v1.0.0/completion-summary.md")
 
-assert_contains "goals.md retains backticks around compliance dir" "$goals_content" "\`kb/feature/pin-leap-v1.0.0\`"
+assert_contains "goals.md retains backticks around compliance dir" "$goals_content" "\`kb/feature/testuser/pin-leap-v1.0.0\`"
 assert_contains "goals.md has target version interpolated" "$goals_content" "Pin LEAP to v1.0.0 Goals"
 
 assert_contains "completion-summary.md retains backticks around branch" "$completion_content" "\`chore/pin-leap-v1.0.0\`"
@@ -188,7 +191,7 @@ echo "$staged_status"
 echo "------------------------------"
 
 assert_true "Submodule pointer change is staged" "$(echo "$staged_status" | grep -q "^M. leap" && echo "true" || echo "false")"
-assert_true "Level 1 compliance folder is staged" "$(echo "$staged_status" | grep -q "^A  kb/feature/pin-leap-v1.0.0/" && echo "true" || echo "false")"
+assert_true "Level 1 compliance folder is staged" "$(echo "$staged_status" | grep -q "^A  kb/feature/testuser/pin-leap-v1.0.0/" && echo "true" || echo "false")"
 
 # Reset parent repo to initial branch and clean working tree for next scenario
 git checkout -q "$INITIAL_BRANCH"
@@ -226,11 +229,11 @@ current_submodule_commit=$(cd leap && git rev-parse HEAD)
 assert_equals "Submodule checked out at latest stable v1.1.0" "$v1_1_0_commit" "$current_submodule_commit"
 
 # - LEAP Level 1 compliance folder and files exist for v1.1.0
-assert_exists "goals.md" "kb/feature/pin-leap-v1.1.0/goals.md"
-assert_exists "completion-summary.md" "kb/feature/pin-leap-v1.1.0/completion-summary.md"
+assert_exists "goals.md" "kb/feature/testuser/pin-leap-v1.1.0/goals.md"
+assert_exists "completion-summary.md" "kb/feature/testuser/pin-leap-v1.1.0/completion-summary.md"
 
 # - Verify backticks and custom base branch are in completion-summary.md
-completion_content_6=$(cat "kb/feature/pin-leap-v1.1.0/completion-summary.md")
+completion_content_6=$(cat "kb/feature/testuser/pin-leap-v1.1.0/completion-summary.md")
 assert_contains "completion-summary.md has dynamic base branch custom-main" "$completion_content_6" "**Base Branch:** \`custom-main\`"
 
 # - Staged changes check
@@ -240,7 +243,7 @@ echo "$staged_status"
 echo "------------------------------"
 
 assert_true "Submodule pointer change is staged" "$(echo "$staged_status" | grep -q "^M. leap" && echo "true" || echo "false")"
-assert_true "Level 1 compliance folder is staged" "$(echo "$staged_status" | grep -q "^A  kb/feature/pin-leap-v1.1.0/" && echo "true" || echo "false")"
+assert_true "Level 1 compliance folder is staged" "$(echo "$staged_status" | grep -q "^A  kb/feature/testuser/pin-leap-v1.1.0/" && echo "true" || echo "false")"
 
 # Print results
 echo ""

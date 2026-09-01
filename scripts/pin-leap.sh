@@ -189,7 +189,11 @@ fi
 print_success "Checked out '$TARGET_VERSION' in submodule '$SUBMODULE_REL_PATH'."
 
 # 7. Generate LEAP Level 1 Compliance Directory structure
-COMPLIANCE_DIR="kb/feature/pin-leap-$TARGET_VERSION"
+# Dynamically determine clean username for nested compliance directory per LEAP standards
+LEAP_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo "developer")}"
+LEAP_USER=$(echo "$LEAP_USER" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+
+COMPLIANCE_DIR="kb/feature/$LEAP_USER/pin-leap-$TARGET_VERSION"
 print_step "Generating LEAP Compliance Level 1 documents"
 
 # Dynamically query default base branch of the parent repository (defaulting to main)
@@ -210,6 +214,7 @@ generate_goals() {
   cat <<'EOF' | sed \
     -e "s|@TARGET_VERSION@|${TARGET_VERSION}|g" \
     -e "s|@CURRENT_DATE@|${CURRENT_DATE}|g" \
+    -e "s|@LEAP_USER@|${LEAP_USER}|g" \
     > "$COMPLIANCE_DIR/goals.md"
 # Pin LEAP to @TARGET_VERSION@ Goals
 
@@ -236,7 +241,7 @@ To leverage the latest enhancements, bug fixes, and development skills provided 
 ### Functional Requirements
 
 - REQ-1: Verify that the parent repository's LEAP submodule points to tag or commit @TARGET_VERSION@.
-- REQ-2: Ensure the feature directory is created under `kb/feature/pin-leap-@TARGET_VERSION@`.
+- REQ-2: Ensure the feature directory is created under `kb/feature/@LEAP_USER@/pin-leap-@TARGET_VERSION@`.
 
 ### Non-Functional Requirements
 
@@ -249,7 +254,7 @@ To leverage the latest enhancements, bug fixes, and development skills provided 
 ## Success Criteria
 
 - [x] LEAP submodule is checked out at @TARGET_VERSION@.
-- [x] Level 1 Compliance directory `kb/feature/pin-leap-@TARGET_VERSION@` is created and staged.
+- [x] Level 1 Compliance directory `kb/feature/@LEAP_USER@/pin-leap-@TARGET_VERSION@` is created and staged.
 EOF
 }
 
@@ -259,6 +264,7 @@ generate_completion_summary() {
     -e "s|@CURRENT_DATE@|${CURRENT_DATE}|g" \
     -e "s|@BASE_BRANCH@|${BASE_BRANCH}|g" \
     -e "s|@SUBMODULE_REL_PATH@|${SUBMODULE_REL_PATH}|g" \
+    -e "s|@LEAP_USER@|${LEAP_USER}|g" \
     > "$COMPLIANCE_DIR/completion-summary.md"
 # Pin LEAP to @TARGET_VERSION@ Completion Summary
 
@@ -283,8 +289,8 @@ The LEAP submodule was successfully updated and pinned to version @TARGET_VERSIO
 
 ### New Files
 
-- `kb/feature/pin-leap-@TARGET_VERSION@/goals.md` - Compliance documentation goals.
-- `kb/feature/pin-leap-@TARGET_VERSION@/completion-summary.md` - This completion summary.
+- `kb/feature/@LEAP_USER@/pin-leap-@TARGET_VERSION@/goals.md` - Compliance documentation goals.
+- `kb/feature/@LEAP_USER@/pin-leap-@TARGET_VERSION@/completion-summary.md` - This completion summary.
 
 ### Modified Files
 
