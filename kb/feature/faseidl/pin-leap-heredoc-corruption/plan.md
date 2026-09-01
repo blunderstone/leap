@@ -62,11 +62,13 @@ The goal is to fix the Markdown inline code (backtick) corruption bug in `script
    ```bash
    cat <<'EOF' | sed -e "s|@TARGET_VERSION@|${TARGET_VERSION}|g" -e ... > "$COMPLIANCE_DIR/goals.md"
    ```
+
 4. Query the base branch dynamically:
    ```bash
    BASE_BRANCH=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's@^origin/@@')
    BASE_BRANCH=${BASE_BRANCH:-main}
    ```
+
 5. Ensure file generation checks for execution errors: if `cat` or `sed` fails, the script should terminate with an error code instead of printing "Generated goals.md and completion-summary.md ...".
 6. Run `bash scripts/tests/pin-leap.test.sh` and confirm all tests now pass (GREEN state reached).
 
