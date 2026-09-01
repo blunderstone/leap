@@ -1,6 +1,12 @@
+[![LEAP Emblem](https://fasleap.org/images/logo/leap-emblem-256.png)](https://fasleap.org)
+
 # LEAP: Literate (Extended-by-Agent) Programming™
 
 [![Latest Release](https://img.shields.io/github/v/release/blunderstone/leap?include_prereleases)](https://github.com/blunderstone/leap/releases)
+
+[Website](https://fasleap.org) • [Releases](https://github.com/blunderstone/leap/releases) • [Getting Started](#getting-started) • [Documentation](#more-information)
+
+---
 
 ## Overview
 
