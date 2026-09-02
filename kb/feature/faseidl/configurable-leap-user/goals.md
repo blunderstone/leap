@@ -11,14 +11,14 @@ Make the compliance directory username configurable via environment variables or
 
 ## Executive Summary
 
-Currently, `pin-leap.sh` derives the per-user compliance directory name under `kb/feature/` solely from the OS login name. In environments like this repository where the project handle is `faseidl` but the local machine username is `fseidl`, this mismatch results in work being split across two separate folders (`kb/feature/faseidl/` and `kb/feature/fseidl/`). A similar issue occurs in CI/CD environments (which typically run as `root` or `runner`) and on shared corporate-imaged machines.
+Currently, `pin-leap.sh` derives the per-user compliance directory name under `kb/feature/` solely from the OS login name. In environments like this repository where the LEAP username is `faseidl` but the local machine username is `fseidl`, this mismatch results in work being split across two separate folders (`kb/feature/faseidl/` and `kb/feature/fseidl/`). A similar issue occurs in CI/CD environments (which typically run as `root` or `runner`) and on shared corporate-imaged machines.
 
 This feature addresses the issue by introducing a clear resolution hierarchy for configuring the LEAP user:
 1. `LEAP_USER` environment variable.
 2. `git config leap.user` configuration value.
 3. Current fallback behavior: `$USER` -> `id -un` -> `whoami` -> `developer`.
 
-Additionally, `setup-leap.sh` will prompt for this handle and write it to `git config leap.user` at setup time, guessing an appropriate default from existing `kb/feature/` subdirectories if they exist.
+Additionally, `setup-leap.sh` will prompt for this username and write it to `git config leap.user` at setup time, guessing an appropriate default from existing `kb/feature/` subdirectories if they exist.
 
 ## Risk and Complexity Assessment
 
@@ -28,7 +28,7 @@ Additionally, `setup-leap.sh` will prompt for this handle and write it to `git c
 
 ## Objectives
 
-1. Enable explicit configuration of the LEAP username to map compliance directories to agreed-upon project handles.
+1. Enable explicit configuration of the LEAP username to map compliance directories to agreed-upon project usernames.
 2. Maintain compatibility with the existing derivation mechanism as a fallback.
 3. Integrate configuration into `setup-leap.sh` to prompt and configure `git config leap.user` automatically.
 4. Normalize and sanitize the configured username to guarantee safe directory paths.
@@ -37,14 +37,14 @@ Additionally, `setup-leap.sh` will prompt for this handle and write it to `git c
 
 ### Functional Requirements
 
-- **REQ-1:** In `scripts/pin-leap.sh`, resolve the LEAP user handle using the following prioritized hierarchy:
+- **REQ-1:** In `scripts/pin-leap.sh`, resolve the LEAP username using the following prioritized hierarchy:
   1. `LEAP_USER` environment variable.
   2. `git config --get leap.user` configuration value (local or global).
   3. Existing OS login-based fallback logic (`USER` -> `id -un` -> `whoami` -> `developer`).
 - **REQ-2:** Normalize and sanitize the resolved username by converting it to lowercase and removing any characters that are not lowercase alphanumeric, `.`, `_`, or `-` (to match existing directory naming safety).
-- **REQ-3:** Update `scripts/setup-leap.sh` to prompt the user for their LEAP/project handle during setup, suggesting a default value.
-- **REQ-4:** In `scripts/setup-leap.sh`, search existing subdirectories of `kb/feature/` (excluding generic names or non-user folders if applicable) to propose the most likely default handle for the prompt.
-- **REQ-5:** Save the user's input/selected handle in local git configuration via `git config leap.user "<handle>"` during `scripts/setup-leap.sh`.
+- **REQ-3:** Update `scripts/setup-leap.sh` to prompt the user for their LEAP username (used for feature directories and branch names) during setup, suggesting a default value.
+- **REQ-4:** In `scripts/setup-leap.sh`, search existing subdirectories of `kb/feature/` (excluding generic names or non-user folders if applicable) to propose the most likely default username for the prompt.
+- **REQ-5:** Save the user's input/selected username in local git configuration via `git config leap.user "<username>"` during `scripts/setup-leap.sh`.
 - **REQ-6:** Support automated/headless execution of `scripts/setup-leap.sh` (e.g., via flags or env vars) without blocking on the interactive prompt.
 
 ### Non-Functional Requirements
@@ -66,7 +66,7 @@ Additionally, `setup-leap.sh` will prompt for this handle and write it to `git c
 ## Success Criteria
 
 - [ ] `pin-leap.sh` successfully resolves username using the hierarchical lookup (LEAP_USER > git config > OS fallbacks).
-- [ ] `setup-leap.sh` correctly prompts for the handle, offers a smart default based on existing `kb/feature/` folders, and writes it to `git config leap.user`.
+- [ ] `setup-leap.sh` correctly prompts for the username, offers a smart default based on existing `kb/feature/` folders, and writes it to `git config leap.user`.
 - [ ] Sanitization works identically across all sources, ensuring only clean and safe directory/file paths are created.
 - [ ] All updated and new automated tests pass.
 
