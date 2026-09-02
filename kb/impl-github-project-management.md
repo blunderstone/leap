@@ -27,7 +27,10 @@ Run the following GitHub CLI commands to create/configure each label. If a label
 
 #### Issue Types
 
-All issue types are styled using color `#0E8A16` <span style="background-color: #0E8A16; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span> (dark green).
+Issue types are styled based on whether they trigger automated releases and version bumps:
+
+* **Release-Triggering** (`#0E8A16` <span style="background-color: #0E8A16; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
+* **Non-Release-Triggering** (`#5F6368` <span style="background-color: #5F6368; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
 
 ```bash
 # Delete default labels that do not fit the taxonomy
@@ -43,8 +46,8 @@ gh label delete "wontfix" --yes || true
 gh label create "type: bug" --color "0E8A16" --description "Unexpected failure, error, or incorrect behavior"
 gh label create "type: feature" --color "0E8A16" --description "Significant new capability or system architecture change"
 gh label create "type: enhancement" --color "0E8A16" --description "Minor improvement or performance tuning to existing capabilities"
-gh label create "type: documentation" --color "0E8A16" --description "Updates to guides, knowledge base articles, templates, or ADRs"
-gh label create "type: chore" --color "0E8A16" --description "Routine maintenance, dependency updates, and workflow configuration"
+gh label create "type: documentation" --color "5F6368" --description "Updates to guides, knowledge base articles, templates, or ADRs"
+gh label create "type: chore" --color "5F6368" --description "Routine maintenance, dependency updates, and workflow configuration"
 ```
 
 #### Priority Levels

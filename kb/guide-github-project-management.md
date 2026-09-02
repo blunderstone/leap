@@ -19,13 +19,15 @@ Labels in the LEAP repository are categorized into three orthogonal groups: type
 
 ### 1. Issue Types
 
-All issue type labels share a single, consistent dark green color (`#0E8A16` <span style="background-color: #0E8A16; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>) to visually differentiate them from priorities and status indicators.
+Issue type labels are colored based on whether they trigger automated releases and version bumps (via `release-please` conventional commit rules). This instantly signals the engineering impact of resolving an issue:
 
-* **`type: bug`**: An unexpected failure, error, or incorrect behavior in the toolchain or codebase.
-* **`type: feature`**: A significant new capability or system architecture change.
-* **`type: enhancement`**: Minor improvements, optimizations, or performance tuning to existing capabilities.
-* **`type: documentation`**: Updates to guides, knowledge base articles, templates, or ADRs.
-* **`type: chore`**: Routine maintenance tasks, dependency updates, and CI/CD workflow configuration.
+* **Release-Triggering Types** (`#0E8A16` <span style="background-color: #0E8A16; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Resolving these issues drives the product forward and triggers a new package version release:
+  * **`type: bug`**: An unexpected failure, error, or incorrect behavior in the toolchain or codebase.
+  * **`type: feature`**: A significant new capability or system architecture change.
+  * **`type: enhancement`**: Minor improvements, optimizations, or performance tuning to existing capabilities.
+* **Non-Release-Triggering Types** (`#5F6368` <span style="background-color: #5F6368; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Resolving these issues maintains project hygiene and documentation but does not trigger a release:
+  * **`type: documentation`**: Updates to guides, knowledge base articles, templates, or ADRs.
+  * **`type: chore`**: Routine maintenance tasks, dependency updates, and CI/CD workflow configuration.
 
 ### 2. Priority Levels
 
