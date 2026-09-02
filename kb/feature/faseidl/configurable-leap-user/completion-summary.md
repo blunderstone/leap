@@ -110,4 +110,4 @@ None. All fallbacks preserve backward compatibility 100% with existing OS-based 
 
 ## Related Issues
 
-None.
+- Closes #71: pin-leap.sh: make the compliance directory username configurable instead of deriving it from $USER
