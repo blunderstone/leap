@@ -14,6 +14,7 @@ Make the compliance directory username configurable via environment variables or
 Currently, `pin-leap.sh` derives the per-user compliance directory name under `kb/feature/` solely from the OS login name. In environments like this repository where the LEAP username is `faseidl` but the local machine username is `fseidl`, this mismatch results in work being split across two separate folders (`kb/feature/faseidl/` and `kb/feature/fseidl/`). A similar issue occurs in CI/CD environments (which typically run as `root` or `runner`) and on shared corporate-imaged machines.
 
 This feature addresses the issue by introducing a clear resolution hierarchy for configuring the LEAP user:
+
 1. `LEAP_USER` environment variable.
 2. `git config leap.user` configuration value.
 3. Current fallback behavior: `$USER` -> `id -un` -> `whoami` -> `developer`.
@@ -65,10 +66,10 @@ Additionally, `setup-leap.sh` will prompt for this username and write it to `git
 
 ## Success Criteria
 
-- [ ] `pin-leap.sh` successfully resolves username using the hierarchical lookup (LEAP_USER > git config > OS fallbacks).
-- [ ] `setup-leap.sh` correctly prompts for the username, offers a smart default based on existing `kb/feature/` folders, and writes it to `git config leap.user`.
-- [ ] Sanitization works identically across all sources, ensuring only clean and safe directory/file paths are created.
-- [ ] All updated and new automated tests pass.
+- [x] `pin-leap.sh` successfully resolves username using the hierarchical lookup (LEAP_USER > git config > OS fallbacks).
+- [x] `setup-leap.sh` correctly prompts for the username, offers a smart default based on existing `kb/feature/` folders, and writes it to `git config leap.user`.
+- [x] Sanitization works identically across all sources, ensuring only clean and safe directory/file paths are created.
+- [x] All updated and new automated tests pass.
 
 ## Constraints
 

@@ -40,6 +40,7 @@ We will use Test-Driven Development (TDD) throughout. We will write failing test
     ```bash
     LEAP_USER=$(echo "$LEAP_USER" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
     ```
+
 - Add test scenarios in `scripts/tests/pin-leap.test.sh` that mock:
   - `LEAP_USER` set as an environment variable.
   - `git config leap.user` set locally.
@@ -52,10 +53,10 @@ We will use Test-Driven Development (TDD) throughout. We will write failing test
 
 ### Success Criteria
 
-- [ ] `scripts/pin-leap.sh` implements `LEAP_USER` -> `git config` -> OS username fallback.
-- [ ] Username is safely normalized and sanitized to lowercase alphanumeric, `.`, `_`, or `-` characters.
-- [ ] Unit tests are written to verify resolution hierarchy and sanitization under simulated conditions.
-- [ ] Test coverage is maintained/increased and all tests in `pin-leap.test.sh` pass.
+- [x] `scripts/pin-leap.sh` implements `LEAP_USER` -> `git config` -> OS username fallback.
+- [x] Username is safely normalized and sanitized to lowercase alphanumeric, `.`, `_`, or `-` characters.
+- [x] Unit tests are written to verify resolution hierarchy and sanitization under simulated conditions.
+- [x] Test coverage is maintained/increased and all tests in `pin-leap.test.sh` pass.
 
 ---
 
@@ -92,10 +93,10 @@ We will use Test-Driven Development (TDD) throughout. We will write failing test
 
 ### Success Criteria
 
-- [ ] `setup-leap.sh` detects existing `kb/feature/` directories and proposes a smart default username.
-- [ ] `setup-leap.sh` prompts for the LEAP username in interactive sessions, and saves the sanitized value in local `git config leap.user`.
-- [ ] Non-interactive or flag-based execution does not block and configures the default username.
-- [ ] Tests in `test_setup_flags.sh` are updated and pass successfully.
+- [x] `setup-leap.sh` detects existing `kb/feature/` directories and proposes a smart default username.
+- [x] `setup-leap.sh` prompts for the LEAP username in interactive sessions, and saves the sanitized value in local `git config leap.user`.
+- [x] Non-interactive or flag-based execution does not block and configures the default username.
+- [x] Tests in `test_setup_flags.sh` are updated and pass successfully.
 
 ---
 
@@ -114,16 +115,18 @@ We will use Test-Driven Development (TDD) throughout. We will write failing test
 
 ### Success Criteria
 
-- [ ] All tests in `scripts/tests/pin-leap.test.sh` pass.
-- [ ] All tests in `scripts/tests/test_setup_flags.sh` pass.
-- [ ] Workspace-wide linter check passes with 0 failures.
+- [x] All tests in `scripts/tests/pin-leap.test.sh` pass.
+- [x] All tests in `scripts/tests/test_setup_flags.sh` pass.
+- [x] Workspace-wide linter check passes with 0 failures.
 
 ---
 
 ## Decision Points
 
 ### After Phase 1
+
 - Verify that the resolution hierarchy is completely solid and covered by automated assertions before touching `setup-leap.sh`.
 
 ### After Phase 2
+
 - Verify that the interactive prompts do not break non-interactive/CI environments. Ensure stdin redirect `/dev/null` tests in `test_setup_flags.sh` continue to run perfectly.
