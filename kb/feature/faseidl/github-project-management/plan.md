@@ -39,11 +39,11 @@ Since this change focuses on documentation, repository settings, and configurati
 
 ### Success Criteria
 
-- [ ] Permanent contributor guide `kb/guide-github-project-management.md` is successfully written.
-- [ ] Administrator-facing setup document `kb/impl-github-project-management.md` is successfully written.
-- [ ] Project board statuses, including the **Ice Box**, are fully defined.
-- [ ] Complete label taxonomy is documented with precise hexadecimal colors and descriptions.
-- [ ] All markdown files in the repository pass the `check-md` linter with high scores and no violations.
+- [x] Permanent contributor guide `kb/guide-github-project-management.md` is successfully written.
+- [x] Administrator-facing setup document `kb/impl-github-project-management.md` is successfully written.
+- [x] Project board statuses, including the **Ice Box**, are fully defined.
+- [x] Complete label taxonomy is documented with precise hexadecimal colors and descriptions.
+- [x] All markdown files in the repository pass the `check-md` linter with high scores and no violations.
 
 ### Explicitly Deferred
 
