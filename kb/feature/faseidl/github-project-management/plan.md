@@ -106,8 +106,8 @@ Since this change focuses on documentation, repository settings, and configurati
 
 ### Success Criteria
 
-- [ ] Live GitHub repository label configurations fetched and verified via the `gh` CLI.
-- [ ] Label names, colors, and descriptions conform 100% to the taxonomy defined in `kb/impl-github-project-management.md`.
+- [x] Live GitHub repository label configurations fetched and verified via the `gh` CLI.
+- [x] Label names, colors, and descriptions conform 100% to the taxonomy defined in `kb/impl-github-project-management.md`.
 
 ### Explicitly Deferred
 
