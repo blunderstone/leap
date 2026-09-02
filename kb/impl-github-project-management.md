@@ -72,14 +72,14 @@ gh label create "priority: low" --color "8A949E" --description "Minor items, spe
 Status labels help external contributors and maintainers coordinate triage:
 
 * **`good first issue`** (`#7057FF` <span style="background-color: #7057FF; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
-* **`help wanted`** (`#008672` <span style="background-color: #008672; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
+* **`help wanted`** (`#7057FF` <span style="background-color: #7057FF; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
 * **`needs repro`** (`#D93F0B` <span style="background-color: #D93F0B; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
 * **`needs info`** (`#FBCA04` <span style="background-color: #FBCA04; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
 
 ```bash
 # Create or update standard community labels
 gh label create "good first issue" --color "7057FF" --description "Simple tasks well-suited for first-time contributors"
-gh label create "help wanted" --color "008672" --description "Tasks seeking community assistance"
+gh label create "help wanted" --color "7057FF" --description "Tasks seeking community assistance"
 gh label create "needs repro" --color "D93F0B" --description "Bug reports lacking sufficient details to reproduce locally"
 gh label create "needs info" --color "FBCA04" --description "Issues awaiting clarification from the poster"
 ```

@@ -40,10 +40,10 @@ Priority levels are color-coded based on their severity to let developers instan
 
 ### 3. Community & Status Labels
 
-Status labels help external contributors find appropriate work and coordinate triage.
+Status labels help external contributors find appropriate work and coordinate triage. Community invitation labels are styled in a welcoming purple (`#7057FF`) to signal open, external opportunities:
 
 * **`good first issue`** (`#7057FF` <span style="background-color: #7057FF; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Simple tasks well-suited for first-time contributors.
-* **`help wanted`** (`#008672` <span style="background-color: #008672; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Tasks seeking community assistance.
+* **`help wanted`** (`#7057FF` <span style="background-color: #7057FF; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Tasks seeking community assistance.
 * **`needs repro`** (`#D93F0B` <span style="background-color: #D93F0B; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Bug reports that lack sufficient steps or details to reproduce locally.
 * **`needs info`** (`#FBCA04` <span style="background-color: #FBCA04; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Issues awaiting clarification from the original poster.
 
