@@ -67,8 +67,8 @@ Currently, the repository contains basic, older-style Markdown issue templates (
 
 ## Success Criteria
 
-- [ ] Interactive GitHub Issue Forms for bug reports and proposals created and verified.
-- [ ] Old Markdown-based issue templates successfully removed.
+- [x] Interactive GitHub Issue Forms for bug reports and proposals created and verified.
+- [x] Old Markdown-based issue templates successfully removed.
 - [x] Standardized label taxonomy clearly defined and documented in the guide.
 - [x] The permanent guide `kb/guide-github-project-management.md` is authored and integrated into the knowledge base.
 - [x] The administrator-facing setup document `kb/impl-github-project-management.md` is authored and integrated into the knowledge base.

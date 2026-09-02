@@ -76,10 +76,10 @@ Since this change focuses on documentation, repository settings, and configurati
 
 ### Success Criteria
 
-- [ ] `.github/ISSUE_TEMPLATE/bug-report.yml` created and verified.
-- [ ] `.github/ISSUE_TEMPLATE/leap-improvement-proposal.yml` created and verified.
-- [ ] Obsolete markdown issue templates removed from the workspace.
-- [ ] Both YAML files start with the correct `# yaml-language-server` schema directive.
+- [x] `.github/ISSUE_TEMPLATE/bug-report.yml` created and verified.
+- [x] `.github/ISSUE_TEMPLATE/leap-improvement-proposal.yml` created and verified.
+- [x] Obsolete markdown issue templates removed from the workspace.
+- [x] Both YAML files start with the correct `# yaml-language-server` schema directive.
 
 ### Explicitly Deferred
 
