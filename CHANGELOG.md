@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0-rc.0](https://github.com/blunderstone/leap/compare/v1.4.1-rc.0...v1.5.0-rc.0) (2026-09-02)
+
+
+### Features
+
+* **kb:** establish github-native project management structure ([#68](https://github.com/blunderstone/leap/issues/68)) ([0af7831](https://github.com/blunderstone/leap/commit/0af7831229df69e89610128a67b10f7a2865873d))
+* **scripts:** support configurable LEAP username ([#72](https://github.com/blunderstone/leap/issues/72)) ([28a94b9](https://github.com/blunderstone/leap/commit/28a94b9badf9c2fa03d1a41a097f9ebab56f91d2))
+
 ## [1.4.1-rc.0](https://github.com/blunderstone/leap/compare/v1.4.0-rc.0...v1.4.1-rc.0) (2026-09-01)
 
 
