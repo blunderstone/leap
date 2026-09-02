@@ -245,6 +245,83 @@ echo "------------------------------"
 assert_true "Submodule pointer change is staged" "$(echo "$staged_status" | grep -q "^M. leap" && echo "true" || echo "false")"
 assert_true "Level 1 compliance folder is staged" "$(echo "$staged_status" | grep -q "^A  kb/feature/testuser/pin-leap-v1.1.0/" && echo "true" || echo "false")"
 
+# Scenario 7: Hierarchical Username Resolution (LEAP_USER environment variable)
+echo "Scenario 7: Hierarchical Username Resolution (LEAP_USER environment variable)"
+# Run with custom env var LEAP_USER
+git checkout -q "$INITIAL_BRANCH"
+git branch -D chore/pin-leap-v1.0.0 || true
+git branch -D chore/pin-leap-v1.1.0 || true
+git reset --hard -q HEAD
+(cd leap && git checkout -q v1.0.0)
+
+set +e
+out=$(LEAP_USER="envuser" bash leap/scripts/pin-leap.sh v1.0.0 2>&1)
+code=$?
+set -e
+assert_exit_code "Execution succeeds with LEAP_USER environment variable" 0 "$code" "$out"
+assert_exists "goals.md" "kb/feature/envuser/pin-leap-v1.0.0/goals.md"
+
+# Cleanup
+git checkout -q "$INITIAL_BRANCH"
+git branch -D chore/pin-leap-v1.0.0 || true
+git reset --hard -q HEAD
+rm -rf kb/feature/envuser
+
+# Scenario 8: Hierarchical Username Resolution (git config leap.user)
+echo "Scenario 8: Hierarchical Username Resolution (git config leap.user)"
+git config leap.user "configuser"
+set +e
+out=$(LEAP_USER="" bash leap/scripts/pin-leap.sh v1.0.0 2>&1)
+code=$?
+set -e
+assert_exit_code "Execution succeeds with git config leap.user" 0 "$code" "$out"
+assert_exists "goals.md" "kb/feature/configuser/pin-leap-v1.0.0/goals.md"
+
+# Cleanup config and files
+git config --unset leap.user
+git checkout -q "$INITIAL_BRANCH"
+git branch -D chore/pin-leap-v1.0.0 || true
+git reset --hard -q HEAD
+rm -rf kb/feature/configuser
+
+# Scenario 9: Username Sanitization & Normalization
+echo "Scenario 9: Username Sanitization & Normalization"
+git config leap.user "My.Nice_User-123!"
+set +e
+out=$(LEAP_USER="" bash leap/scripts/pin-leap.sh v1.0.0 2>&1)
+code=$?
+set -e
+assert_exit_code "Execution succeeds with unclean git config username" 0 "$code" "$out"
+assert_exists "goals.md" "kb/feature/my.nice_user-123/pin-leap-v1.0.0/goals.md"
+
+# Cleanup
+git config --unset leap.user
+git checkout -q "$INITIAL_BRANCH"
+git branch -D chore/pin-leap-v1.0.0 || true
+git reset --hard -q HEAD
+rm -rf kb/feature/my.nice_user-123
+
+# Scenario 10: Fallback to developer when all user identification fails
+echo "Scenario 10: Fallback to developer when all user identification fails"
+MOCK_BIN="$TEMP_DIR/mock-bin"
+mkdir -p "$MOCK_BIN"
+printf '#!/bin/sh\nexit 1\n' > "$MOCK_BIN/id"
+printf '#!/bin/sh\nexit 1\n' > "$MOCK_BIN/whoami"
+chmod +x "$MOCK_BIN/id" "$MOCK_BIN/whoami"
+
+set +e
+out=$(PATH="$MOCK_BIN:$PATH" USER="" LEAP_USER="" bash leap/scripts/pin-leap.sh v1.0.0 2>&1)
+code=$?
+set -e
+assert_exit_code "Execution succeeds when OS user identification is missing" 0 "$code" "$out"
+assert_exists "goals.md" "kb/feature/developer/pin-leap-v1.0.0/goals.md"
+
+# Cleanup
+git checkout -q "$INITIAL_BRANCH"
+git branch -D chore/pin-leap-v1.0.0 || true
+git reset --hard -q HEAD
+rm -rf kb/feature/developer "$MOCK_BIN"
+
 # Print results
 echo ""
 echo "Test results: PASS=$PASS FAIL=$FAIL"

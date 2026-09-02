@@ -190,8 +190,22 @@ print_success "Checked out '$TARGET_VERSION' in submodule '$SUBMODULE_REL_PATH'.
 
 # 7. Generate LEAP Level 1 Compliance Directory structure
 # Dynamically determine clean username for nested compliance directory per LEAP standards
-LEAP_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo "developer")}"
-LEAP_USER=$(echo "$LEAP_USER" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+# Prioritized hierarchy: 1. LEAP_USER env var, 2. git config, 3. OS fallback.
+RESOLVED_USER="${LEAP_USER:-}"
+if [ -z "$RESOLVED_USER" ]; then
+  RESOLVED_USER=$(git config --get leap.user || echo "")
+fi
+if [ -z "$RESOLVED_USER" ]; then
+  RESOLVED_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo "")}"
+fi
+
+# Normalize and sanitize the resolved username to match directory naming safety
+LEAP_USER=$(echo "$RESOLVED_USER" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+
+# Fallback to developer if resolved name is empty after sanitization
+if [ -z "$LEAP_USER" ]; then
+  LEAP_USER="developer"
+fi
 
 COMPLIANCE_DIR="kb/feature/$LEAP_USER/pin-leap-$TARGET_VERSION"
 print_step "Generating LEAP Compliance Level 1 documents"

@@ -354,6 +354,64 @@ if [ "$IS_SUBMODULE" = true ]; then
   fi
 fi
 
+# 2c. Configure LEAP Username
+print_step "Configuring LEAP Username"
+
+# Try to find a smart default
+DEFAULT_USER=""
+if git config --get leap.user >/dev/null 2>&1; then
+  DEFAULT_USER=$(git config --get leap.user)
+fi
+
+if [ -z "$DEFAULT_USER" ] && [ -d "kb/feature" ]; then
+  dirs=()
+  for d in kb/feature/*; do
+    if [ -d "$d" ]; then
+      name=$(basename "$d")
+      if [ "$name" != "*" ]; then
+        dirs+=("$name")
+      fi
+    fi
+  done
+  if [ ${#dirs[@]} -eq 1 ]; then
+    DEFAULT_USER="${dirs[0]}"
+  fi
+fi
+
+if [ -z "$DEFAULT_USER" ]; then
+  DEFAULT_USER="${LEAP_USER:-${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo "")}}"
+fi
+
+# Sanitize/normalize
+DEFAULT_USER=$(echo "$DEFAULT_USER" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+if [ -z "$DEFAULT_USER" ]; then
+  DEFAULT_USER="developer"
+fi
+
+SELECTED_USER=""
+# Non-interactive / Headless check
+if [ -n "${LEAP_USER:-}" ]; then
+  SELECTED_USER=$(echo "$LEAP_USER" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+  echo -e "  LEAP username overridden via environment variable: ${GREEN}${SELECTED_USER}${NC}"
+elif [ "$NON_INTERACTIVE" = "true" ]; then
+  SELECTED_USER="$DEFAULT_USER"
+  echo -e "  LEAP username selected (non-interactive): ${GREEN}${SELECTED_USER}${NC}"
+else
+  echo -e "\n${BOLD}Please enter your LEAP username${NC}"
+  echo -e "  This username maps to your compliance directory (e.g. kb/feature/<username>/) and feature branches."
+  echo -n "  Username [default: ${DEFAULT_USER}]: "
+  read -r response <&3
+  response="${response:-$DEFAULT_USER}"
+  SELECTED_USER=$(echo "$response" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
+  if [ -z "$SELECTED_USER" ]; then
+    SELECTED_USER="developer"
+  fi
+fi
+
+# Save selected user to git config
+git config leap.user "$SELECTED_USER"
+print_success "Configured git config leap.user to '${SELECTED_USER}'."
+
 # 3. Help install check-md
 print_step "Installing check-md (Markdown Linter)"
 if command -v check-md &> /dev/null; then

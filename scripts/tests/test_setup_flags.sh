@@ -111,6 +111,43 @@ assert_exists "GEMINI.md" "GEMINI.md"
 assert_exists ".cursorrules" ".cursorrules"
 assert_exists ".github/copilot-instructions.md" ".github/copilot-instructions.md"
 
+# Test 6: Non-interactive username configuration via LEAP_USER env var
+echo "Testing setup-leap.sh username config via LEAP_USER env var (non-interactive)..."
+git config --unset leap.user || true
+set +e
+out=$(LEAP_USER="Env_User.123!" bash scripts/setup-leap.sh --yes < /dev/null 2>&1)
+code=$?
+set -e
+assert_exit_code "Setup exits with 0 under LEAP_USER" 0 "$code"
+cfg_user=$(git config leap.user || echo "")
+assert_equals "Saves sanitized LEAP_USER in git config" "env_user.123" "$cfg_user"
+
+# Test 7: Propose smart default from existing directory when no git config is set
+echo "Testing setup-leap.sh smart default detection..."
+git config --unset leap.user || true
+# Create a single user directory in kb/feature/
+mkdir -p kb/feature/smartuser
+set +e
+out=$(bash scripts/setup-leap.sh --yes < /dev/null 2>&1)
+code=$?
+set -e
+assert_exit_code "Setup exits with 0" 0 "$code"
+cfg_user=$(git config leap.user || echo "")
+assert_equals "Resolves smart default from existing folder" "smartuser" "$cfg_user"
+rm -rf kb/feature/smartuser
+
+# Test 8: Interactive prompt for username
+echo "Testing setup-leap.sh interactive username prompt (entering custom username)..."
+git config --unset leap.user || true
+set +o pipefail
+out=$((echo "custom.User_7"; yes "") | bash scripts/setup-leap.sh 2>&1)
+code=$?
+set -o pipefail
+set -e
+assert_exit_code "Interactive setup with custom username exits with 0" 0 "$code"
+cfg_user=$(git config leap.user || echo "")
+assert_equals "Saves sanitized custom username from interactive prompt" "custom.user_7" "$cfg_user"
+
 echo ""
 echo "Test summary: PASS=$PASS FAIL=$FAIL"
 

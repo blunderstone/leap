@@ -117,34 +117,43 @@ To set up custom status options:
 
 ## 3. Automation Workflows
 
-We leverage GitHub Projects' native workflows to automate card transitions. In the Project Board, navigate to **Workflows** (the lighting bolt icon on the top right) and configure the following rules:
+We leverage GitHub Projects' native workflows to automate card transitions. In the Project Board, navigate to **Workflows** (the lightning bolt icon on the top right) and configure the following rules to align with our active board rules:
 
-### 1. Auto-Add to Project
+### 1. Auto-Add Workflows
 
-*   **Trigger**: Item added to repository (`blunderstone/leap`).
-*   **Condition**: When a new **Issue** or **Pull request** is created.
-*   **Action**: Add to project and set Status to **Triage / Inbox**.
+*   **Auto-add to project (Active)**:
+    *   **Trigger**: Item added to repository (`blunderstone/leap`).
+    *   **Condition**: When a new **Issue** or **Pull request** is created.
+    *   **Action**: Automatically adds the issue/PR to the project.
+*   **Auto-add sub-issues to project (Active)**:
+    *   **Trigger**: Checklist item sub-issues are created under a parent issue.
+    *   **Action**: Automatically adds parent-linked sub-issues to the project board.
 
-### 2. Item Closed
+### 2. Status Assignment on Entry
 
-*   **Trigger**: Item closed in repository.
-*   **Condition**: When an **Issue** is closed.
-*   **Action**: Set Status to **Done**.
+*   **Item added to project (Active)**:
+    *   **Trigger**: An issue or pull request is newly added to the project board.
+    *   **Action**: Set Status to **Triage / Inbox** (or **Ready / Up Next** depending on project triage preferences).
+    *   *Note*: Ensure that newly added PRs are either manually assigned or handled by linked-issue rules to prevent overriding active progress.
 
-### 3. Pull Request Merged
+### 3. Review Workflows
 
-*   **Trigger**: Pull Request merged in repository.
-*   **Condition**: When a **Pull request** merges.
-*   **Action**: Set Status to **Done**.
+*   **Pull Request Linked to Issue (Active)**:
+    *   **Trigger**: A pull request is linked to an issue.
+    *   **Action**: Set Status to **In Review**.
+    *   **Rationale**: Configured to move linked items straight to **In Review**, this rule elegantly bypasses native GitHub Projects v2 gaps where directly opened non-draft PRs get stuck or pull cards backwards.
+*   **Code review approved (Active)**:
+    *   **Trigger**: A pull request gets approved during review.
+    *   **Action**: Maintains status in **In Review** or transitions to a custom "Approved" milestone column if configured.
+*   **Code changes requested (Active)**:
+    *   **Trigger**: Code changes are requested on an open pull request.
+    *   **Action**: Set Status back to **In Progress** to signal active work is needed.
 
-### 4. Pull Request Opened / Linked
+### 4. Close & Done Workflows
 
-*   **Trigger**: Pull request opened as draft or branch linked.
-*   **Condition**: When a linked pull request is opened or a draft PR is created.
-*   **Action**: Set Status to **In Progress**.
-
-### 5. Pull Request Ready for Review
-
-*   **Trigger**: Pull request marked "Ready for review".
-*   **Condition**: When a pull request transitions from draft to ready for review.
-*   **Action**: Set Status to **In Review**.
+*   **Pull Request Merged (Active)**:
+    *   **Trigger**: Pull Request is merged into the default branch.
+    *   **Action**: Set Status to **Done**.
+*   **Item Closed (Active)** & **Auto-close issue (Active)**:
+    *   **Trigger**: An issue is closed or marked completed in the repository.
+    *   **Action**: Automatically sets Status to **Done** for both tracked issue cards and standalone project items.
