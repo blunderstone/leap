@@ -44,11 +44,12 @@ Currently, the repository contains basic, older-style Markdown issue templates (
   - **In Progress:** Actively being developed (Auto-move when branch or draft PR is linked).
   - **In Review:** Pull request open and awaiting review / CI checks (Auto-move when PR is marked 'Ready for review').
   - **Done:** Merged or resolved (Auto-move when PR merges or issue is closed).
-- **REQ-6:** Produce a comprehensive, LEAP-compliant guide document (`kb/guide-github-project-management.md`) detailing the project management structure, project board statuses, label configurations, and workflows.
+- **REQ-6:** Produce a comprehensive, LEAP-compliant guide document (`kb/guide-github-project-management.md`) detailing the project management structure, project board statuses, label configurations, and workflows for everyday contributors and agents.
+- **REQ-7:** Produce a separate, LEAP-compliant implementation document (`kb/impl-github-project-management.md`) detailing the one-time manual/CLI setup instructions for repository administrators (such as creating the project board, setting up labels, and enabling automated workflows).
 
 ### Non-Functional Requirements
 
-- **LEAP Taxonomy Compliance:** The new guide must reside in the correct `kb/` directory and follow the prefix-first pattern (`guide-github-project-management.md`).
+- **LEAP Taxonomy Compliance:** The new documentation must reside in the correct `kb/` directory and follow the prefix-first pattern (`guide-github-project-management.md` and `impl-github-project-management.md`).
 - **Date Formatting:** All dates in the goals, plan, and guide documents must strictly use the ISO 8601 standard (`YYYY-MM-DD`).
 - **Markdown Consistency:** All written documentation must be fully compatible with LEAP guidelines and parse perfectly through the workspace's linter (`check-md`).
 - **YAML Schema Integration:** All YAML files (specifically GitHub Issue Forms) must reference their respective schema (e.g., using `# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json`) so that IDEs like IntelliJ or VS Code can perform automated verification checks.
@@ -61,7 +62,8 @@ Currently, the repository contains basic, older-style Markdown issue templates (
 
 ### Documentation Requirements
 
-- A permanent, LEAP-compliant guide under `kb/guide-github-project-management.md` explaining the workflow, labels, and board setup.
+- A permanent, LEAP-compliant guide under `kb/guide-github-project-management.md` explaining the everyday contributor/agent workflow.
+- A permanent, LEAP-compliant implementation spec under `kb/impl-github-project-management.md` explaining the administrator-facing setup and automation commands.
 
 ## Success Criteria
 
@@ -69,6 +71,7 @@ Currently, the repository contains basic, older-style Markdown issue templates (
 - [ ] Old Markdown-based issue templates successfully removed.
 - [ ] Standardized label taxonomy clearly defined and documented in the guide.
 - [ ] The permanent guide `kb/guide-github-project-management.md` is authored and integrated into the knowledge base.
+- [ ] The administrator-facing setup document `kb/impl-github-project-management.md` is authored and integrated into the knowledge base.
 - [ ] All new and modified markdown files pass `check-md` checks with no style or semantic violations.
 
 ## Constraints
