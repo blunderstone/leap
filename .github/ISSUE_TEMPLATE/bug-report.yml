@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
+name: Bug Report / Defect
+description: Report a bug, error, or unexpected behavior in check-md or LEAP
+title: "[component] "
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug! Please fill out the form below as completely as possible.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a clear and concise description of what went wrong.
+      placeholder: Tell us what happened...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Reproduction Steps
+      description: Describe how to reproduce the issue. Include the exact commands run or markdown snippet analyzed.
+      placeholder: |
+        1. Run check-md on ...
+        2. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened? (Paste terminal output, traceback, logs, or diagnostic text here).
+      render: shell
+      placeholder: |
+        Paste output here...
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen instead?
+      placeholder: Describe the expected behavior...
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating System (OS)
+      description: e.g., macOS, Ubuntu, Windows
+      placeholder: e.g., macOS Sequoia
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Python Version
+      description: e.g., 3.11
+      placeholder: e.g., 3.12
+    validations:
+      required: true
+  - type: input
+    id: check-md-version
+    attributes:
+      label: check-md Version
+      description: e.g., 1.4.1
+      placeholder: e.g., 1.4.1
+    validations:
+      required: true

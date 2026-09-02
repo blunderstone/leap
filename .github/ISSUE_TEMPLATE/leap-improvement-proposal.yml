@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
+name: LEAP Improvement Proposal
+description: Propose an improvement or change to the LEAP methodology or guides
+title: "[component] "
+labels: ["type: feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for proposing an improvement to LEAP! Proposals are structured to ensure high-clarity collaboration.
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What situation prompted this idea? Include concrete examples from actual features, code, or documentation files.
+      placeholder: Provide context here...
+    validations:
+      required: true
+  - type: textarea
+    id: current-state
+    attributes:
+      label: Current State
+      description: How does LEAP work today? What is the current process or template?
+      placeholder: Describe current state...
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-change
+    attributes:
+      label: Proposed Change
+      description: What improvement are you suggesting? Describe the new process, guidelines, or tool change.
+      placeholder: Describe proposed change...
+    validations:
+      required: true
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: What are the primary benefits or advantages of this proposal?
+      placeholder: List benefits...
+    validations:
+      required: true
+  - type: textarea
+    id: drawbacks
+    attributes:
+      label: Drawbacks
+      description: What are the potential drawbacks or trade-offs of this proposal?
+      placeholder: List drawbacks...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered (Optional)
+      description: What other options did you consider, and why were they rejected?
+      placeholder: List alternatives considered...
+    validations:
+      required: false
