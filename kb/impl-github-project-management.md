@@ -52,14 +52,16 @@ gh label create "type: chore" --color "0E8A16" --description "Routine maintenanc
 Priority levels use color-coded severity:
 
 * **`priority: critical`** (`#D93F0B` <span style="background-color: #D93F0B; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
-* **`priority: normal`** (`#FBCA04` <span style="background-color: #FBCA04; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
-* **`priority: low`** (`#006B75` <span style="background-color: #006B75; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
+* **`priority: high`** (`#FBCA04` <span style="background-color: #FBCA04; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
+* **`priority: normal`** (`#1D4ED8` <span style="background-color: #1D4ED8; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
+* **`priority: low`** (`#8A949E` <span style="background-color: #8A949E; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>)
 
 ```bash
 # Create priority labels
 gh label create "priority: critical" --color "D93F0B" --description "Blockers, vulnerabilities, or major regressions needing immediate fix"
-gh label create "priority: normal" --color "FBCA04" --description "Standard planned improvements or non-blocking bug fixes"
-gh label create "priority: low" --color "006B75" --description "Minor items, speculative ideas, or non-disruptive feedback"
+gh label create "priority: high" --color "FBCA04" --description "Severe bugs, major regressions, or critical feature milestones"
+gh label create "priority: normal" --color "1D4ED8" --description "Standard planned improvements or non-blocking bug fixes"
+gh label create "priority: low" --color "8A949E" --description "Minor items, speculative ideas, or non-disruptive feedback"
 ```
 
 #### Community & Status Labels

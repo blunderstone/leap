@@ -31,9 +31,10 @@ All issue type labels share a single, consistent dark green color (`#0E8A16` <sp
 
 Priority levels are color-coded based on their severity to let developers instantly identify where to focus their attention.
 
-* **`priority: critical`** (`#D93F0B` <span style="background-color: #D93F0B; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Blockers, security vulnerabilities, or major regressions that must be addressed immediately.
-* **`priority: normal`** (`#FBCA04` <span style="background-color: #FBCA04; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Standard features, planned improvements, or non-blocking bug fixes for the current cycle.
-* **`priority: low`** (`#006B75` <span style="background-color: #006B75; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Minor items, speculative enhancements, or non-disruptive feedback.
+* **`priority: critical`** (`#D93F0B` <span style="background-color: #D93F0B; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Blockers, security vulnerabilities, or major regressions that completely halt work and must be addressed immediately.
+* **`priority: high`** (`#FBCA04` <span style="background-color: #FBCA04; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Severe bugs, major regressions, or critical feature milestones with high urgency.
+* **`priority: normal`** (`#1D4ED8` <span style="background-color: #1D4ED8; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Standard planned features, improvements, or non-blocking bug fixes for the current cycle.
+* **`priority: low`** (`#8A949E` <span style="background-color: #8A949E; display: inline-block; width: 14px; height: 14px; border: 1px solid #777; vertical-align: middle;"></span>): Minor items, speculative enhancements, or non-disruptive feedback.
 
 ### 3. Community & Status Labels
 
